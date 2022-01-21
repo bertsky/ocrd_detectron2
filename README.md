@@ -15,10 +15,13 @@
      * [LayoutParser](#layoutparser)
   * [Testing](#testing)
 
-
 ## Introduction
 
-This offers [OCR-D](https://ocr-d.de) compliant [workspace processors](https://ocr-d.de/en/spec/cli) for
+This offers [OCR-D](https://ocr-d.de) compliant [workspace processors](https://ocr-d.de/en/spec/cli) for document layout analysis with models trained on [Detectron2](https://github.com/facebookresearch/detectron2), which implements [Faster R-CNN](https://arxiv.org/abs/1506.01497), [Mask R-CNN](https://arxiv.org/abs/1703.06870), [Cascade R-CNN](https://arxiv.org/abs/1712.00726), [Feature Pyramid Networks](https://arxiv.org/abs/1612.03144) and [Panoptic Segmentation](https://arxiv.org/abs/1801.00868), among others.
+
+In trying to cover a broad range of third-party models, a few sacrifices have to be made: Deployment of [models](#models) may be difficult, and needs configuration. Class labels (really [PAGE-XML](https://github.com/PRImA-Research-Lab/PAGE-XML) region types) must be provided. The code itself tries to cope with panoptic and instance segmentation models (with or without masks).
+
+Only meant for (coarse) page segmentation into regions – no text lines, no reading order, no orientation.
 
 ## Installation
 
