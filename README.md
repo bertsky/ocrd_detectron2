@@ -1,6 +1,6 @@
 [![PyPI version](https://badge.fury.io/py/ocrd-detectron2.svg)](https://badge.fury.io/py/ocrd-detectron2)
 
-# ocrd_wrap
+# ocrd_detectron2
 
     OCR-D wrapper for detectron2 based segmentation models
 

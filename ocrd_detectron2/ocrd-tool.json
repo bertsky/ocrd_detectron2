@@ -16,8 +16,8 @@
             "parameters": {
                 "categories": {
                     "type": "array",
-                    "default": ["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"],
-                    "description": "maps each region category (position) of the model to a PAGE region type (and subtype if separated by colon)"
+                    "required": true,
+                    "description": "maps each region category (position) of the model to a PAGE region type (and subtype if separated by colon), e.g. ['TextRegion:paragraph', 'TextRegion:heading', 'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet"
                 },
                 "min_confidence": {
                     "type": "number",
