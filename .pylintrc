@@ -1,0 +1,23 @@
+[MASTER]
+extension-pkg-whitelist=cv2
+
+[MESSAGES CONTROL]
+disable =
+    ungrouped-imports,
+    bad-continuation,
+    missing-docstring,
+    no-self-use,
+    superfluous-parens,
+    invalid-name,
+    line-too-long,
+    too-many-arguments,
+    too-many-branches,
+    too-many-statements,
+    too-many-locals,
+    too-few-public-methods,
+    too-many-nested-blocks,
+    wrong-import-order,
+    duplicate-code
+
+# allow non-snake-case identifiers:
+good-names=n,i

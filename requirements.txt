@@ -1,0 +1,9 @@
+ocrd>=2.18
+click>=7.0
+scipy
+numpy>=1.17.0
+pillow>=7.1.2
+scikit-image>=0.17.2
+torch~=1.10
+torchvision
+detectron2

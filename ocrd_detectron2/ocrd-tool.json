@@ -1,0 +1,50 @@
+{
+    "git_url": "https://github.com/bertsky/ocrd_detectron2",
+    "version": "0.1.0",
+    "tools": {
+        "ocrd-detectron2-segment": {
+            "executable": "ocrd-detectron2-segment",
+            "categories": ["Layout analysis"],
+            "steps": ["layout/segmentation/region"],
+            "description": "Detect regions with Detectron2",
+            "input_file_grp": [
+                "OCR-D-IMG"
+            ],
+            "output_file_grp": [
+                "OCR-D-SEG-REGION"
+            ],
+            "parameters": {
+                "categories": {
+                    "type": "array",
+                    "default": ["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"],
+                    "description": "maps each region category (position) of the model to a PAGE region type (and subtype if separated by colon)"
+                },
+                "min_confidence": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 0.5,
+                    "description": "confidence threshold for detections"
+                },
+                "model_config": {
+                    "type": "string",
+                    "format": "uri",
+                    "content-type": "text/yaml",
+                    "required": true,
+                    "description": "path name of model config"
+                },
+                "model_weights": {
+                    "type": "string",
+                    "format": "uri",
+                    "content-type": "application/octet-stream",
+                    "required": true,
+                    "description": "path name of model weights"
+                },
+                "device": {
+                    "type": "string",
+                    "default": "cuda",
+                    "description": "select computing device for Torch (e.g. cpu or cuda:0); will fall back to CPU if no GPU is available"
+                }
+            }
+        }
+    }
+}
