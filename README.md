@@ -13,6 +13,7 @@
      * [PubLayNet](#publaynet)
      * [PubLayNet](#publaynet-1)
      * [LayoutParser](#layoutparser)
+     * [DocBank](#docbank)
   * [Testing](#testing)
 
 ## Introduction
@@ -99,9 +100,11 @@ Options:
   -V, --version                   Show version
 
 Parameters:
-   "categories" [array - ["TextRegion:paragraph", "TextRegion:heading",
-    "TextRegion:list-label", "TableRegion", "ImageRegion"]]
-    maps region category (position) to region type
+   "categories" [array - REQUIRED]
+    maps each region category (position) of the model to a PAGE region
+    type (and subtype if separated by colon), e.g.
+    ['TextRegion:paragraph', 'TextRegion:heading',
+    'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet
    "min_confidence" [number - 0.5]
     confidence threshold for detections
    "model_config" [string - REQUIRED]
