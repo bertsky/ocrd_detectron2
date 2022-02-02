@@ -428,7 +428,7 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     combinations = list(zip(*np.where(instances_i != instances_j)))
     shared_masks = mp.sharedctypes.RawArray(ctypes.c_bool, masks.size)
     shared_masks_np = tonumpyarray_with_shape(shared_masks, masks.shape)
-    np.copyto(shared_masks_np, masks)
+    np.copyto(shared_masks_np, masks * page_array_bin)
     with mp.Pool(processes=nproc, # to be refined via param
                  initializer=overlapmasks_init,
                  initargs=(shared_masks, masks.shape)) as pool:
