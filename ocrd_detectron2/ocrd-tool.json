@@ -1,12 +1,12 @@
 {
     "git_url": "https://github.com/bertsky/ocrd_detectron2",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "tools": {
         "ocrd-detectron2-segment": {
             "executable": "ocrd-detectron2-segment",
             "categories": ["Layout analysis"],
             "steps": ["layout/segmentation/region"],
-            "description": "Detect regions with Detectron2",
+            "description": "Detect regions with Detectron2 models",
             "input_file_grp": [
                 "OCR-D-IMG"
             ],
