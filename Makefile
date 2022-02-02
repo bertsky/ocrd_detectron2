@@ -38,7 +38,7 @@ deps:
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; else CUDA=cu$${CUDA_VERSION//.}; fi && \
 	$(PIP) install -r requirements.txt \
-	-f 'https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html' 
+	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html"
 
 # Install Python package via pip
 install: deps
