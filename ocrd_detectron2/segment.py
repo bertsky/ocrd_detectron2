@@ -115,7 +115,7 @@ class Detectron2Segment(Processor):
         if self.parameter['device'] == 'cpu' or not torch.cuda.is_available():
             device = "cpu"
         else:
-            device = "cuda:0"
+            device = self.parameter['device']
         cfg.MODEL.DEVICE = device
         model_weights = self.resolve_resource(self.parameter['model_weights'])
         cfg.MODEL.WEIGHTS = model_weights
