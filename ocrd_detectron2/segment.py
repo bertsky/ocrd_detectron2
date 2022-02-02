@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from pkg_resources import resource_filename
+import sys
 import os
 import tempfile
 import shutil
@@ -13,13 +14,11 @@ from shapely.geometry import Polygon, asPolygon
 from shapely.ops import unary_union
 import cv2
 from PIL import Image
-import detectron2
-from detectron2.utils.logger import setup_logger
-# import some common detectron2 utilities
+#from detectron2.utils.logger import setup_logger
 from detectron2.engine import DefaultPredictor
 from detectron2.utils import visualizer
 from detectron2.config import get_cfg
-from detectron2.data import MetadataCatalog, DatasetCatalog
+#from detectron2.data import MetadataCatalog, DatasetCatalog
 import torch
 
 from ocrd_utils import (
@@ -30,7 +29,6 @@ from ocrd_utils import (
     coordinates_of_segment,
     coordinates_for_segment,
     crop_image,
-    polygon_from_bbox,
     points_from_polygon,
     polygon_from_points,
     MIMETYPE_PAGE
@@ -141,14 +139,19 @@ class Detectron2Segment(Processor):
 
         \b
         - panoptic segmentation: take the provided segment label map, and
-          apply the segment to class label map
+          apply the segment to class label map,
         - instance segmentation: find an optimal non-overlapping set (flat
-          map) of instances via non-maximum suppression; then extend / shrink
-          the surviving masks to fully include / exclude connected components
-          in the foreground that are on the boundary
+          map) of instances via non-maximum suppression,
+        - both: avoid overlapping pre-existing top-level regions (incremental
+          segmentation).
+
+        Then extend / shrink the surviving masks to fully include / exclude
+        connected components in the foreground that are on the boundary.
 
         Finally, find the convex hull polygon for each region, and map its
         class id to a new PAGE region type (and subtype).
+
+        (Does not annotate `ReadingOrder` or `TextLine`s or `@orientation`.)
 
         Produce a new output file by serialising the resulting hierarchy.
         """
@@ -164,6 +167,7 @@ class Detectron2Segment(Processor):
             self.add_metadata(pcgts)
 
             page = pcgts.get_Page()
+            regions = page.get_AllRegions(depth=1)
             page_image_raw, page_coords, page_image_info = self.workspace.image_from_page(
                 page, page_id,
                 feature_filter='binarized')
@@ -239,7 +243,7 @@ class Detectron2Segment(Processor):
             page_array_bin = np.array(page_image_bin)
             page_array_bin = ~ page_array_bin
 
-            self._process_page(page, page_coords, page_id, page_array_raw, page_array_bin, zoomed)
+            self._process_page(page, regions, page_coords, page_id, page_array_raw, page_array_bin, zoomed)
 
             file_id = make_file_id(input_file, self.output_file_grp)
             file_path = os.path.join(self.output_file_grp,
@@ -254,7 +258,7 @@ class Detectron2Segment(Processor):
             LOG.info('created file ID: %s, file_grp: %s, path: %s',
                      file_id, self.output_file_grp, out.local_filename)
 
-    def _process_page(self, page, page_coords, page_id, page_array_raw, page_array_bin, zoomed):
+    def _process_page(self, page, ignore, page_coords, page_id, page_array_raw, page_array_bin, zoomed):
         LOG = getLogger('processor.Detectron2Segment')
         cpu = torch.device('cpu')
         # remove existing segmentation (have only detected targets survive)
@@ -349,20 +353,33 @@ class Detectron2Segment(Processor):
                     masks[i,
                           math.floor(y1):math.ceil(y2),
                           math.floor(x1):math.ceil(x2)] = True
-            # apply non-maximum suppression between overlapping instances
-            scores, classes, masks = postprocess(
-                scores, classes, masks,
-                page_array_bin, components,
-                self.categories, min_confidence=self.parameter['min_confidence'], nproc=8)
         else:
             LOG.error("Found no suitable output format to decode from")
             return
+        # apply non-maximum suppression between overlapping instances
+        # (not strictly necessary in case of panoptic segmentation,
+        #  but we can still have overlaps with preexisting regions)
+        if len(ignore):
+            scores = np.insert(scores, 0, 1.0, axis=0)
+            classes = np.insert(classes, 0, -1, axis=0)
+            masks = np.insert(masks, 0, 0, axis=0)
+            mask0 = np.zeros(masks.shape[1:], np.uint8)
+            for i, region in enumerate(ignore):
+                polygon = coordinates_of_segment(region, _, page_coords)
+                cv2.fillPoly(mask0, pts=[polygon], color=(255,))
+            masks[0] |= mask0 > 0
+        scores, classes, masks = postprocess(
+            scores, classes, masks,
+            page_array_bin, components,
+            self.categories, min_confidence=self.parameter['min_confidence'], nproc=8)
+        if len(ignore):
+            scores = scores[1:]
+            classes = classes[1:]
+            masks = masks[1:]
         # convert to polygons and regions
         region_no = 0
         for mask, class_id, score in zip(masks, classes, scores):
             category = self.categories[class_id]
-            LOG.info("Detected %s region with %.2f", category, score)
-            #region_polygon = polygon_from_bbox(bbox[1],bbox[0],bbox[3],bbox[2])
             # dilate until we have a single outer contour
             invalid = True
             for _ in range(10):
@@ -375,7 +392,7 @@ class Detectron2Segment(Processor):
                 mask = cv2.dilate(mask.astype(np.uint8),
                                   np.ones((scale,scale), np.uint8)) > 0
             if invalid:
-                LOG.warning("Ignoring non-contiguous (%d) region for '%s'", len(contours), category)
+                LOG.warning("Ignoring non-contiguous (%d) region for %s", len(contours), category)
                 continue
             region_polygon = contours[0][:,0,:] # already in x,y order
             if zoomed != 1.0:
@@ -384,7 +401,7 @@ class Detectron2Segment(Processor):
             region_polygon = coordinates_for_segment(region_polygon, _, page_coords)
             region_polygon = polygon_for_parent(region_polygon, page)
             if region_polygon is None:
-                LOG.warning("Ignoring extant region for '%s'", category)
+                LOG.warning("Ignoring extant region for %s", category)
                 continue
             # annotate new region/line
             region_coords = CoordsType(points_from_polygon(region_polygon), conf=score)
@@ -412,7 +429,7 @@ class Detectron2Segment(Processor):
                 regiontype = cat2class[cat[0]]
             except KeyError:
                 LOG.critical("Invalid region type %s (see https://github.com/PRImA-Research-Lab/PAGE-XML)", cat[0])
-                exit(1)
+                sys.exit(1)
             region = regiontype(id=region_id, Coords=region_coords)
             if len(cat) > 1:
                 try:
@@ -453,29 +470,32 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     # find best-scoring instance per class
     bad = np.zeros_like(instances, np.bool)
     for i in np.argsort(-scores):
-        class_id = classes[i]
-        category = categories[class_id]
         score = scores[i]
         mask = masks[i]
         assert mask.shape[:2] == page_array_bin.shape[:2]
         ys, xs = mask.nonzero()
         bbox = [xs.min(), ys.min(), xs.max(), ys.max()]
+        class_id = classes[i]
+        if class_id < 0:
+            LOG.debug("ignoring existing region at %s", str(bbox))
+            continue
+        category = categories[class_id]
         if scores[i] < min_confidence:
-            LOG.debug("Ignoring instance for '%s' with too low score %.2f", category, score)
+            LOG.debug("Ignoring instance for %s with too low score %.2f", category, score)
             bad[i] = True
             continue
         count = np.count_nonzero(mask)
         if count < 10:
-            LOG.warning("Ignoring too small (%dpx) region for '%s'", count, category)
+            LOG.warning("Ignoring too small (%dpx) region for %s", count, category)
             bad[i] = True
             continue
         worse = score < scores
         if np.any(worse & overlaps[i]):
-            LOG.debug("Ignoring instance for '%s' with %.2f overlapping better neighbour",
+            LOG.debug("Ignoring instance for %s with %.2f overlapping better neighbour",
                       category, score)
             bad[i] = True
         else:
-            LOG.debug("post-processing prediction for '%s' at %s area %d score %f",
+            LOG.debug("post-processing prediction for %s at %s area %d score %f",
                       category, str(bbox), count, score)
     # post-process detections morphologically and decode to region polygons
     # does not compile (no OpenCV support):
@@ -486,7 +506,6 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     scores = scores[keep]
     classes = classes[keep]
     masks = masks[keep]
-    cats = [categories[class_id] for class_id in classes]
     shared_masks = mp.sharedctypes.RawArray(ctypes.c_bool, masks.size)
     shared_components = mp.sharedctypes.RawArray(ctypes.c_int32, components.size)
     shared_masks_np = tonumpyarray_with_shape(shared_masks, masks.shape)
