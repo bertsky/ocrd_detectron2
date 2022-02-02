@@ -11,7 +11,7 @@ help:
 	@echo
 	@echo "  Variables"
 	@echo "    PYTHON"
-	@echo "    CUDA_VERSION  override detection of CUDA runtime version (e.g. 11.3)"
+	@echo "    CUDA_VERSION  override detection of CUDA runtime version (e.g. '11.3' or 'CPU')"
 
 # Install Python deps via pip
 # There is no prebuilt for detectron2 on PyPI, and the wheels depend on CUDA and Torch version.
@@ -32,9 +32,11 @@ deps:
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
 	else \
-		echo >&2 "Cannot find CUDA runtime library"; false; \
-	fi && $(PIP) install -r requirements.txt \
-	-f 'https://dl.fbaipublicfiles.com/detectron2/wheels/cu$${CUDA_VERSION//.}/torch1.10/index.html' 
+		echo >&2 "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
+	fi && echo "Detected CUDA version $$CUDA_VERSION" && \
+	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; else CUDA=cu$${CUDA_VERSION//.}; fi && \
+	$(PIP) install -r requirements.txt \
+	-f 'https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html' 
 
 # Install Python package via pip
 install: deps
