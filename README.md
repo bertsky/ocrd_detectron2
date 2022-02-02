@@ -35,6 +35,7 @@ To install Python dependencies:
 Which is the equivalent of:
 
     pip install -r requirements.txt -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu113/torch1.10/index.html # for CUDA 11.3
+    pip install -r requirements.txt -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html # for CPU only
 
 To install this module, then do:
 

@@ -1,6 +1,7 @@
 PYTHON = python3
 PIP = pip3
 PYTHONIOENCODING=utf8
+SHELL = /bin/bash
 
 help:
 	@echo
@@ -31,9 +32,10 @@ deps:
 		CUDA_VERSION=$$(nvidia-smi --version | sed -n '/CUDA Version/{s/.*CUDA Version: //;s/ .*//;p}'); \
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
-	else \
-		echo >&2 "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
-	fi && echo "Detected CUDA version $$CUDA_VERSION" && \
+	fi && \
+	if test -z "$$CUDA_VERSION"; then \
+		echo "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
+	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; else CUDA=cu$${CUDA_VERSION//.}; fi && \
 	$(PIP) install -r requirements.txt \
 	-f 'https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html' 
