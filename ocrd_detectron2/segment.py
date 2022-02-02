@@ -71,8 +71,8 @@ TOOL = 'ocrd-detectron2-segment'
 # corresponding connected components
 NP_POSTPROCESSING_OUTER = False
 # when pruning overlapping detections (in either mode),
-# disregard up to this intersection over union
-IOU_THRESHOLD = 0.2
+# require at least this share of the area to be redundant
+RECALL_THRESHOLD = 0.8
 # when finalizing contours of detections (in either mode),
 # snap to connected components overlapping by this share
 # (of component area), i.e. include if larger and exclude
@@ -425,7 +425,7 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     assert masks.dtype == np.bool
     instances = np.arange(len(masks))
     instances_i, instances_j = np.meshgrid(instances, instances, indexing='ij')
-    combinations = list(zip(*np.where(instances_i < instances_j)))
+    combinations = list(zip(*np.where(instances_i != instances_j)))
     shared_masks = mp.sharedctypes.RawArray(ctypes.c_bool, masks.size)
     shared_masks_np = tonumpyarray_with_shape(shared_masks, masks.shape)
     np.copyto(shared_masks_np, masks)
@@ -438,7 +438,6 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     for (i, j), overlapping in zip(combinations, overlapping_combinations):
         if overlapping:
             overlaps[i, j] = True
-            overlaps[j, i] = True
     # find best-scoring instance per class
     bad = np.zeros_like(instances, np.bool)
     for i in np.argsort(-scores):
@@ -563,14 +562,15 @@ def overlapmasks_init(masks_array, masks_shape):
     shared_masks_shape = masks_shape
 
 def overlapmasks(i, j):
+    # is i redundant w.r.t. j (i.e. j already covers most of its area)
     masks = np.ctypeslib.as_array(shared_masks).reshape(shared_masks_shape)
     imask = masks[i]
     jmask = masks[j]
     intersection = np.count_nonzero(imask * jmask)
     if not intersection:
         return False
-    union = np.count_nonzero(imask + jmask)
-    if intersection / union > IOU_THRESHOLD:
+    base = np.count_nonzero(imask)
+    if intersection / base > RECALL_THRESHOLD:
         return True
     return False
 
