@@ -179,7 +179,7 @@ class Detectron2Segment(Processor):
             else:
                 dpi = None
                 zoom = 1.0
-            if zoom < 0.7:
+            if zoom < 1.9:
                 LOG.info("scaling %dx%d image by %.2f", page_image_raw.width, page_image_raw.height, zoom)
                 # actual resampling: see below
                 zoomed = zoom
