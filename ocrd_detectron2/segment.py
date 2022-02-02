@@ -294,8 +294,6 @@ class Detectron2Segment(Processor):
             for label in seglabels:
                 if label == -1:
                     continue
-                masks.append(segmap == label)
-                scores.append(1.0) #scores[i]
                 if seginfo is None:
                     class_id = label // self.predictor.metadata.label_divisor
                 else:
@@ -303,7 +301,14 @@ class Detectron2Segment(Processor):
                         if info['id'] == label:
                             class_id = info['category_id']
                             break
+                if not self.categories[class_id]:
+                    continue
+                masks.append(segmap == label)
+                scores.append(1.0) #scores[i]
                 classes.append(class_id)
+            if not len(masks):
+                LOG.warning("Detected no regions for selected categories on page '%s'", page_id)
+                return
         elif 'instances' in output:
             LOG.info("decoding from instance segmentation results")
             instances = output['instances']
@@ -311,13 +316,20 @@ class Detectron2Segment(Processor):
                 assert instances.image_size == (height, width)
                 instances = instances.to(cpu)
                 instances = instances.get_fields()
+            classes = instances['pred_classes']
+            if not all(self.categories):
+                # filter out inactive classes
+                select = np.array([bool(cat) for cat in self.categories])
+                select = select[classes]
+                for key, val in instances.items():
+                    instances[key] = val[select]
+                classes = instances['pred_classes']
             scores = instances['scores']
             if not isinstance(scores, np.ndarray):
                 scores = scores.to(cpu).numpy()
             if not scores.shape[0]:
                 LOG.warning("Detected no regions on page '%s'", page_id)
                 return
-            classes = instances['pred_classes']
             if 'pred_masks' in instances: # or pred_masks_rle ?
                 masks = np.asarray(instances['pred_masks'])
                 def get_mask(x):

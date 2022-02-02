@@ -134,17 +134,17 @@ R152-FPN [config](https://layoutlm.blob.core.windows.net/tablebank/model_zoo/det
 
 ### [PubLayNet](https://github.com/hpanwar08/detectron2)
 
-R50-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/44ez171b2qaocd2/AAB0huidzzOXeo99QdplZRjua)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"]`
+R50-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/44ez171b2qaocd2/AAB0huidzzOXeo99QdplZRjua)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
-R101-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/wgt9skz67usliei/AAD9n6qbsyMz1Y3CwpZpHXCpa)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"]`
+R101-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/wgt9skz67usliei/AAD9n6qbsyMz1Y3CwpZpHXCpa)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
-X101-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/1098ym6vhad4zi6/AABe16eSdY_34KGp52W0ruwha)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"]`
+X101-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml)|[weights](https://www.dropbox.com/sh/1098ym6vhad4zi6/AABe16eSdY_34KGp52W0ruwha)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
 ### [PubLayNet](https://github.com/JPLeoRX/detectron2-publaynet)
 
-R50-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"]`
+R50-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
-R101-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:list-label", "TableRegion", "ImageRegion"]`
+R101-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
 ### [LayoutParser](https://github.com/Layout-Parser/layout-parser/blob/master/src/layoutparser/models/detectron2/catalog.py)
 
@@ -163,8 +163,8 @@ See [here](https://github.com/Layout-Parser/layout-parser/blob/master/docs/notes
 X101-FPN [archive](https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip)
 
 Proposed mappings:
-- `["TextRegion:heading", "TextRegion:credit", "TextRegion:caption", "TextRegion:other", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:floating", "TextRegion:paragraph", "TextRegion:endnote", "TextRegion:heading", "TableRegion", "TextRegion:heading"` (using only predefined `@type`)
-- `["TextRegion:abstract", "TextRegion:author", "TextRegion:caption", "TextRegion:date", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:list", "TextRegion:paragraph", "TextRegion:reference", "TextRegion:heading", "TableRegion", "TextRegion:title"` (using `@custom` as well)
+- `["TextRegion:heading", "TextRegion:credit", "TextRegion:caption", "TextRegion:other", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:floating", "TextRegion:paragraph", "TextRegion:endnote", "TextRegion:heading", "TableRegion", "TextRegion:heading"]` (using only predefined `@type`)
+- `["TextRegion:abstract", "TextRegion:author", "TextRegion:caption", "TextRegion:date", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:list", "TextRegion:paragraph", "TextRegion:reference", "TextRegion:heading", "TableRegion", "TextRegion:title"]` (using `@custom` as well)
 
 ## Testing
 

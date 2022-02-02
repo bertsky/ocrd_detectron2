@@ -17,7 +17,7 @@
                 "categories": {
                     "type": "array",
                     "required": true,
-                    "description": "maps each region category (position) of the model to a PAGE region type (and subtype if separated by colon), e.g. ['TextRegion:paragraph', 'TextRegion:heading', 'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet"
+                    "description": "maps each region category (position) of the model to a PAGE region type (and @type or @custom if separated by colon), e.g. ['TextRegion:paragraph', 'TextRegion:heading', 'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet; categories with an empty string will be skipped during prediction"
                 },
                 "min_confidence": {
                     "type": "number",
