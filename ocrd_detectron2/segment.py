@@ -179,10 +179,11 @@ class Detectron2Segment(Processor):
             else:
                 dpi = None
                 zoom = 1.0
-            if zoom < 1.9:
-                LOG.info("scaling %dx%d image by %.2f", page_image_raw.width, page_image_raw.height, zoom)
+            # todo: if zoom is > 4.0, do something along the lines of eynollah's enhance
+            if zoom < 2.0:
                 # actual resampling: see below
-                zoomed = zoom
+                zoomed = zoom / 2.0
+                LOG.info("scaling %dx%d image by %.2f", page_image_raw.width, page_image_raw.height, zoomed)
             else:
                 zoomed = 1.0
 
@@ -348,6 +349,7 @@ class Detectron2Segment(Processor):
                 if not isinstance(boxes, np.ndarray):
                     boxes = boxes.to(cpu).tensor.numpy()
                 assert boxes.shape[1] == 4 # and not 5 (rotated boxes)
+                assert boxes.shape[0], "prediction without instances"
                 masks = np.zeros((len(boxes), height, width), np.bool)
                 for i, (x1, y1, x2, y2) in enumerate(boxes):
                     masks[i,
@@ -356,6 +358,7 @@ class Detectron2Segment(Processor):
         else:
             LOG.error("Found no suitable output format to decode from")
             return
+        assert len(scores) == len(classes) == len(masks)
         # apply non-maximum suppression between overlapping instances
         # (not strictly necessary in case of panoptic segmentation,
         #  but we can still have overlaps with preexisting regions)
@@ -366,7 +369,10 @@ class Detectron2Segment(Processor):
             mask0 = np.zeros(masks.shape[1:], np.uint8)
             for i, region in enumerate(ignore):
                 polygon = coordinates_of_segment(region, _, page_coords)
+                if zoomed != 1.0:
+                    polygon = np.round(polygon * zoomed).astype(int)
                 cv2.fillPoly(mask0, pts=[polygon], color=(255,))
+            assert np.count_nonzero(mask0), "existing regions all outside of page frame"
             masks[0] |= mask0 > 0
         scores, classes, masks = postprocess(
             scores, classes, masks,
@@ -474,6 +480,7 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
         mask = masks[i]
         assert mask.shape[:2] == page_array_bin.shape[:2]
         ys, xs = mask.nonzero()
+        assert xs.any() and ys.any(), "instance has empty mask"
         bbox = [xs.min(), ys.min(), xs.max(), ys.max()]
         class_id = classes[i]
         if class_id < 0:
