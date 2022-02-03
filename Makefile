@@ -29,15 +29,16 @@ deps:
 	elif command -v nvcc &>/dev/null; then \
 		CUDA_VERSION=$$(nvcc --version | sed -n '/^Cuda/{s/.* release //;s/,.*//;p}'); \
 	elif command -v nvidia-smi &>/dev/null; then \
-		CUDA_VERSION=$$(nvidia-smi --version | sed -n '/CUDA Version/{s/.*CUDA Version: //;s/ .*//;p}'); \
+		CUDA_VERSION=$$(nvidia-smi | sed -n '/CUDA Version/{s/.*CUDA Version: //;s/ .*//;p}'); \
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
 	fi && \
 	if test -z "$$CUDA_VERSION"; then \
 		echo "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
-	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; else CUDA=cu$${CUDA_VERSION//.}; fi && \
-	$(PIP) install -r requirements.txt \
+	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
+	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
+	fi && $(PIP) install -r requirements.txt \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html"
 
 # Install Python package via pip
