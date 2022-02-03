@@ -15,7 +15,7 @@ from shapely.ops import unary_union
 import cv2
 from PIL import Image
 #from detectron2.utils.logger import setup_logger
-from detectron2.engine import DefaultPredictor
+#from detectron2.engine import DefaultPredictor
 from detectron2.utils import visualizer
 from detectron2.config import get_cfg
 #from detectron2.data import MetadataCatalog, DatasetCatalog
@@ -62,6 +62,7 @@ from ocrd_modelfactory import page_from_file
 from ocrd import Processor
 
 from .config import OCRD_TOOL
+from .predictor import AsyncPredictor
 
 TOOL = 'ocrd-detectron2-segment'
 # when doing Numpy postprocessing, enlarge masks via
@@ -121,7 +122,7 @@ class Detectron2Segment(Processor):
         cfg.MODEL.WEIGHTS = model_weights
         # instantiate model
         LOG.info("Loading weights '%s'", model_weights)
-        self.predictor = DefaultPredictor(cfg)
+        self.predictor = AsyncPredictor(cfg)
         self.categories = self.parameter['categories']
 
     def process(self):

@@ -42,7 +42,7 @@
                 "device": {
                     "type": "string",
                     "default": "cuda",
-                    "description": "select computing device for Torch (e.g. cpu or cuda:0); will fall back to CPU if no GPU is available"
+                    "description": "select computing device for Torch (e.g. `cpu` or `cuda:0`); will fall back to CPU if no GPU is available; for multiple GPUs, separate by white-space"
                 }
             }
         }
