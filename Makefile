@@ -33,7 +33,9 @@ deps:
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
 	fi && \
-	if test -z "$$CUDA_VERSION"; then \
+	if test "$$CUDA_VERSION" = 10.0 -o "$$CUDA_VERSION" = 11.0; then \
+		echo "Detected CUDA version $$CUDA_VERSION, which is not supported by Detectron2 - falling back to CPU-only"; CUDA_VERSION=CPU; \
+	elif test -z "$$CUDA_VERSION"; then \
 		echo "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
