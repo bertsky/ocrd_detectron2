@@ -187,45 +187,47 @@ class Detectron2Segment(Processor):
             else:
                 zoomed = 1.0
 
-            # for morphological post-processing, we will need the binarized image, too
-            page_image_bin, _, _ = self.workspace.image_from_page(
-                page, page_id,
-                feature_selector='binarized')
-            # workaround for OCR-D/core#687:
-            if 0 < abs(page_image_raw.width - page_image_bin.width) <= 2:
-                diff = page_image_raw.width - page_image_bin.width
-                if diff > 0:
-                    page_image_raw = crop_image(
-                        page_image_raw,
-                        (int(np.floor(diff / 2)), 0,
-                         page_image_raw.width - int(np.ceil(diff / 2)),
-                         page_image_raw.height))
-                else:
-                    page_image_bin = crop_image(
-                        page_image_bin,
-                        (int(np.floor(-diff / 2)), 0,
-                         page_image_bin.width - int(np.ceil(-diff / 2)),
-                         page_image_bin.height))
-            if 0 < abs(page_image_raw.height - page_image_bin.height) <= 2:
-                diff = page_image_raw.height - page_image_bin.height
-                if diff > 0:
-                    page_image_raw = crop_image(
-                        page_image_raw,
-                        (0, int(np.floor(diff / 2)),
-                         page_image_raw.width,
-                         page_image_raw.height - int(np.ceil(diff / 2))))
-                else:
-                    page_image_bin = crop_image(
-                        page_image_bin,
-                        (0, int(np.floor(-diff / 2)),
-                         page_image_bin.width,
-                         page_image_bin.height - int(np.ceil(-diff / 2))))
+            # check wether input image is binarized
+            if page_image_info.photometricInterpretation == "1":
+                # for morphological post-processing, we will need the binarized image, too
+                page_image_bin, _, _ = self.workspace.image_from_page(
+                    page, page_id,
+                    feature_selector='binarized')
+                # workaround for OCR-D/core#687:
+                if 0 < abs(page_image_raw.width - page_image_bin.width) <= 2:
+                    diff = page_image_raw.width - page_image_bin.width
+                    if diff > 0:
+                        page_image_raw = crop_image(
+                            page_image_raw,
+                            (int(np.floor(diff / 2)), 0,
+                            page_image_raw.width - int(np.ceil(diff / 2)),
+                            page_image_raw.height))
+                    else:
+                        page_image_bin = crop_image(
+                            page_image_bin,
+                            (int(np.floor(-diff / 2)), 0,
+                            page_image_bin.width - int(np.ceil(-diff / 2)),
+                            page_image_bin.height))
+                if 0 < abs(page_image_raw.height - page_image_bin.height) <= 2:
+                    diff = page_image_raw.height - page_image_bin.height
+                    if diff > 0:
+                        page_image_raw = crop_image(
+                            page_image_raw,
+                            (0, int(np.floor(diff / 2)),
+                            page_image_raw.width,
+                            page_image_raw.height - int(np.ceil(diff / 2))))
+                    else:
+                        page_image_bin = crop_image(
+                            page_image_bin,
+                            (0, int(np.floor(-diff / 2)),
+                            page_image_bin.width,
+                            page_image_bin.height - int(np.ceil(-diff / 2))))
 
             # ensure RGB (if raw was merely grayscale)
             if page_image_raw.mode == '1':
                 page_image_raw = page_image_raw.convert('L')
             page_image_raw = page_image_raw.convert(mode='RGB')
-            page_image_bin = page_image_bin.convert(mode='1')
+            page_image_bin = page_image_raw.convert(mode='1')
             # reduce resolution to 300 DPI max
             if zoomed != 1.0:
                 page_image_bin = page_image_bin.resize(
@@ -267,7 +269,7 @@ class Detectron2Segment(Processor):
         #page.set_TextRegion([])
         page.set_custom('coords=%s' % page_coords['transform'])
         height, width, _ = page_array_raw.shape
-        # get connected components to estimate scale
+        # get connected components to estimate ignorescale
         _, components = cv2.connectedComponents(page_array_bin.astype(np.uint8))
         # estimate glyph scale (roughly)
         _, counts = np.unique(components, return_counts=True)
