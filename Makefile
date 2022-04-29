@@ -33,15 +33,14 @@ deps:
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
 	fi && \
-	if test "$$CUDA_VERSION" = 10.0 -o "$$CUDA_VERSION" = 11.0 -o "$$CUDA_VERSION" = 11.2; then \
-		echo "Detected CUDA version $$CUDA_VERSION, which is not supported by Detectron2 - falling back to CPU-only"; CUDA_VERSION=CPU; \
-	elif test -z "$$CUDA_VERSION"; then \
+	if test -z "$$CUDA_VERSION"; then \
 		echo "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
 	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
 	fi && $(PIP) install -r requirements.txt \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
+	-f "https://github.com/facebookresearch/detectron2/archive/refs/tags/v0.6.tar.gz" \
 	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
 
 # Install Python package via pip
