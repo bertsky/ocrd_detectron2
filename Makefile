@@ -41,7 +41,8 @@ deps:
 	fi && $(PIP) install -r requirements.txt \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
-	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
+	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" || \
+	$(PIP) install git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6
 
 # Install Python package via pip
 install: deps
