@@ -40,7 +40,7 @@ deps:
 	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
 	fi && $(PIP) install -r requirements.txt \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://github.com/facebookresearch/detectron2/archive/refs/tags/v0.6.zip" \
+	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
 	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
 
 # Install Python package via pip
