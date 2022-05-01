@@ -27,11 +27,11 @@ deps:
 	elif test -s /usr/local/cuda/version.txt; then \
 		CUDA_VERSION=$$(sed 's/^.* //;s/\([0-9]\+[.][0-9]\).*/\1/' /usr/local/cuda/version.txt); \
 	elif command -v nvcc &>/dev/null; then \
-		CUDA_VERSION=$$(nvcc --version | sed -n '/^Cuda/{s/.* release //;s/,.*//;p}'); \
+		CUDA_VERSION=$$(nvcc --version | sed -n '/^Cuda/{s/.* release //;s/,.*//;p;}'); \
 	elif command -v nvidia-smi &>/dev/null; then \
-		CUDA_VERSION=$$(nvidia-smi | sed -n '/CUDA Version/{s/.*CUDA Version: //;s/ .*//;p}'); \
+		CUDA_VERSION=$$(nvidia-smi | sed -n '/CUDA Version/{s/.*CUDA Version: //;s/ .*//;p;}'); \
 	elif command -v pkg-config &>/dev/null; then \
-		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q}'); \
+		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q;}'); \
 	fi && \
 	if test "$$CUDA_VERSION" = 10.0 -o "$$CUDA_VERSION" = 11.0 -o "$$CUDA_VERSION" = 11.2; then \
 		echo "Detected CUDA version $$CUDA_VERSION, which is not supported by Detectron2 - falling back to CPU-only"; CUDA_VERSION=CPU; \
