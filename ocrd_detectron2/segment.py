@@ -10,7 +10,7 @@ import multiprocessing as mp
 import multiprocessing.sharedctypes
 import ctypes
 import numpy as np
-from shapely.geometry import Polygon, asPolygon
+from shapely.geometry import Polygon
 from shapely.ops import unary_union
 import cv2
 from PIL import Image
@@ -569,7 +569,7 @@ def polygon_for_parent(polygon, parent):
     if interp.minimum_clearance < 1.0:
         # follow-up calculations will necessarily be integer;
         # so anticipate rounding here and then ensure validity
-        interp = asPolygon(np.round(interp.exterior.coords))
+        interp = Polygon(np.round(interp.exterior.coords))
         interp = make_valid(interp)
     return interp.exterior.coords[:-1] # keep open
 
