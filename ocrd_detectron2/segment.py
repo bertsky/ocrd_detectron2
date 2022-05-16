@@ -211,7 +211,7 @@ class Detectron2Segment(Processor):
                 else:
                     image_raw, coords = self.workspace.image_from_segment(
                         segment, page_image_raw, page_coords, feature_filter='binarized')
-                    image_bin, _ = self.workspace.image_from_page(
+                    image_bin, _ = self.workspace.image_from_segment(
                         segment, page_image_bin, page_coords, feature_selector='binarized')
                     image_raw, image_bin = _ensure_consistent_crops(
                         image_raw, image_bin)
