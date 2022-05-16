@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - downscale images to no more than 150 DPI for prediction (for speed)
+- add param `operation_level` (default `page`), add `table` mode
 
 ## [0.1.1] - 2022-02-02
 ### Fixed

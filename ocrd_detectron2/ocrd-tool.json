@@ -14,6 +14,12 @@
                 "OCR-D-SEG-REGION"
             ],
             "parameters": {
+                "operation_level": {
+                    "type": "string",
+                    "enum": ["page", "table"],
+                    "default": "page",
+                    "description": "hierarchy level which to predict and assign regions for"
+                },
                 "categories": {
                     "type": "array",
                     "required": true,

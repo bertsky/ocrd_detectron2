@@ -127,8 +127,11 @@ class Detectron2Segment(Processor):
     def process(self):
         """Use detectron2 to segment each page into regions.
 
-        Open and deserialize PAGE input files and their respective images.
-        Fetch a raw and a binarized image for the page frame (possibly
+        Open and deserialize PAGE input files and their respective images,
+        then iterate over the element hierarchy down to the requested
+        ``operation_level``.
+
+        Fetch a raw and a binarized image for the page/segment (possibly
         cropped and deskewed).
 
         Feed the raw image into the detectron2 predictor that has been
@@ -158,6 +161,7 @@ class Detectron2Segment(Processor):
         LOG = getLogger('processor.Detectron2Segment')
         assert_file_grp_cardinality(self.input_file_grp, 1)
         assert_file_grp_cardinality(self.output_file_grp, 1)
+        level = self.parameter['operation_level']
 
         # pylint: disable=attribute-defined-outside-init
         for n, input_file in enumerate(self.input_files):
@@ -167,10 +171,14 @@ class Detectron2Segment(Processor):
             self.add_metadata(pcgts)
 
             page = pcgts.get_Page()
-            regions = page.get_AllRegions(depth=1)
             page_image_raw, page_coords, page_image_info = self.workspace.image_from_page(
-                page, page_id,
-                feature_filter='binarized')
+                page, page_id, feature_filter='binarized')
+            # for morphological post-processing, we will need the binarized image, too
+            page_image_bin, _, _ = self.workspace.image_from_page(
+                page, page_id, feature_selector='binarized')
+            page_image_raw, page_image_bin = _ensure_consistent_crops(
+                page_image_raw, page_image_bin)
+            # determine current zoom and target zoom
             if page_image_info.resolution != 1:
                 dpi = page_image_info.resolution
                 if page_image_info.resolutionUnit == 'cm':
@@ -187,64 +195,52 @@ class Detectron2Segment(Processor):
             else:
                 zoomed = 1.0
 
-            # for morphological post-processing, we will need the binarized image, too
-            page_image_bin, _, _ = self.workspace.image_from_page(
-                page, page_id,
-                feature_selector='binarized')
-            # workaround for OCR-D/core#687:
-            if 0 < abs(page_image_raw.width - page_image_bin.width) <= 2:
-                diff = page_image_raw.width - page_image_bin.width
-                if diff > 0:
-                    page_image_raw = crop_image(
-                        page_image_raw,
-                        (int(np.floor(diff / 2)), 0,
-                         page_image_raw.width - int(np.ceil(diff / 2)),
-                         page_image_raw.height))
+            for segment in ([page] if level == 'page' else
+                            page.get_AllRegions(depth=1, classes=['Table'])):
+                # regions = segment.get_AllRegions(depth=1)
+                # FIXME: as long as we don't have get_AllRegions on region level,
+                #        we have to simulate this via parent_object filtering
+                def at_segment(region):
+                    return region.parent_object_ is segment
+                regions = list(filter(at_segment, page.get_AllRegions()))
+
+                if isinstance(segment, PageType):
+                    image_raw = page_image_raw
+                    image_bin = page_image_bin
+                    coords = page_coords
                 else:
-                    page_image_bin = crop_image(
-                        page_image_bin,
-                        (int(np.floor(-diff / 2)), 0,
-                         page_image_bin.width - int(np.ceil(-diff / 2)),
-                         page_image_bin.height))
-            if 0 < abs(page_image_raw.height - page_image_bin.height) <= 2:
-                diff = page_image_raw.height - page_image_bin.height
-                if diff > 0:
-                    page_image_raw = crop_image(
-                        page_image_raw,
-                        (0, int(np.floor(diff / 2)),
-                         page_image_raw.width,
-                         page_image_raw.height - int(np.ceil(diff / 2))))
-                else:
-                    page_image_bin = crop_image(
-                        page_image_bin,
-                        (0, int(np.floor(-diff / 2)),
-                         page_image_bin.width,
-                         page_image_bin.height - int(np.ceil(-diff / 2))))
+                    image_raw, coords = self.workspace.image_from_segment(
+                        segment, page_image_raw, page_coords, feature_filter='binarized')
+                    image_bin, _ = self.workspace.image_from_page(
+                        segment, page_image_bin, page_coords, feature_selector='binarized')
+                    image_raw, image_bin = _ensure_consistent_crops(
+                        image_raw, image_bin)
 
-            # ensure RGB (if raw was merely grayscale)
-            if page_image_raw.mode == '1':
-                page_image_raw = page_image_raw.convert('L')
-            page_image_raw = page_image_raw.convert(mode='RGB')
-            page_image_bin = page_image_bin.convert(mode='1')
-            # reduce resolution to 300 DPI max
-            if zoomed != 1.0:
-                page_image_bin = page_image_bin.resize(
-                    (int(page_image_raw.width * zoomed),
-                     int(page_image_raw.height * zoomed)),
-                    resample=Image.BICUBIC)
-                page_image_raw = page_image_raw.resize(
-                    (int(page_image_raw.width * zoomed),
-                     int(page_image_raw.height * zoomed)),
-                    resample=Image.BICUBIC)
+                # ensure RGB (if raw was merely grayscale)
+                if image_raw.mode == '1':
+                    image_raw = image_raw.convert('L')
+                image_raw = image_raw.convert(mode='RGB')
+                image_bin = image_bin.convert(mode='1')
 
-            # convert raw to BGR
-            page_array_raw = np.array(page_image_raw)
-            page_array_raw = page_array_raw[:,:,::-1]
-            # convert binarized to single-channel negative
-            page_array_bin = np.array(page_image_bin)
-            page_array_bin = ~ page_array_bin
+                # reduce resolution to 300 DPI max
+                if zoomed != 1.0:
+                    image_bin = image_bin.resize(
+                        (int(image_raw.width * zoomed),
+                         int(image_raw.height * zoomed)),
+                        resample=Image.BICUBIC)
+                    image_raw = image_raw.resize(
+                        (int(image_raw.width * zoomed),
+                         int(image_raw.height * zoomed)),
+                        resample=Image.BICUBIC)
 
-            self._process_page(page, regions, page_coords, page_id, page_array_raw, page_array_bin, zoomed)
+                # convert raw to BGR
+                array_raw = np.array(image_raw)
+                array_raw = array_raw[:,:,::-1]
+                # convert binarized to single-channel negative
+                array_bin = np.array(image_bin)
+                array_bin = ~ array_bin
+
+                self._process_segment(segment, regions, coords, array_raw, array_bin, zoomed)
 
             file_id = make_file_id(input_file, self.output_file_grp)
             file_path = os.path.join(self.output_file_grp,
@@ -259,16 +255,17 @@ class Detectron2Segment(Processor):
             LOG.info('created file ID: %s, file_grp: %s, path: %s',
                      file_id, self.output_file_grp, out.local_filename)
 
-    def _process_page(self, page, ignore, page_coords, page_id, page_array_raw, page_array_bin, zoomed):
+    def _process_segment(self, segment, ignore, coords, array_raw, array_bin, zoomed):
         LOG = getLogger('processor.Detectron2Segment')
         cpu = torch.device('cpu')
+        segtype = segment.__class__.__name__[:-4]
         # remove existing segmentation (have only detected targets survive)
         #page.set_ReadingOrder(None)
         #page.set_TextRegion([])
-        page.set_custom('coords=%s' % page_coords['transform'])
-        height, width, _ = page_array_raw.shape
+        segment.set_custom('coords=%s' % coords['transform'])
+        height, width, _ = array_raw.shape
         # get connected components to estimate scale
-        _, components = cv2.connectedComponents(page_array_bin.astype(np.uint8))
+        _, components = cv2.connectedComponents(array_bin.astype(np.uint8))
         # estimate glyph scale (roughly)
         _, counts = np.unique(components, return_counts=True)
         if counts.shape[0] > 1:
@@ -279,7 +276,7 @@ class Detectron2Segment(Processor):
         else:
             scale = 43
         # predict
-        output = self.predictor(page_array_raw)
+        output = self.predictor(array_raw)
         # https://detectron2.readthedocs.io/en/latest/tutorials/models.html
         if 'panoptic_seg' in output:
             LOG.info("decoding from panoptic segmentation results")
@@ -291,7 +288,7 @@ class Detectron2Segment(Processor):
             seglabels = np.unique(segmap)
             nseg = len(seglabels)
             if not nseg:
-                LOG.warning("Detected no regions on page '%s'", page_id)
+                LOG.warning("Detected no regions on %s '%s'", segtype, segment.id)
                 return
             masks = []
             classes = []
@@ -312,7 +309,7 @@ class Detectron2Segment(Processor):
                 scores.append(1.0) #scores[i]
                 classes.append(class_id)
             if not len(masks):
-                LOG.warning("Detected no regions for selected categories on page '%s'", page_id)
+                LOG.warning("Detected no regions for selected categories on %s '%s'", segtype, segment.id)
                 return
         elif 'instances' in output:
             LOG.info("decoding from instance segmentation results")
@@ -333,7 +330,7 @@ class Detectron2Segment(Processor):
             if not isinstance(scores, np.ndarray):
                 scores = scores.to(cpu).numpy()
             if not scores.shape[0]:
-                LOG.warning("Detected no regions on page '%s'", page_id)
+                LOG.warning("Detected no regions on %s '%s'", segtype, segment.id)
                 return
             if 'pred_masks' in instances: # or pred_masks_rle ?
                 masks = np.asarray(instances['pred_masks'])
@@ -368,7 +365,7 @@ class Detectron2Segment(Processor):
             masks = np.insert(masks, 0, 0, axis=0)
             mask0 = np.zeros(masks.shape[1:], np.uint8)
             for i, region in enumerate(ignore):
-                polygon = coordinates_of_segment(region, _, page_coords)
+                polygon = coordinates_of_segment(region, _, coords)
                 if zoomed != 1.0:
                     polygon = np.round(polygon * zoomed).astype(int)
                 cv2.fillPoly(mask0, pts=[polygon], color=(255,))
@@ -376,7 +373,7 @@ class Detectron2Segment(Processor):
             masks[0] |= mask0 > 0
         scores, classes, masks = postprocess(
             scores, classes, masks,
-            page_array_bin, components,
+            array_bin, components,
             self.categories, min_confidence=self.parameter['min_confidence'], nproc=8)
         if len(ignore):
             scores = scores[1:]
@@ -404,8 +401,8 @@ class Detectron2Segment(Processor):
             if zoomed != 1.0:
                 region_polygon = region_polygon / zoomed
             # ensure consistent and valid polygon outline
-            region_polygon = coordinates_for_segment(region_polygon, _, page_coords)
-            region_polygon = polygon_for_parent(region_polygon, page)
+            region_polygon = coordinates_for_segment(region_polygon, _, coords)
+            region_polygon = polygon_for_parent(region_polygon, segment)
             if region_polygon is None:
                 LOG.warning("Ignoring extant region for %s", category)
                 continue
@@ -445,9 +442,9 @@ class Detectron2Segment(Processor):
                     region.set_type(cat[1])
                 except (KeyError, ValueError):
                     region.set_custom(cat[1])
-            getattr(page, 'add_' + cat[0])(region)
-            LOG.info("Detected %s region%04d (p=%.2f) on page '%s'",
-                     category, region_no, score, page_id)
+            getattr(segment, 'add_' + cat[0])(region)
+            LOG.info("Detected %s region%04d (p=%.2f) on %s '%s'",
+                     category, region_no, score, segtype, segment.id)
 
 def postprocess(scores, classes, masks, page_array_bin, components, categories, min_confidence=0.5, nproc=8):
     """Apply post-processing to raw detections. Implement via Numpy routines.
@@ -706,3 +703,35 @@ def morphmasks(instance):
                 bottom = newbottom
                 w = right - left
                 h = bottom - top
+
+def _ensure_consistent_crops(image_raw, image_bin):
+    # workaround for OCR-D/core#687:
+    if 0 < abs(image_raw.width - image_bin.width) <= 2:
+        diff = image_raw.width - image_bin.width
+        if diff > 0:
+            image_raw = crop_image(
+                image_raw,
+                (int(np.floor(diff / 2)), 0,
+                 image_raw.width - int(np.ceil(diff / 2)),
+                 image_raw.height))
+        else:
+            image_bin = crop_image(
+                image_bin,
+                (int(np.floor(-diff / 2)), 0,
+                 image_bin.width - int(np.ceil(-diff / 2)),
+                 image_bin.height))
+    if 0 < abs(image_raw.height - image_bin.height) <= 2:
+        diff = image_raw.height - image_bin.height
+        if diff > 0:
+            image_raw = crop_image(
+                image_raw,
+                (0, int(np.floor(diff / 2)),
+                 image_raw.width,
+                 image_raw.height - int(np.ceil(diff / 2))))
+        else:
+            image_bin = crop_image(
+                image_bin,
+                (0, int(np.floor(-diff / 2)),
+                 image_bin.width,
+                 image_bin.height - int(np.ceil(-diff / 2))))
+    return image_raw, image_bin
