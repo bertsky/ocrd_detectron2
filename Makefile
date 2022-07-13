@@ -42,7 +42,8 @@ deps:
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
 	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" || \
-	$(PIP) install -r requirements_src.txt \
+	$(PIP) install -r <(sed /detectron2/d requirements.txt; echo "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6") \
+	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
 
 # Install Python package via pip
