@@ -22,8 +22,10 @@ help:
 # be encapsulated via setuptools, see https://github.com/pypa/pip/issues/5898
 # and https://stackoverflow.com/questions/3472430/how-can-i-make-setuptools-install-a-package-thats-not-on-pypi
 # and https://github.com/pypa/pip/issues/4187
+# To make matters worse, source build of Detectron2 fails unless Torch is already installed before:
+# https://github.com/facebookresearch/detectron2/issues/4472
 deps:
-	if test -n "$$CUDA_VERSION"; then :; \
+	@if test -n "$$CUDA_VERSION"; then :; \
 	elif test -s /usr/local/cuda/version.txt; then \
 		CUDA_VERSION=$$(sed 's/^.* //;s/\([0-9]\+[.][0-9]\).*/\1/' /usr/local/cuda/version.txt); \
 	elif command -v nvcc &>/dev/null; then \
@@ -42,9 +44,10 @@ deps:
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
 	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" || \
-	$(PIP) install -r <(sed /detectron2/d requirements.txt; echo "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6") \
+	{ $(PIP) install -r <(sed /detectron2/d requirements.txt) \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
+	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" && \
+	$(PIP) install "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"; }
 
 # Install Python package via pip
 install: deps
