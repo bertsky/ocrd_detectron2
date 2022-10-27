@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- added various models as file resources
+- added corresponding preset files
+- updated documentation
+
 ## [0.1.2] - 2022-10-27
 ### Fixed
 - `make deps`: fix CUDA detection even more

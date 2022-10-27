@@ -1,0 +1,11 @@
+{
+    "model_config": "PubLayNet_X_101_32x8d_FPN_3x.yaml",
+    "model_weights": "PubLayNet_X_101_32x8d_FPN_3x.pth",
+    "categories": [
+        "TextRegion:paragraph", 
+        "TextRegion:heading", 
+        "TextRegion:floating", 
+        "TableRegion", 
+        "ImageRegion"
+    ]
+}

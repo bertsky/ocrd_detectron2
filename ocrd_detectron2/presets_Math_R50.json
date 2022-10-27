@@ -1,0 +1,8 @@
+{
+    "model_config": "Math_R_50_FPN_3x.yaml",
+    "model_weights": "Math_R_50_FPN_3x.pth",
+    "categories": [
+        "",
+        "MathsRegion"
+    ]
+}

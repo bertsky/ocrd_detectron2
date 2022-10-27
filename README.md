@@ -128,15 +128,41 @@ Parameters:
 
 Example:
 
-    ocrd resmgr download -n ocrd-detectron2-segment https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/All_X152.yaml
-    ocrd resmgr download -n ocrd-detectron2-segment https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth
-    ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -P categories '["TableRegion"]' -P model_config All_X152.yaml -P model_weights model_final.pth -P min_confidence 0.1
+    ocrd resmgr download ocrd-detectron2-segment TableBank_X152.yaml
+    ocrd resmgr download ocrd-detectron2-segment TableBank_X152.pth
+    ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -P categories '["TableRegion"]' -P model_config TableBank_X152.yaml -P model_weights TableBank_X152.pth -P min_confidence 0.1
+    ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -p presets_TableBank_X152.json -P min_confidence 0.1 # equivalent, with presets file
+    ocrd resmgr download ocrd-detectron2-segment "*" # get all preconfigured models
 
 ## Models
 
-> Note: These are just examples, no exhaustive search was done yet!
+Some of the following models have already been registered as known [file resources](https://ocr-d.de/en/spec/cli#processor-resources), along with parameter presets to use them.
 
-> Note: Make sure you unpack first if the download link is an archive. Also, the filename suffix (.pth vs .pkl) of the weight file does matter!
+To get a list of available registered models, do:
+
+    ocrd resmgr list-available -e ocrd-detectron2-segment
+
+To get a list of already installed models and presets, do:
+
+    ocrd resmgr list-installed -e ocrd-detectron2-segment
+
+To download a registered model (i.e. a config file and the respective weights file), do:
+
+    ocrd resmgr download ocrd-detectron2-segment NAME.yaml
+    ocrd resmgr download ocrd-detectron2-segment NAME.pth
+
+To download more models (registered or other), see:
+
+    ocrd resmgr download --help
+
+To use a model, do:
+
+    ocrd-detectron2-segment -P model_config NAME.yaml -P model_weights NAME.pth -P categories '[...]' ...
+    ocrd-detectron2-segment -p NAME.json ... # equivalent, with presets file
+
+> **Note**: These are just examples, no exhaustive search was done yet!
+
+> **Note**: Make sure you unpack first if the download link is an archive. Also, the filename suffix (.pth vs .pkl) of the weight file does matter!
 
 ### [TableBank](https://github.com/doc-analysis/TableBank)
 

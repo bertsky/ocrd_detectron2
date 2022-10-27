@@ -1,0 +1,13 @@
+{
+    "model_config": "NewspaperNavigator_R_50_PFPN_3x.yaml",
+    "model_weights": "NewspaperNavigator_R_50_PFPN_3x.pth",
+    "categories": [
+        "ImageRegion:photograph",
+        "ImageRegion:illustration",
+        "MapRegion",
+        "ImageRegion:cartoon",
+        "ImageRegion:editorial",
+        "TextRegion:heading",
+        "AdvertRegion"
+    ]
+}
