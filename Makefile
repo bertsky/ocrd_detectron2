@@ -22,8 +22,10 @@ help:
 # be encapsulated via setuptools, see https://github.com/pypa/pip/issues/5898
 # and https://stackoverflow.com/questions/3472430/how-can-i-make-setuptools-install-a-package-thats-not-on-pypi
 # and https://github.com/pypa/pip/issues/4187
+# To make matters worse, source build of Detectron2 fails unless Torch is already installed before:
+# https://github.com/facebookresearch/detectron2/issues/4472
 deps:
-	if test -n "$$CUDA_VERSION"; then :; \
+	@if test -n "$$CUDA_VERSION"; then :; \
 	elif test -s /usr/local/cuda/version.txt; then \
 		CUDA_VERSION=$$(sed 's/^.* //;s/\([0-9]\+[.][0-9]\).*/\1/' /usr/local/cuda/version.txt); \
 	elif command -v nvcc &>/dev/null; then \
@@ -33,16 +35,19 @@ deps:
 	elif command -v pkg-config &>/dev/null; then \
 		CUDA_VERSION=$$(pkg-config --list-all | sed -n '/^cudart/{s/cudart-//;s/ .*//;p;q;}'); \
 	fi && \
-	if test "$$CUDA_VERSION" = 10.0 -o "$$CUDA_VERSION" = 11.0 -o "$$CUDA_VERSION" = 11.2; then \
-		echo "Detected CUDA version $$CUDA_VERSION, which is not supported by Detectron2 - falling back to CPU-only"; CUDA_VERSION=CPU; \
-	elif test -z "$$CUDA_VERSION"; then \
+	if test -z "$$CUDA_VERSION"; then \
 		echo "Cannot find CUDA runtime library, assuming CPU-only"; CUDA_VERSION=CPU; \
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
 	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
 	fi && $(PIP) install -r requirements.txt \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html"
+	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
+	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" || \
+	{ $(PIP) install -r <(sed /detectron2/d requirements.txt) \
+	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
+	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" && \
+	$(PIP) install "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"; }
 
 # Install Python package via pip
 install: deps
