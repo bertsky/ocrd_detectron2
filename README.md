@@ -54,7 +54,7 @@ To be used with [PAGE-XML](https://github.com/PRImA-Research-Lab/PAGE-XML) docum
 ```
 Usage: ocrd-detectron2-segment [OPTIONS]
 
-  Detect regions with Detectron2
+  Detect regions with Detectron2 models
 
   > Use detectron2 to segment each page into regions.
 
@@ -69,14 +69,19 @@ Usage: ocrd-detectron2-segment [OPTIONS]
   > boxes), post-process the predictions:
 
   > - panoptic segmentation: take the provided segment label map, and
-  >   apply the segment to class label map
+  >   apply the segment to class label map,
   > - instance segmentation: find an optimal non-overlapping set (flat
-  >   map) of instances via non-maximum suppression; then extend / shrink
-  >   the surviving masks to fully include / exclude connected components
-  >   in the foreground that are on the boundary
+  >   map) of instances via non-maximum suppression,
+  > - both: avoid overlapping pre-existing top-level regions (incremental
+  >   segmentation).
+
+  > Then extend / shrink the surviving masks to fully include / exclude
+  > connected components in the foreground that are on the boundary.
 
   > Finally, find the convex hull polygon for each region, and map its
   > class id to a new PAGE region type (and subtype).
+
+  > (Does not annotate `ReadingOrder` or `TextLine`s or `@orientation`.)
 
   > Produce a new output file by serialising the resulting hierarchy.
 
@@ -86,6 +91,8 @@ Options:
   -g, --page-id ID                Physical page ID(s) to process
   --overwrite                     Remove existing output pages/images
                                   (with --page-id, remove only those)
+  --profile                       Enable profiling
+  --profile-file                  Write cProfile stats to this file. Implies --profile
   -p, --parameter JSON-PATH       Parameters, either verbatim JSON string
                                   or JSON file path
   -P, --param-override KEY VAL    Override a single JSON object key-value pair,
@@ -97,15 +104,17 @@ Options:
   -C, --show-resource RESNAME     Dump the content of processor resource RESNAME
   -L, --list-resources            List names of processor resources
   -J, --dump-json                 Dump tool description as JSON and exit
+  -D, --dump-module-dir           Output the 'module' directory with resources for this processor
   -h, --help                      This help message
   -V, --version                   Show version
 
 Parameters:
    "categories" [array - REQUIRED]
     maps each region category (position) of the model to a PAGE region
-    type (and subtype if separated by colon), e.g.
+    type (and @type or @custom if separated by colon), e.g.
     ['TextRegion:paragraph', 'TextRegion:heading',
-    'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet
+    'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet;
+    categories with an empty string will be skipped during prediction
    "min_confidence" [number - 0.5]
     confidence threshold for detections
    "model_config" [string - REQUIRED]
