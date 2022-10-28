@@ -73,7 +73,7 @@
                 {
                     "description": "PubLayNet via hpanwar08 R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x.pth",
-                    "size": 182879769,
+                    "size": 176249992,
                     "path_in_archive": "model_final_trimmed.pth",
                     "url": "https://www.dropbox.com/sh/44ez171b2qaocd2/AAB0huidzzOXeo99QdplZRjua"
                 },
@@ -145,13 +145,13 @@
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN config",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.yaml",
                     "size": 5434,
-                    "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml"
+                    "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml&dl=1"
                 },
                 {
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN weights",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.pth",
                     "size": 330226761,
-                    "url": "https://www.dropbox.com/s/6ewh6g8rqt2ev3a/model_final.pth"
+                    "url": "https://www.dropbox.com/s/6ewh6g8rqt2ev3a/model_final.pth&dl=1"
                 },
                 {
                     "description": "MathFormulaDetection via LayoutParser R50-FPN config",
