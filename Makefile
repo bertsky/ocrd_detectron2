@@ -22,9 +22,18 @@ help:
 # be encapsulated via setuptools, see https://github.com/pypa/pip/issues/5898
 # and https://stackoverflow.com/questions/3472430/how-can-i-make-setuptools-install-a-package-thats-not-on-pypi
 # and https://github.com/pypa/pip/issues/4187
+# Detectron2 requires Torch >=1.10 and <1.11, which is quite out of date now.
+# Also, the prebuilt versions on https://dl.fbaipublicfiles.com/detectron2/wheels/*/torch1.10/index.html
+# are only available for CUDA 10.1, 10.2, 11.1, 11.3 or CPU.
+# Moreoever, even Torch >=1.10 and <1.11 is not available on https://download.pytorch.org/whl/torch/
+# except for a narrow few CUDA versions.
 # To make matters worse, source build of Detectron2 fails unless Torch is already installed before:
 # https://github.com/facebookresearch/detectron2/issues/4472
+# Finally, due to https://github.com/pypa/pip/issues/4321, we cannot even mix -f links and pkgindex (for Pytorch versions)
+# because pip will (more or less) randomly pick the one or the other.
+# Detectron2 must always have the same version of Torch at runtime which it was compiled against.
 deps:
+	@$(PIP) install -r <(sed "/torch/d;/detectron2/d" requirements.txt)
 	@if test -n "$$CUDA_VERSION"; then :; \
 	elif test -s /usr/local/cuda/version.txt; then \
 		CUDA_VERSION=$$(sed 's/^.* //;s/\([0-9]\+[.][0-9]\).*/\1/' /usr/local/cuda/version.txt); \
@@ -40,13 +49,13 @@ deps:
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
 	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
-	fi && $(PIP) install -r requirements.txt \
+	fi && $(PIP) install -r <(sed -n "/torch/p;/detectron2/p" requirements.txt) \
+	-i "https://download.pytorch.org/whl/$$CUDA" \
 	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" \
-	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" || \
-	{ $(PIP) install -r <(sed /detectron2/d requirements.txt) \
-	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://download.pytorch.org/whl/$$CUDA/torch_stable.html" && \
+	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" || \
+	{ $(PIP) install -r <(sed -n "/torch/p" requirements.txt) \
+	-i "https://download.pytorch.org/whl/$$CUDA" \
+	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" && \
 	$(PIP) install "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"; }
 
 # Install Python package via pip
