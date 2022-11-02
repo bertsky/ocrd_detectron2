@@ -91,8 +91,15 @@ class Detectron2Segment(Processor):
             self.setup()
 
     def setup(self):
-        #setup_logger()
+        #setup_logger(name='fvcore')
+        #mp.set_start_method("spawn", force=True)
         LOG = getLogger('processor.Detectron2Segment')
+        # runtime overrides
+        if self.parameter['device'] == 'cpu' or not torch.cuda.is_available():
+            device = "cpu"
+        else:
+            device = self.parameter['device']
+        LOG.info("Using compute device %s", device)
         model_config = self.resolve_resource(self.parameter['model_config'])
         LOG.info("Loading config '%s'", model_config)
         # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
@@ -107,18 +114,20 @@ class Detectron2Segment(Processor):
             with pushd_popd(tmpdir):
                 cfg = get_cfg()
                 cfg.merge_from_file(temp_config)
+        model_weights = self.resolve_resource(self.parameter['model_weights'])
+        cfg.merge_from_list([
+            # set threshold for this model
+            "MODEL.ROI_HEADS.SCORE_THRESH_TEST", self.parameter['min_confidence'],
+            "MODEL.RETINANET.SCORE_THRESH_TEST", self.parameter['min_confidence'],
+            "MODEL.PANOPTIC_FPN.COMBINE.INSTANCES_CONFIDENCE_THRESH", self.parameter['min_confidence'],
+            # or cfg.MODEL.PANOPTIC_FPN.COMBINE.OVERLAP_THRESH ?
+            "MODEL.DEVICE", device,
+            "MODEL.WEIGHTS", model_weights,
+        ])
+        cfg.freeze()
         assert cfg.MODEL.ROI_HEADS.NUM_CLASSES == len(self.parameter['categories']), \
             "The chosen model's number of classes %d does not match the given list of categories %d " % (
                 cfg.MODEL.ROI_HEADS.NUM_CLASSES, len(self.parameter['categories']))
-        # runtime overrides
-        cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = self.parameter['min_confidence']  # set threshold for this model
-        if self.parameter['device'] == 'cpu' or not torch.cuda.is_available():
-            device = "cpu"
-        else:
-            device = self.parameter['device']
-        cfg.MODEL.DEVICE = device
-        model_weights = self.resolve_resource(self.parameter['model_weights'])
-        cfg.MODEL.WEIGHTS = model_weights
         # instantiate model
         LOG.info("Loading weights '%s'", model_weights)
         self.predictor = DefaultPredictor(cfg)
