@@ -49,14 +49,13 @@ deps:
 	fi && echo "Detected CUDA version: $$CUDA_VERSION" && \
 	if test "$$CUDA_VERSION" = CPU; then CUDA=cpu; \
 	else IFS=. CUDA=($$CUDA_VERSION) && CUDA=cu$${CUDA[0]}$${CUDA[1]}; \
-	fi && $(PIP) install -r <(sed -n "/torch/p;/detectron2/p" requirements.txt) \
-	-i "https://download.pytorch.org/whl/$$CUDA" \
-	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	-f "https://github.com/facebookresearch/detectron2/releases/tag/v0.6" || \
-	{ $(PIP) install -r <(sed -n "/torch/p" requirements.txt) \
-	-i "https://download.pytorch.org/whl/$$CUDA" \
-	-f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" && \
-	$(PIP) install "git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"; }
+	fi && \
+	$(PIP) install -i "https://download.pytorch.org/whl/$$CUDA" \
+	-r <(sed -n "/torch/p" requirements.txt) && \
+	$(PIP) install -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
+	"detectron2==0.6" || \
+	$(PIP) install -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
+	"git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"
 
 # Install Python package via pip
 install: deps
