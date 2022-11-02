@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2022-11-02
+### Fixed
+- `make deps`: fall back to Detectron2 src build
+
 ### Changed
 - added various models as file resources
 - added corresponding preset files
@@ -34,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2022-01-21
 
 <!-- link-labels -->
-[unreleased]: ../../compare/v0.1.1...master
+[0.1.0]: ../../compare/aeca7e37...v0.1.0
 [0.1.1]: ../../compare/v0.1.0...v0.1.1
 [0.1.2]: ../../compare/v0.1.1...v0.1.2
+[0.1.3]: ../../compare/v0.1.2...v0.1.3
+[unreleased]: ../../compare/v0.1.0...master
