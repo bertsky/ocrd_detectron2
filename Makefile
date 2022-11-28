@@ -53,8 +53,6 @@ deps:
 	$(PIP) install -i "https://download.pytorch.org/whl/$$CUDA" \
 	-r <(sed -n "/torch/p" requirements.txt) && \
 	$(PIP) install -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	"detectron2==0.6" || \
-	$(PIP) install -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	"git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2==0.6"
 
 # Install Python package via pip
