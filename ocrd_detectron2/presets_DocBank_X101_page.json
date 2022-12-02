@@ -1,0 +1,19 @@
+{
+    "model_config": "DocBank_X101.yaml",
+    "model_weights": "DocBank_X101.pth",
+    "categories": [
+        "TextRegion:header",
+        "TextRegion:credit",
+        "TextRegion:caption",
+        "TextRegion:other",
+        "MathsRegion",
+        "GraphicRegion",
+        "TextRegion:footer",
+        "TextRegion:floating",
+        "TextRegion:paragraph",
+        "TextRegion:endnote",
+        "TextRegion:heading",
+        "TableRegion",
+        "TextRegion:heading"
+    ]
+}
