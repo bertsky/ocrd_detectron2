@@ -1,6 +1,6 @@
 {
     "git_url": "https://github.com/bertsky/ocrd_detectron2",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "tools": {
         "ocrd-detectron2-segment": {
             "executable": "ocrd-detectron2-segment",
@@ -25,12 +25,6 @@
                     "required": true,
                     "description": "maps each region category (position) of the model to a PAGE region type (and @type or @custom if separated by colon), e.g. ['TextRegion:paragraph', 'TextRegion:heading', 'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet; categories with an empty string will be skipped during prediction"
                 },
-                "min_confidence": {
-                    "type": "number",
-                    "format": "float",
-                    "default": 0.5,
-                    "description": "confidence threshold for detections"
-                },
                 "model_config": {
                     "type": "string",
                     "format": "uri",
@@ -44,6 +38,24 @@
                     "content-type": "application/octet-stream",
                     "required": true,
                     "description": "path name of model weights"
+                },
+                "min_confidence": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 0.5,
+                    "description": "confidence threshold for detections"
+                },
+                "postprocessing": {
+                    "type": "string",
+                    "enum": ["full", "only-nms", "only-morph", "none"],
+                    "default": "full",
+                    "description": "which postprocessing steps to enable: by default, applies a custom non-maximum suppression (to avoid overlaps) and morphological operations (using connected component analysis on the binarized input image to shrink or expand regions)"
+                },
+                "debug_img": {
+                    "type": "string",
+                    "enum": ["none", "instance_colors", "instance_colors_only", "category_colors"],
+                    "default": "none",
+                    "description": "paint an AlternativeImage which blends the input image and all raw decoded region candidates"
                 },
                 "device": {
                     "type": "string",

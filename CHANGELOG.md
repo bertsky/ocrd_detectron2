@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2022-12-02
+### Added
+- param `postprocessing` (select steps, including `none`)
+- param `debug_img` (styles to visualise raw predictions, including `none`)
+
 ## [0.1.3] - 2022-11-02
 ### Fixed
 - `make deps`: fall back to Detectron2 src build
@@ -42,4 +47,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.1]: ../../compare/v0.1.0...v0.1.1
 [0.1.2]: ../../compare/v0.1.1...v0.1.2
 [0.1.3]: ../../compare/v0.1.2...v0.1.3
-[unreleased]: ../../compare/v0.1.0...master
+[0.1.4]: ../../compare/v0.1.3...v0.1.4
+[unreleased]: ../../compare/v0.1.4...master

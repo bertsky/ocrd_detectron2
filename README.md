@@ -114,6 +114,9 @@ Options:
   -V, --version                   Show version
 
 Parameters:
+   "operation_level" [string - "page"]
+    hierarchy level which to predict and assign regions for
+    Possible values: ["page", "table"]
    "categories" [array - REQUIRED]
     maps each category (class index) of the model to a PAGE region
     type (and @type or @custom if separated by colon), e.g.
@@ -132,9 +135,10 @@ Parameters:
     operations (using connected component analysis on the binarized
     input image to shrink or expand regions)
     Possible values: ["full", "only-nms", "only-morph", "none"]
-   "debug-img" [boolean - false]
-    paint a page-level AlternativeImage which blends the input image
+   "debug_img" [string - "none"]
+    paint an AlternativeImage which blends the input image
     and all raw decoded region candidates
+    Possible values: ["none", "instance_colors", "instance_colors_only", "category_colors"]
    "device" [string - "cuda"]
     select computing device for Torch (e.g. cpu or cuda:0); will fall
     back to CPU if no GPU is available
@@ -151,6 +155,23 @@ Example:
     ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -p presets_TableBank_X152.json -P min_confidence 0.1 
     # download all preconfigured models
     ocrd resmgr download ocrd-detectron2-segment "*"
+
+#### Debugging
+
+If you mistrust your model, and/or this tool's additional postprocessing,
+try playing with the runtime parameters:
+
+- Set `debug_img` to some value other than `none`, e.g. `instance_colors_only`.
+  This will generate an image which overlays the raw predictions with the raw image
+  using Detectron2's internal visualiser. The parameter settings correspond to its
+  [ColorMode](https://detectron2.readthedocs.io/en/latest/modules/utils.html#detectron2.utils.visualizer.ColorMode).
+  The AlternativeImages will have `@comments="debug"`, and will also be referenced in the METS,
+  which allows convenient browsing with [OCR-D Browser](https://github.com/hnesk/browse-ocrd).
+  (For example, open the Page View and Image View side by side, and navigate to your output
+  fileGrp on each.)
+- Selectively disable postprocessing steps: from the default `full` via `only-nms` (first stage)
+  or `only-morph` (second stage) to `none`.
+- Lower `min_confidence` to get more candidates, raise to get fewer.
 
 ## Models
 
@@ -179,31 +200,34 @@ To **use** a model, do:
     ocrd-detectron2-segment -p NAME.json ... # equivalent, with presets file
 
 To add (i.e. register) a **new model**, you first have to find:
-- the classes it is defined on, so you can then define a mapping to PAGE-XML region (and subregion) types,
+- the classes it is trained on, so you can then define a mapping to PAGE-XML region (and subregion) types,
 - a download link to the model config and model weights file. 
   Archives (zip/tar) are allowed, but then you must also specify the file paths to extract.
 
 Assuming you have done so, then proceed as follows:
 
-    # from single file URL:
-    ocrd resmgr download -n https://path.to/your/model/config.yml ocrd-detectron2-segment NAME.yml
-    ocrd resmgr download -n https://path.to/your/model/weights.pth ocrd-detectron2-segment NAME.pth
-    # from zip file URL:
-    ocrd resmgr download -n https://path.to/your/model/arch.zip -t archive -P zip-path/to/config.yml ocrd-detectron2-segment NAME.yml
-    ocrd resmgr download -n https://path.to/your/model/arch.zip -t archive -P zip-path/to/weights.pth ocrd-detectron2-segment NAME.pth
-    # create corresponding preset file:
-    echo '{"model_weights": "your-model-name.pth", "model_config": "your-model-name.yml", "categories": [...]}' > NAME.json
-    # install that file so it can be used everywhere (not just in CWD):
-    ocrd resmgr download -n your-model-name.json ocrd-detectron2-segment NAME.json
-    # now the new model can be used like the preregistered models:
+    # from local file path
+    ocrd resmgr download -n path/to/model/config.yml ocrd-detectron2-segment NAME.yml
+    ocrd resmgr download -n path/to/model/weights.pth ocrd-detectron2-segment NAME.pth
+    # from single file URL
+    ocrd resmgr download -n https://path.to/model/config.yml ocrd-detectron2-segment NAME.yml
+    ocrd resmgr download -n https://path.to/model/weights.pth ocrd-detectron2-segment NAME.pth
+    # from zip file URL
+    ocrd resmgr download -n https://path.to/model/arch.zip -t archive -P zip-path/to/config.yml ocrd-detectron2-segment NAME.yml
+    ocrd resmgr download -n https://path.to/model/arch.zip -t archive -P zip-path/to/weights.pth ocrd-detectron2-segment NAME.pth
+    # create corresponding preset file
+    echo '{"model_weights": "NAME.pth", "model_config": "NAME.yml", "categories": [...]}' > NAME.json
+    # install preset file so it can be used everywhere (not just in CWD):
+    ocrd resmgr download -n NAME.json ocrd-detectron2-segment NAME.json
+    # now the new model can be used just like the preregistered models
     ocrd-detectron2-segment -p NAME.json ...
 
 
-What follows is an **overview** of the **preregistered** models.
+What follows is an **overview** of the **preregistered** models (i.e. available via `resmgr`).
 
 > **Note**: These are just examples, no exhaustive search was done yet!
 
-> **Note**: Make sure you unpack first if the download link is an archive. Also, the filename suffix (.pth vs .pkl) of the weight file does matter!
+> **Note**: The filename suffix (.pth vs .pkl) of the weight file does matter!
 
 ### [TableBank](https://github.com/doc-analysis/TableBank)
 
@@ -233,7 +257,10 @@ provides different model variants of various depths for multiple datasets:
 - [NewspaperNavigator](https://news-navigator.labs.loc.gov/) (Historical Newspapers)
 - [Math Formula Detection](http://transcriptorium.eu/~htrcontest/MathsICDAR2021/)
 
-See [here](https://github.com/Layout-Parser/layout-parser/blob/master/docs/notes/modelzoo.md) for an overview. You will have to adapt the label map to conform to [PAGE-XML](https://github.com/PRImA-Research-Lab/PAGE-XML) region (sub)types accordingly.
+See [here](https://github.com/Layout-Parser/layout-parser/blob/master/docs/notes/modelzoo.md) for an overview,
+and [here](https://github.com/Layout-Parser/layout-parser/blob/main/src/layoutparser/models/detectron2/catalog.py) for the model files.
+You will have to adapt the label map to conform to [PAGE-XML](https://github.com/PRImA-Research-Lab/PAGE-XML)
+region (sub)types accordingly.
 
 ### [DocBank](https://github.com/doc-analysis/DocBank/blob/master/MODEL_ZOO.md)
 

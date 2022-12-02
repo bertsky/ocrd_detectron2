@@ -18,7 +18,7 @@ from PIL import Image
 from detectron2.engine import DefaultPredictor
 from detectron2.utils import visualizer
 from detectron2.config import get_cfg
-#from detectron2.data import MetadataCatalog, DatasetCatalog
+from detectron2.data import MetadataCatalog #, DatasetCatalog
 import torch
 
 from ocrd_utils import (
@@ -51,7 +51,8 @@ from ocrd_models.ocrd_page import (
     TableRegionType,
     TextRegionType,
     UnknownRegionType,
-    CoordsType
+    CoordsType,
+    AlternativeImageType
 )
 from ocrd_models.ocrd_page_generateds import (
     ChartTypeSimpleType,
@@ -132,6 +133,8 @@ class Detectron2Segment(Processor):
         LOG.info("Loading weights '%s'", model_weights)
         self.predictor = DefaultPredictor(cfg)
         self.categories = self.parameter['categories']
+        self.metadata = MetadataCatalog.get('runtime')
+        self.metadata.thing_classes = self.categories
 
     def process(self):
         """Use detectron2 to segment each page into regions.
@@ -160,6 +163,11 @@ class Detectron2Segment(Processor):
         Then extend / shrink the surviving masks to fully include / exclude
         connected components in the foreground that are on the boundary.
 
+        (This describes the steps when ``postprocessing`` is `full`. A value
+        of `only-nms` will omit the morphological extension/shrinking, while
+        `only-morph` will omit the non-maximum suppression, and `none` will
+        skip all postprocessing.)
+
         Finally, find the convex hull polygon for each region, and map its
         class id to a new PAGE region type (and subtype).
 
@@ -174,6 +182,7 @@ class Detectron2Segment(Processor):
 
         # pylint: disable=attribute-defined-outside-init
         for n, input_file in enumerate(self.input_files):
+            file_id = make_file_id(input_file, self.output_file_grp)
             page_id = input_file.pageId or input_file.ID
             LOG.info("INPUT FILE %i / %s", n, page_id)
             pcgts = page_from_file(self.workspace.download_file(input_file))
@@ -183,10 +192,13 @@ class Detectron2Segment(Processor):
             page_image_raw, page_coords, page_image_info = self.workspace.image_from_page(
                 page, page_id, feature_filter='binarized')
             # for morphological post-processing, we will need the binarized image, too
-            page_image_bin, _, _ = self.workspace.image_from_page(
-                page, page_id, feature_selector='binarized')
-            page_image_raw, page_image_bin = _ensure_consistent_crops(
-                page_image_raw, page_image_bin)
+            if self.parameter['postprocessing'] != 'none':
+                page_image_bin, _, _ = self.workspace.image_from_page(
+                    page, page_id, feature_selector='binarized')
+                page_image_raw, page_image_bin = _ensure_consistent_crops(
+                    page_image_raw, page_image_bin)
+            else:
+                page_image_bin = page_image_raw
             # determine current zoom and target zoom
             if page_image_info.resolution != 1:
                 dpi = page_image_info.resolution
@@ -220,10 +232,13 @@ class Detectron2Segment(Processor):
                 else:
                     image_raw, coords = self.workspace.image_from_segment(
                         segment, page_image_raw, page_coords, feature_filter='binarized')
-                    image_bin, _ = self.workspace.image_from_segment(
-                        segment, page_image_bin, page_coords)
-                    image_raw, image_bin = _ensure_consistent_crops(
-                        image_raw, image_bin)
+                    if self.parameter['postprocessing'] != 'none':
+                        image_bin, _ = self.workspace.image_from_segment(
+                            segment, page_image_bin, page_coords)
+                        image_raw, image_bin = _ensure_consistent_crops(
+                            image_raw, image_bin)
+                    else:
+                        image_bin = image_raw
 
                 # ensure RGB (if raw was merely grayscale)
                 if image_raw.mode == '1':
@@ -249,9 +264,9 @@ class Detectron2Segment(Processor):
                 array_bin = np.array(image_bin)
                 array_bin = ~ array_bin
 
-                self._process_segment(segment, regions, coords, array_raw, array_bin, zoomed)
+                self._process_segment(segment, regions, coords, array_raw, array_bin, zoomed,
+                                      file_id, input_file.pageId)
 
-            file_id = make_file_id(input_file, self.output_file_grp)
             file_path = os.path.join(self.output_file_grp,
                                      file_id + '.xml')
             out = self.workspace.add_file(
@@ -264,7 +279,7 @@ class Detectron2Segment(Processor):
             LOG.info('created file ID: %s, file_grp: %s, path: %s',
                      file_id, self.output_file_grp, out.local_filename)
 
-    def _process_segment(self, segment, ignore, coords, array_raw, array_bin, zoomed):
+    def _process_segment(self, segment, ignore, coords, array_raw, array_bin, zoomed, file_id, page_id):
         LOG = getLogger('processor.Detectron2Segment')
         cpu = torch.device('cpu')
         segtype = segment.__class__.__name__[:-4]
@@ -273,20 +288,29 @@ class Detectron2Segment(Processor):
         #page.set_TextRegion([])
         segment.set_custom('coords=%s' % coords['transform'])
         height, width, _ = array_raw.shape
-        # get connected components to estimate scale
-        _, components = cv2.connectedComponents(array_bin.astype(np.uint8))
-        # estimate glyph scale (roughly)
-        _, counts = np.unique(components, return_counts=True)
-        if counts.shape[0] > 1:
-            counts = np.sqrt(3 * counts)
-            counts = counts[(5 < counts) & (counts < 100)]
-            scale = int(np.median(counts))
-            LOG.debug("estimated scale: %d", scale)
-        else:
-            scale = 43
+        postprocessing = self.parameter['postprocessing']
+        scale = 43
+        if postprocessing in ['full', 'only-morph']:
+            # get connected components to estimate scale
+            _, components = cv2.connectedComponents(array_bin.astype(np.uint8))
+            # estimate glyph scale (roughly)
+            _, counts = np.unique(components, return_counts=True)
+            if counts.shape[0] > 1:
+                counts = np.sqrt(3 * counts)
+                counts = counts[(5 < counts) & (counts < 100)]
+                scale = int(np.median(counts))
+                LOG.debug("estimated scale: %d", scale)
         # predict
         output = self.predictor(array_raw)
-        # https://detectron2.readthedocs.io/en/latest/tutorials/models.html
+        if self.parameter['debug_img'] != 'none':
+            vis = visualizer.Visualizer(array_raw,
+                                        metadata=self.metadata,
+                                        instance_mode={
+                                            'instance_colors': visualizer.ColorMode.IMAGE,
+                                            'instance_colors_only': visualizer.ColorMode.IMAGE_BW,
+                                            'category_colors': visualizer.ColorMode.SEGMENTATION
+                                        }[self.parameter['debug_img']])
+        # decoding, cf. https://detectron2.readthedocs.io/en/latest/tutorials/models.html
         if 'panoptic_seg' in output:
             LOG.info("decoding from panoptic segmentation results")
             segmap, seginfo = output['panoptic_seg']
@@ -294,6 +318,8 @@ class Detectron2Segment(Processor):
                 LOG.debug(str(segmap))
                 segmap = segmap.to(cpu)
                 segmap = segmap.numpy()
+            if self.parameter['debug_img'] != 'none':
+                visimg = vis.draw_panoptic_seg(segmap, seginfo)
             seglabels = np.unique(segmap)
             nseg = len(seglabels)
             if not nseg:
@@ -326,6 +352,8 @@ class Detectron2Segment(Processor):
             if not isinstance(instances, dict):
                 assert instances.image_size == (height, width)
                 instances = instances.to(cpu)
+                if self.parameter['debug_img'] != 'none':
+                    visimg = vis.draw_instance_predictions(instances)
                 instances = instances.get_fields()
             classes = instances['pred_classes']
             if not all(self.categories):
@@ -380,10 +408,13 @@ class Detectron2Segment(Processor):
                 cv2.fillPoly(mask0, pts=[polygon], color=(255,))
             assert np.count_nonzero(mask0), "existing regions all outside of page frame"
             masks[0] |= mask0 > 0
-        scores, classes, masks = postprocess(
-            scores, classes, masks,
-            array_bin, components,
-            self.categories, min_confidence=self.parameter['min_confidence'], nproc=8)
+        if postprocessing in ['full', 'only-nms']:
+            scores, classes, masks = postprocess_nms(
+                scores, classes, masks, array_bin, self.categories,
+                min_confidence=self.parameter['min_confidence'], nproc=8)
+        if postprocessing in ['full', 'only-morph']:
+            scores, classes, masks = postprocess_morph(
+                scores, classes, masks, components, nproc=8)
         if len(ignore):
             scores = scores[1:]
             classes = classes[1:]
@@ -454,12 +485,18 @@ class Detectron2Segment(Processor):
             getattr(segment, 'add_' + cat[0])(region)
             LOG.info("Detected %s region%04d (p=%.2f) on %s '%s'",
                      category, region_no, score, segtype, segment.id)
+            if self.parameter['debug_img'] != 'none':
+                path = self.workspace.save_image_file(
+                    Image.fromarray(visimg.get_image()),
+                    (file_id if isinstance(segment, PageType) else file_id + '_' + segment.id) + '.IMG-DEBUG',
+                    self.output_file_grp, page_id=page_id)
+                segment.add_AlternativeImage(AlternativeImageType(filename=path, comments='debug'))
 
-def postprocess(scores, classes, masks, page_array_bin, components, categories, min_confidence=0.5, nproc=8):
-    """Apply post-processing to raw detections. Implement via Numpy routines.
 
-    - geometrically: remove overlapping candidates via non-maximum suppression across classes
-    - morphologically: extend masks to avoid chopping off fg connected components
+def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_confidence=0.5, nproc=8):
+    """Apply geometrical post-processing to raw detections: remove overlapping candidates via non-maximum suppression across classes.
+
+    Implement via Numpy routines.
     """
     LOG = getLogger('processor.Detectron2Segment')
     # apply IoU-based NMS across classes
@@ -519,6 +556,14 @@ def postprocess(scores, classes, masks, page_array_bin, components, categories, 
     scores = scores[keep]
     classes = classes[keep]
     masks = masks[keep]
+    return scores, classes, masks
+
+def postprocess_morph(scores, classes, masks, components, nproc=8):
+    """Apply morphological post-processing to raw detections: extend masks to avoid chopping off fg connected components.
+
+    Implement via Numpy routines.
+    """
+    LOG = getLogger('processor.Detectron2Segment')
     shared_masks = mp.sharedctypes.RawArray(ctypes.c_bool, masks.size)
     shared_components = mp.sharedctypes.RawArray(ctypes.c_int32, components.size)
     shared_masks_np = tonumpyarray_with_shape(shared_masks, masks.shape)
