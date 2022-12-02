@@ -78,6 +78,8 @@ Usage: ocrd-detectron2-segment [OPTIONS]
   > Then extend / shrink the surviving masks to fully include / exclude
   > connected components in the foreground that are on the boundary.
 
+  > If ``
+
   > Finally, find the convex hull polygon for each region, and map its
   > class id to a new PAGE region type (and subtype).
 
@@ -110,17 +112,26 @@ Options:
 
 Parameters:
    "categories" [array - REQUIRED]
-    maps each region category (position) of the model to a PAGE region
+    maps each category (class index) of the model to a PAGE region
     type (and @type or @custom if separated by colon), e.g.
     ['TextRegion:paragraph', 'TextRegion:heading',
     'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet;
     categories with an empty string will be skipped during prediction
-   "min_confidence" [number - 0.5]
-    confidence threshold for detections
    "model_config" [string - REQUIRED]
     path name of model config
    "model_weights" [string - REQUIRED]
     path name of model weights
+   "min_confidence" [number - 0.5]
+    confidence threshold for detections
+   "postprocessing" [string - "full"]
+    which postprocessing steps to enable: by default, applies a custom
+    non-maximum suppression (to avoid overlaps) and morphological
+    operations (using connected component analysis on the binarized
+    input image to shrink or expand regions)
+    Possible values: ["full", "only-nms", "only-morph", "none"]
+   "debug-img" [boolean - false]
+    paint a page-level AlternativeImage which blends the input image
+    and all raw decoded region candidates
    "device" [string - "cuda"]
     select computing device for Torch (e.g. cpu or cuda:0); will fall
     back to CPU if no GPU is available
@@ -128,25 +139,29 @@ Parameters:
 
 Example:
 
+    # download one preconfigured model:
     ocrd resmgr download ocrd-detectron2-segment TableBank_X152.yaml
     ocrd resmgr download ocrd-detectron2-segment TableBank_X152.pth
+    # run it (setting model_config, model_weights and categories):
     ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -P categories '["TableRegion"]' -P model_config TableBank_X152.yaml -P model_weights TableBank_X152.pth -P min_confidence 0.1
-    ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -p presets_TableBank_X152.json -P min_confidence 0.1 # equivalent, with presets file
-    ocrd resmgr download ocrd-detectron2-segment "*" # get all preconfigured models
+    # run it (equivalent, with presets file)
+    ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -p presets_TableBank_X152.json -P min_confidence 0.1 
+    # download all preconfigured models
+    ocrd resmgr download ocrd-detectron2-segment "*"
 
 ## Models
 
-Some of the following models have already been registered as known [file resources](https://ocr-d.de/en/spec/cli#processor-resources), along with parameter presets to use them.
+Some of the following models have already been registered as known [file resources](https://ocr-d.de/en/spec/cli#processor-resources), along with parameter presets to use them conveniently.
 
-To get a list of available registered models, do:
+To get a list of registered models **available for download**, do:
 
     ocrd resmgr list-available -e ocrd-detectron2-segment
 
-To get a list of already installed models and presets, do:
+To get a list of **already installed** models and presets, do:
 
     ocrd resmgr list-installed -e ocrd-detectron2-segment
 
-To download a registered model (i.e. a config file and the respective weights file), do:
+To **download** a registered model (i.e. a config file and the respective weights file), do:
 
     ocrd resmgr download ocrd-detectron2-segment NAME.yaml
     ocrd resmgr download ocrd-detectron2-segment NAME.pth
@@ -155,10 +170,33 @@ To download more models (registered or other), see:
 
     ocrd resmgr download --help
 
-To use a model, do:
+To **use** a model, do:
 
     ocrd-detectron2-segment -P model_config NAME.yaml -P model_weights NAME.pth -P categories '[...]' ...
     ocrd-detectron2-segment -p NAME.json ... # equivalent, with presets file
+
+To add (i.e. register) a **new model**, you first have to find:
+- the classes it is defined on, so you can then define a mapping to PAGE-XML region (and subregion) types,
+- a download link to the model config and model weights file. 
+  Archives (zip/tar) are allowed, but then you must also specify the file paths to extract.
+
+Assuming you have done so, then proceed as follows:
+
+    # from single file URL:
+    ocrd resmgr download -n https://path.to/your/model/config.yml ocrd-detectron2-segment NAME.yml
+    ocrd resmgr download -n https://path.to/your/model/weights.pth ocrd-detectron2-segment NAME.pth
+    # from zip file URL:
+    ocrd resmgr download -n https://path.to/your/model/arch.zip -t archive -P zip-path/to/config.yml ocrd-detectron2-segment NAME.yml
+    ocrd resmgr download -n https://path.to/your/model/arch.zip -t archive -P zip-path/to/weights.pth ocrd-detectron2-segment NAME.pth
+    # create corresponding preset file:
+    echo '{"model_weights": "your-model-name.pth", "model_config": "your-model-name.yml", "categories": [...]}' > NAME.json
+    # install that file so it can be used everywhere (not just in CWD):
+    ocrd resmgr download -n your-model-name.json ocrd-detectron2-segment NAME.json
+    # now the new model can be used like the preregistered models:
+    ocrd-detectron2-segment -p NAME.json ...
+
+
+What follows is an **overview** of the **preregistered** models.
 
 > **Note**: These are just examples, no exhaustive search was done yet!
 
@@ -199,7 +237,7 @@ See [here](https://github.com/Layout-Parser/layout-parser/blob/master/docs/notes
 X101-FPN [archive](https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip)
 
 Proposed mappings:
-- `["TextRegion:heading", "TextRegion:credit", "TextRegion:caption", "TextRegion:other", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:floating", "TextRegion:paragraph", "TextRegion:endnote", "TextRegion:heading", "TableRegion", "TextRegion:heading"]` (using only predefined `@type`)
+- `["TextRegion:header", "TextRegion:credit", "TextRegion:caption", "TextRegion:other", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:floating", "TextRegion:paragraph", "TextRegion:endnote", "TextRegion:heading", "TableRegion", "TextRegion:heading"]` (using only predefined `@type`)
 - `["TextRegion:abstract", "TextRegion:author", "TextRegion:caption", "TextRegion:date", "MathsRegion", "GraphicRegion", "TextRegion:footer", "TextRegion:list", "TextRegion:paragraph", "TextRegion:reference", "TextRegion:heading", "TableRegion", "TextRegion:title"]` (using `@custom` as well)
 
 ## Testing
