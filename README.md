@@ -78,7 +78,10 @@ Usage: ocrd-detectron2-segment [OPTIONS]
   > Then extend / shrink the surviving masks to fully include / exclude
   > connected components in the foreground that are on the boundary.
 
-  > If ``
+  > (This describes the steps when ``postprocessing`` is `full`. A value
+  > of `only-nms` will omit the morphological extension/shrinking, while
+  > `only-morph` will omit the non-maximum suppression, and `none` will
+  > skip all postprocessing.)
 
   > Finally, find the convex hull polygon for each region, and map its
   > class id to a new PAGE region type (and subtype).
