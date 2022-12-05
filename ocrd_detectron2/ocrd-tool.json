@@ -86,6 +86,7 @@
                     "description": "PubLayNet via hpanwar08 R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x.pth",
                     "size": 176249992,
+                    "type": "archive",
                     "path_in_archive": "model_final_trimmed.pth",
                     "url": "https://www.dropbox.com/sh/44ez171b2qaocd2/AAB0huidzzOXeo99QdplZRjua"
                 },
@@ -99,6 +100,7 @@
                     "description": "PubLayNet via hpanwar08 R101-FPN weights",
                     "name": "PubLayNet_R_101_FPN_3x.pth",
                     "size": 254055290,
+                    "type": "archive",
                     "path_in_archive": "model_final.pth",
                     "url": "https://www.dropbox.com/sh/wgt9skz67usliei/AAD9n6qbsyMz1Y3CwpZpHXCpa"
                 },
@@ -111,6 +113,7 @@
                 {
                     "description": "PubLayNet via hpanwar08 X101-FPN weights",
                     "name": "PubLayNet_X_101_32x8d_FPN_3x.pth",
+                    "type": "archive",
                     "path_in_archive": "model_final_trimmed.pth",
                     "size": 431414189,
                     "url": "https://www.dropbox.com/sh/1098ym6vhad4zi6/AABe16eSdY_34KGp52W0ruwha"
@@ -142,6 +145,7 @@
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
                     "name": "DocBank_X101.yaml",
+                    "type": "archive",
                     "path_in_archive": "X101/X101.yaml",
                     "size": 526,
                     "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
@@ -149,6 +153,7 @@
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
                     "name": "DocBank_X101.pth",
+                    "type": "archive",
                     "path_in_archive": "X101/model.pth",
                     "size": 835606605,
                     "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
@@ -157,13 +162,13 @@
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN config",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.yaml",
                     "size": 5434,
-                    "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml&dl=1"
+                    "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml?dl=1"
                 },
                 {
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN weights",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.pth",
                     "size": 330226761,
-                    "url": "https://www.dropbox.com/s/6ewh6g8rqt2ev3a/model_final.pth&dl=1"
+                    "url": "https://www.dropbox.com/s/6ewh6g8rqt2ev3a/model_final.pth?dl=1"
                 },
                 {
                     "description": "MathFormulaDetection via LayoutParser R50-FPN config",
