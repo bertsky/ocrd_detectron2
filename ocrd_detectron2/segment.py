@@ -450,6 +450,7 @@ class Detectron2Segment(Processor):
             region_coords = CoordsType(points_from_polygon(region_polygon), conf=score)
             region_no += 1
             region_id = 'region%04d_%s' % (region_no, category)
+            region_id = region_id.replace(':', '_')
             cat2class = dict([
                 ('AdvertRegion', AdvertRegionType),
                 ('ChartRegion', ChartRegionType),
