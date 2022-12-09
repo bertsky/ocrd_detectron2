@@ -488,7 +488,7 @@ class Detectron2Segment(Processor):
             if self.parameter['debug_img'] != 'none':
                 path = self.workspace.save_image_file(
                     Image.fromarray(visimg.get_image()),
-                    (file_id if isinstance(segment, PageType) else file_id + '_' + segment.id) + '.IMG-DEBUG',
+                    file_id + '_' + region_id + '.IMG-DEBUG',
                     self.output_file_grp, page_id=page_id)
                 segment.add_AlternativeImage(AlternativeImageType(filename=path, comments='debug'))
 
