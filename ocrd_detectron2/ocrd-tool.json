@@ -121,26 +121,26 @@
                 {
                     "description": "PubLayNet via JPLeoRX R50-FPN config",
                     "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.yaml",
-                    "size": 192,
-                    "url": "https://github.com/facebookresearch/detectron2/raw/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
+                    "size": 388,
+                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_50_FPN_3x.yaml"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.pth",
-                    "size": 7692,
-                    "url": "https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth"
+                    "size": 176299422,
+                    "url": "https://jpleorx.keybase.pub/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth?dl=1"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R101-FPN config",
                     "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.yaml",
-                    "size": 194,
-                    "url": "https://github.com/facebookresearch/detectron2/raw/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml"
+                    "size": 392,
+                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_101_FPN_3x.yaml"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R101-FPN weights",
                     "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.pth",
-                    "size": 7696,
-                    "url": "https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth"
+                    "size": 252572745,
+                    "url": "https://jpleorx.keybase.pub/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth?dl=1"
                 },
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
