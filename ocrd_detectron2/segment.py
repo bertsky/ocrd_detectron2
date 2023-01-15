@@ -485,12 +485,12 @@ class Detectron2Segment(Processor):
             getattr(segment, 'add_' + cat[0])(region)
             LOG.info("Detected %s region%04d (p=%.2f) on %s '%s'",
                      category, region_no, score, segtype, segment.id)
-            if self.parameter['debug_img'] != 'none':
-                path = self.workspace.save_image_file(
-                    Image.fromarray(visimg.get_image()),
-                    (file_id if isinstance(segment, PageType) else file_id + '_' + segment.id) + '.IMG-DEBUG',
-                    self.output_file_grp, page_id=page_id)
-                segment.add_AlternativeImage(AlternativeImageType(filename=path, comments='debug'))
+        if self.parameter['debug_img'] != 'none':
+            path = self.workspace.save_image_file(
+                Image.fromarray(visimg.get_image()),
+                (file_id if isinstance(segment, PageType) else file_id + '_' + segment.id) + '.IMG-DEBUG',
+                self.output_file_grp, page_id=page_id)
+            segment.add_AlternativeImage(AlternativeImageType(filename=path, comments='debug'))
 
 
 def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_confidence=0.5, nproc=8):
