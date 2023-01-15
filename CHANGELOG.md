@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2023-01-15
+### Fixed
+- param `debug_img`: 1 image per page
+- URLs/specs for PubLayNet/JPLeoRX models
+
 ## [0.1.4] - 2022-12-02
 ### Added
 - param `postprocessing` (select steps, including `none`)
@@ -48,4 +53,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.2]: ../../compare/v0.1.1...v0.1.2
 [0.1.3]: ../../compare/v0.1.2...v0.1.3
 [0.1.4]: ../../compare/v0.1.3...v0.1.4
+[0.1.5]: ../../compare/v0.1.4...v0.1.5
 [unreleased]: ../../compare/v0.1.4...master

@@ -1,6 +1,6 @@
 {
     "git_url": "https://github.com/bertsky/ocrd_detectron2",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "tools": {
         "ocrd-detectron2-segment": {
             "executable": "ocrd-detectron2-segment",
