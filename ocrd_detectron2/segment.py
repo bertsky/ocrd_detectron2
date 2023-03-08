@@ -448,8 +448,6 @@ class Detectron2Segment(Processor):
                 continue
             # annotate new region/line
             region_coords = CoordsType(points_from_polygon(region_polygon), conf=score)
-            region_no += 1
-            region_id = 'region%04d_%s' % (region_no, category)
             cat2class = dict([
                 ('AdvertRegion', AdvertRegionType),
                 ('ChartRegion', ChartRegionType),
@@ -473,6 +471,8 @@ class Detectron2Segment(Processor):
             except KeyError:
                 LOG.critical("Invalid region type %s (see https://github.com/PRImA-Research-Lab/PAGE-XML)", cat[0])
                 sys.exit(1)
+            region_no += 1
+            region_id = 'region%04d_%s' % (region_no, cat[0])
             region = regiontype(id=region_id, Coords=region_coords)
             if len(cat) > 1:
                 try:
