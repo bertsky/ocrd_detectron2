@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - avoid colon in generated region IDs
+- `make deps`: add explicit deps for torch
 
 ## [0.1.5] - 2023-01-15
 ### Fixed
