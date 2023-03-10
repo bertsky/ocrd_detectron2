@@ -5,9 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.6] - 2023-03-10
 ### Fixed
 - avoid colon in generated region IDs
 - `make deps`: add explicit deps for torch
+- fix/update file resources
+- fix model config base paths on-the-fly
+
+### Added
+- add Psarpei TD model
 
 ## [0.1.5] - 2023-01-15
 ### Fixed
@@ -57,4 +64,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.3]: ../../compare/v0.1.2...v0.1.3
 [0.1.4]: ../../compare/v0.1.3...v0.1.4
 [0.1.5]: ../../compare/v0.1.4...v0.1.5
-[unreleased]: ../../compare/v0.1.4...master
+[0.1.5]: ../../compare/v0.1.5...v0.1.6
+[unreleased]: ../../compare/v0.1.6...master
