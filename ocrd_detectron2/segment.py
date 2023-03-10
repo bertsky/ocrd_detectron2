@@ -4,6 +4,7 @@ from pkg_resources import resource_filename
 import sys
 import os
 import tempfile
+import fileinput
 import shutil
 import math
 import multiprocessing as mp
@@ -113,6 +114,16 @@ class Detectron2Segment(Processor):
             temp_config = os.path.join(temp_config, os.path.basename(model_config))
             shutil.copyfile(model_config, temp_config)
             with pushd_popd(tmpdir):
+                # repair broken config files that make deviating assumptions on model_zoo files
+                with fileinput.input(temp_config, inplace=True) as temp_config_file:
+                    for line in temp_config_file:
+                        if fileinput.isfirstline():
+                            PREFIXES = ['/content/',
+                                        '../configs/',
+                                        '../']
+                            line = next((line.replace(pref, '') for pref in PREFIXES
+                                         if line.startswith('_BASE_: "' + pref)), line)
+                        print(line, end='')
                 cfg = get_cfg()
                 cfg.merge_from_file(temp_config)
         model_weights = self.resolve_resource(self.parameter['model_weights'])
