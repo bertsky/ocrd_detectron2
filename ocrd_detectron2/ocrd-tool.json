@@ -65,13 +65,13 @@
             },
             "resources": [
                 {
-                    "description": "TableBank via LayoutLM R152-FPN config",
+                    "description": "TableBank via LayoutLM X152-FPN config",
                     "name": "TableBank_X152.yaml",
                     "size": 536,
                     "url": "https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/All_X152.yaml"
                 },
                 {
-                    "description": "TableBank via LayoutLM R152-FPN weights",
+                    "description": "TableBank via LayoutLM X152-FPN weights",
                     "name": "TableBank_X152.pth",
                     "size": 1103832675,
                     "url": "https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth"
@@ -128,7 +128,7 @@
                     "description": "PubLayNet via JPLeoRX R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.pth",
                     "size": 176299422,
-                    "url": "https://jpleorx.keybase.pub/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth?dl=1"
+                    "url": "https://drive.google.com/file/d/1IbxaRd82hIrxPT4a1U61_g2vvE3zcRLO/view?usp=sharing"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R101-FPN config",
@@ -140,14 +140,14 @@
                     "description": "PubLayNet via JPLeoRX R101-FPN weights",
                     "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.pth",
                     "size": 252572745,
-                    "url": "https://jpleorx.keybase.pub/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth?dl=1"
+                    "url": "https://drive.google.com/file/d/17MD-FegQtFRNn4GeHqKCLaQZ6FiFrzLg/view?usp=sharing"
                 },
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
                     "name": "DocBank_X101.yaml",
                     "type": "archive",
                     "path_in_archive": "X101/X101.yaml",
-                    "size": 526,
+                    "size": 783884362,
                     "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
                 },
                 {
@@ -155,13 +155,13 @@
                     "name": "DocBank_X101.pth",
                     "type": "archive",
                     "path_in_archive": "X101/model.pth",
-                    "size": 835606605,
+                    "size": 783884362,
                     "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
                 },
                 {
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN config",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.yaml",
-                    "size": 5434,
+                    "size": 330226761,
                     "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml?dl=1"
                 },
                 {
