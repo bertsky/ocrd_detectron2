@@ -1,0 +1,7 @@
+{
+    "model_config": "TableBank_X152_Psarpei.yaml",
+    "model_weights": "TableBank_X152_Psarpei.pth",
+    "categories": [
+        "TableRegion"
+    ]
+}

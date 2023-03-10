@@ -231,7 +231,11 @@ What follows is an **overview** of the **preregistered** models (i.e. available 
 
 ### [TableBank](https://github.com/doc-analysis/TableBank)
 
-R152-FPN [config](https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/All_X152.yaml)|[weights](https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth)|`["TableRegion"]`
+X152-FPN [config](https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/All_X152.yaml)|[weights](https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth)|`["TableRegion"]`
+
+### [TableBank](https://github.com/Psarpei/Multi-Type-TD-TSR)
+
+X152-FPN [config](https://drive.google.com/drive/folders/1COTV5f7dEAA4Txmxy3LVfcNHiPSc4Bmp?usp=sharing)|[weights](https://drive.google.com/drive/folders/1COTV5f7dEAA4Txmxy3LVfcNHiPSc4Bmp?usp=sharing)|`["TableRegion"]`
 
 ### [PubLayNet](https://github.com/hpanwar08/detectron2)
 
@@ -243,9 +247,9 @@ X101-FPN [config](https://github.com/hpanwar08/detectron2/raw/master/configs/DLA
 
 ### [PubLayNet](https://github.com/JPLeoRX/detectron2-publaynet)
 
-R50-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_50_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
+R50-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml)|[weights](https://drive.google.com/file/d/1IbxaRd82hIrxPT4a1U61_g2vvE3zcRLO/view?usp=sharing)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
-R101-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://keybase.pub/jpleorx/detectron2-publaynet/mask_rcnn_R_101_FPN_3x/model_final.pth)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
+R101-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml)|[weights](https://drive.google.com/file/d/17MD-FegQtFRNn4GeHqKCLaQZ6FiFrzLg/view?usp=sharing)|`["TextRegion:paragraph", "TextRegion:heading", "TextRegion:floating", "TableRegion", "ImageRegion"]`
 
 ### [LayoutParser](https://github.com/Layout-Parser/layout-parser/blob/master/src/layoutparser/models/detectron2/catalog.py)
 

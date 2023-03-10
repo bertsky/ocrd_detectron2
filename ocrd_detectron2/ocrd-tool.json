@@ -77,6 +77,18 @@
                     "url": "https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth"
                 },
                 {
+                    "description": "TableBank via Psarpei X152-FPN config",
+                    "name": "TableBank_X152_Psarpei.yaml",
+                    "size": 534,
+                    "url": "https://drive.google.com/uc?id=1WBk6kHHyvyEzoPBsRr2BvFY51zURjd4R"
+                },
+                {
+                    "description": "TableBank via Psarpei X152-FPN weights",
+                    "name": "TableBank_X152_Psarpei.pth",
+                    "size": 1103832675,
+                    "url": "https://drive.google.com/uc?id=11FgFTy0MyVUMGd00T_InEDaarB4qAlP8"
+                },
+                {
                     "description": "PubLayNet via hpanwar08 R50-FPN config",
                     "name": "PubLayNet_R_50_FPN_3x.yaml",
                     "size": 388,
