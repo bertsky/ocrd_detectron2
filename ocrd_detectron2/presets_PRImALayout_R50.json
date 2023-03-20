@@ -1,0 +1,13 @@
+{
+    "model_config": "PRImALayout_R50.yaml",
+    "model_weights": "PRImALayout_R50.pth",
+    "categories": [
+        "Background",
+        "TextRegion",
+        "ImageRegion",
+        "TableRegion",
+        "MathsRegion",
+        "SeparatorRegion",
+        "LineDrawingRegion"
+    ]
+}

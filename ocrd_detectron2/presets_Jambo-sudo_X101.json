@@ -1,0 +1,12 @@
+{
+    "model_config": "Jambo-sudo_X101.yaml",
+    "model_weights": "Jambo-sudo_X101.pth",
+    "categories": [
+        "TextRegion:caption",
+        "ImageRegion",
+        "TextRegion:page-number",
+        "TableRegion",
+        "TextRegion:heading",
+        "TextRegion:paragraph"
+    ]
+}

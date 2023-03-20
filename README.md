@@ -256,7 +256,8 @@ R101-FPN [config](https://github.com/facebookresearch/detectron2/blob/main/confi
 provides different model variants of various depths for multiple datasets:
 - [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet) (Medical Research Papers)
 - [TableBank](https://doc-analysis.github.io/tablebank-page/index.html) (Tables Computer Typesetting)
-- [PRImALayout](https://www.primaresearch.org/dataset/) (Various Computer Typesetting)
+- [PRImALayout](https://www.primaresearch.org/dataset/) (Various Computer Typesetting)  
+  R50-FPN [config](https://www.dropbox.com/s/yc92x97k50abynt/config.yaml?dl=1)|[weights](https://www.dropbox.com/s/h7th27jfv19rxiy/model_final.pth?dl=1)|`["Background","TextRegion","ImageRegion","TableRegion","MathsRegion","SeparatorRegion","LineDrawingRegion"]`
 - [HJDataset](https://dell-research-harvard.github.io/HJDataset/) (Historical Japanese Magazines)
 - [NewspaperNavigator](https://news-navigator.labs.loc.gov/) (Historical Newspapers)
 - [Math Formula Detection](http://transcriptorium.eu/~htrcontest/MathsICDAR2021/)
@@ -265,6 +266,12 @@ See [here](https://github.com/Layout-Parser/layout-parser/blob/master/docs/notes
 and [here](https://github.com/Layout-Parser/layout-parser/blob/main/src/layoutparser/models/detectron2/catalog.py) for the model files.
 You will have to adapt the label map to conform to [PAGE-XML](https://github.com/PRImA-Research-Lab/PAGE-XML)
 region (sub)types accordingly.
+
+### [PubLaynet finetuning](https://github.com/Jambo-sudo/Historical-document-layout-analysis)
+
+(pre-trained on PubLayNet, fine-tuned on a custom, non-public GT corpus of 500 pages 20th century magazines)
+
+X101-FPN [config](https://github.com/Jambo-sudo/Historical-document-layout-analysis/raw/main/historical-document-analysis/DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml)|[weights](https://www.dropbox.com/s/hfhsdpvg7jesd4g/pub_model_final.pth?dl=1)|`["TextRegion:caption","ImageRegion","TextRegion:page-number","TableRegion","TextRegion:heading","TextRegion:paragraph"]`
 
 ### [DocBank](https://github.com/doc-analysis/DocBank/blob/master/MODEL_ZOO.md)
 
