@@ -283,5 +283,22 @@ Proposed mappings:
 
 ## Testing
 
-none yet
+To install Python dependencies and download some models:
 
+    make deps-test
+
+Which is the equivalent of:
+
+    pip install -r requirements-test.txt
+    make models-test
+
+To run the tests, then do:
+
+    make test
+
+You can inspect the results under `test/assets/*/data` under various new `OCR-D-SEG-*` fileGrps.
+(Again, it is recommended to use [OCR-D Browser](https://github.com/hnesk/browse-ocrd).)
+
+Finally, to remove the test data, do:
+
+    make clean

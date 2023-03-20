@@ -7,8 +7,11 @@ help:
 	@echo
 	@echo "  Targets"
 	@echo
-	@echo "    deps    Install only Python deps via pip"
-	@echo "    install Install full Python package via pip"
+	@echo "    deps      Install only Python dependencies via pip"
+	@echo "    install   Install full Python package via pip"
+	@echo "    deps-test Install Python dependencies for tests via pip and models via resmgr"
+	@echo "    test      Run regression tests"
+	@echo "    clean     Remove symlinks in test/assets"
 	@echo
 	@echo "  Variables"
 	@echo "    PYTHON"
@@ -59,4 +62,66 @@ deps:
 install: deps
 	$(PIP) install .
 
-.PHONY: help deps install
+# Install testing python deps via pip
+deps-test: models-test
+	$(PIP) install -r requirements-test.txt
+
+
+# Clone OCR-D/assets to ./repo/assets
+repo/assets:
+	@mkdir -p $(@D)
+	git clone https://github.com/OCR-D/assets $@
+
+# Setup test data
+test/assets: repo/assets
+	@mkdir -p $@
+	cp -r -t $@ repo/assets/data/*
+
+# Remove test data copies and intermediate results
+clean:
+	-$(RM) -r test/assets
+
+#MODELDIR := $(or $(XDG_DATA_HOME),$(HOME)/.local/share)/ocrd-resources/ocrd-detectron2-segment
+
+TESTMODEL := TableBank_X152_Psarpei
+TESTMODEL += DocBank_X101
+TESTMODEL += Jambo-sudo_X101
+TESTMODEL += PRImALayout_R50
+
+TESTBED := gutachten
+TESTBED += column-samples
+
+models-test: $(TESTMODEL:=.yaml)
+models-test: $(TESTMODEL:=.pth)
+
+%.yaml:
+	ocrd resmgr download ocrd-detectron2-segment $@
+%.pth:
+	ocrd resmgr download ocrd-detectron2-segment $@
+
+test: $(patsubst %,test/assets/%/data/test-result,$(TESTBED))
+	@cat $^
+
+count-regions := python -c "import sys; from ocrd_models.ocrd_page import parse; print('%s: %d' % (sys.argv[1], len(parse(sys.argv[1], silence=True).get_Page().get_AllRegions())))"
+
+%/test-result: test/assets
+	for MODEL in $(TESTMODEL); do \
+		$(MAKE) MODEL=$$MODEL $*/OCR-D-SEG-$$MODEL; \
+	done
+	@shopt -s nullglob; { for file in $(TESTMODEL:%=$*/OCR-D-SEG-%/*.xml); do \
+		$(count-regions) $$file; \
+	done; } > $@
+
+%/OCR-D-BIN: 
+	cd $(@D) && ocrd-skimage-binarize -I `grp=(*IMG); basename $$grp` -O $(@F)
+
+# workaround for OCR-D/core#930:
+%/OCR-D-SEG-$(MODEL): PRESET := $(shell ocrd-detectron2-segment -D)/presets_$(MODEL).json
+
+%/OCR-D-SEG-$(MODEL): %/OCR-D-BIN
+	cd $(@D) && ocrd-detectron2-segment -I $(<F) -O $(@F) -P debug_img instance_colors_only -P postprocessing only-nms -P min_confidence 0.3 -p $(PRESET)
+
+# make cannot delete directories, so keep them
+.PRECIOUS .SECONDARY: %/OCR-D-BIN %/OCR-D-SEG-$(MODEL)
+
+.PHONY: help deps install deps-test models-test test clean
