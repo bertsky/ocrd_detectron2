@@ -30,9 +30,26 @@ jobs:
       run: make deps
     - name: Install package
       run: make install
+    - name: Check model artifacts
+      uses: actions/xSAVIKx/artifact-exists-action@v0
+      id: model_artifacts
+      with:
+        name: detectron-models
+    - name: Download model artifacts
+      if: steps.model_artifacts.outputs.exists
+      uses: actions/download-artifact@v3
+      with:
+        name: detectron-models
+        path: /home/runner/.local/share/ocrd-resources/ocrd-detectron2-segment/
     - name: Download models
       run: make deps-test
-    # cache result (by uploading+downloading as build artifact)?
+    - name: Upload model artifacts
+      if: not steps.model_artifacts.outputs.exists
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: detectron-models
+        path: /home/runner/.local/share/ocrd-resources/ocrd-detectron2-segment/*
+        if-no-files-found: error
     - name: Run tests
       run: make test
     - name: Upload test results
