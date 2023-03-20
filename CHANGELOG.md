@@ -73,6 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.3]: ../../compare/v0.1.2...v0.1.3
 [0.1.4]: ../../compare/v0.1.3...v0.1.4
 [0.1.5]: ../../compare/v0.1.4...v0.1.5
-[0.1.5]: ../../compare/v0.1.5...v0.1.6
-[0.1.6]: ../../compare/v0.1.6...v0.1.7
+[0.1.6]: ../../compare/v0.1.5...v0.1.6
+[0.1.7]: ../../compare/v0.1.6...v0.1.7
 [unreleased]: ../../compare/v0.1.7...master

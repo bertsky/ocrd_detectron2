@@ -116,7 +116,7 @@ count-regions := python -c "import sys; from ocrd_models.ocrd_page import parse;
 	cd $(@D) && ocrd-skimage-binarize -I `grp=(*IMG); basename $$grp` -O $(@F)
 
 # workaround for OCR-D/core#930:
-%/OCR-D-SEG-$(MODEL): PRESET := $(shell ocrd-detectron2-segment -D)/presets_$(MODEL).json
+%/OCR-D-SEG-$(MODEL): PRESET = $(shell ocrd-detectron2-segment -D)/presets_$(MODEL).json
 
 %/OCR-D-SEG-$(MODEL): %/OCR-D-BIN
 	cd $(@D) && ocrd-detectron2-segment -I $(<F) -O $(@F) -P debug_img instance_colors_only -P postprocessing only-nms -P min_confidence 0.3 -p $(PRESET)

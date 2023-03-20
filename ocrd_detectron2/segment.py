@@ -119,10 +119,14 @@ class Detectron2Segment(Processor):
                     for line in temp_config_file:
                         if fileinput.isfirstline():
                             PREFIXES = ['/content/',
+                                        '../../configs/',
                                         '../configs/',
                                         '../']
                             line = next((line.replace(pref, '') for pref in PREFIXES
                                          if line.startswith('_BASE_: "' + pref)), line)
+                        if os.path.basename(model_config) == 'Jambo-sudo_X101.yaml' and 'NUM_CLASSES: 5' in line:
+                            # workaround for Jambo-sudo/Historical-document-layout-analysis#1
+                            line = line.replace('NUM_CLASSES: 5', 'NUM_CLASSES: 6')
                         print(line, end='')
                 cfg = get_cfg()
                 cfg.merge_from_file(temp_config)
