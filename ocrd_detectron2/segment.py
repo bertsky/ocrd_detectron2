@@ -395,7 +395,7 @@ class Detectron2Segment(Processor):
                     boxes = boxes.to(cpu).tensor.numpy()
                 assert boxes.shape[1] == 4 # and not 5 (rotated boxes)
                 assert boxes.shape[0], "prediction without instances"
-                masks = np.zeros((len(boxes), height, width), np.bool)
+                masks = np.zeros((len(boxes), height, width), bool)
                 for i, (x1, y1, x2, y2) in enumerate(boxes):
                     masks[i,
                           math.floor(y1):math.ceil(y2),
@@ -511,7 +511,7 @@ def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_conf
     """
     LOG = getLogger('processor.Detectron2Segment')
     # apply IoU-based NMS across classes
-    assert masks.dtype == np.bool
+    assert masks.dtype == bool
     instances = np.arange(len(masks))
     instances_i, instances_j = np.meshgrid(instances, instances, indexing='ij')
     combinations = list(zip(*np.where(instances_i != instances_j)))
@@ -523,12 +523,12 @@ def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_conf
                  initargs=(shared_masks, masks.shape)) as pool:
         # multiprocessing for different combinations of array slices (pure)
         overlapping_combinations = pool.starmap(overlapmasks, combinations)
-    overlaps = np.zeros((len(masks), len(masks)), np.bool)
+    overlaps = np.zeros((len(masks), len(masks)), bool)
     for (i, j), overlapping in zip(combinations, overlapping_combinations):
         if overlapping:
             overlaps[i, j] = True
     # find best-scoring instance per class
-    bad = np.zeros_like(instances, np.bool)
+    bad = np.zeros_like(instances, bool)
     for i in np.argsort(-scores):
         score = scores[i]
         mask = masks[i]
