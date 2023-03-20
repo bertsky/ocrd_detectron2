@@ -44,7 +44,7 @@ jobs:
     - name: Download models
       run: make deps-test
     - name: Upload model artifacts
-      if: not steps.model_artifacts.outputs.exists
+      if: ! steps.model_artifacts.outputs.exists
       uses: actions/upload-artifact@v3.1.2
       with:
         name: detectron-models
