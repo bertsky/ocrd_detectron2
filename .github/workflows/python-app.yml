@@ -31,7 +31,7 @@ jobs:
     - name: Install package
       run: make install
     - name: Check model artifacts
-      uses: actions/xSAVIKx/artifact-exists-action@v0
+      uses: xSAVIKx/artifact-exists-action@v0
       id: model_artifacts
       with:
         name: detectron-models
