@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2023-03-20
+### Fixed
+- adapt to Numpy 1.24 (no `np.bool`)
+
+### Added
+- model by Jambo-sudo (PubLayNet+custom GT)
+- model by LayoutParser (PRImA Layout GT)
+- CLI tests
+
 ## [0.1.6] - 2023-03-10
 ### Fixed
 - avoid colon in generated region IDs
@@ -65,4 +74,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.4]: ../../compare/v0.1.3...v0.1.4
 [0.1.5]: ../../compare/v0.1.4...v0.1.5
 [0.1.5]: ../../compare/v0.1.5...v0.1.6
-[unreleased]: ../../compare/v0.1.6...master
+[0.1.6]: ../../compare/v0.1.6...v0.1.7
+[unreleased]: ../../compare/v0.1.7...master
