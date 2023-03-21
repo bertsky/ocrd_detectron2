@@ -36,7 +36,7 @@ jobs:
       with:
         name: detectron-models
     - name: Download model artifacts
-      if: steps.model_artifacts.outputs.exists
+      if: steps.model_artifacts.outputs.exists == true
       uses: actions/download-artifact@v3
       with:
         name: detectron-models
