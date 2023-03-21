@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- workarounds for broken models (DocBank_X101, Jambo-sudo_X101)
+
+### Added
+- CI for CLI tests (with cached models and stored result artifacts)
 
 ## [0.1.7] - 2023-03-20
 ### Fixed

@@ -1,4 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/ocrd-detectron2.svg)](https://badge.fury.io/py/ocrd-detectron2)
+[![Python test](https://github.com/bertsky/ocrd_detectron2/actions/workflows/python-app.yml/badge.svg)](https://github.com/bertsky/ocrd_detectron2/actions/workflows/python-app.yml)
 
 # ocrd_detectron2
 
