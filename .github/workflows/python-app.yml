@@ -73,6 +73,6 @@ jobs:
       with:
         commit_message: new test results from ${{ github.sha }}
         branch: gh-pages
-        file_pattern: test-results.md
+        # file_pattern: test-results*
         repository: .
   
