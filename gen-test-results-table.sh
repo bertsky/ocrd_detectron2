@@ -1,6 +1,5 @@
 #!/bin/bash
-mkdir -p test-results
-unzip test-results.zip -d test-results
+# assumes the result artifact from make test has been downloaded already
 find test-results/ -name test-result | {
     echo ---;
     echo layout: post;
