@@ -25,7 +25,7 @@ find test-results/ -name test-result | {
                     echo '<tr>';
                     echo "<th>$grp</th>";
                 fi;
-                echo "<td><img title=\"$num regions\" src=\"${path%.xml}.IMG-DEBUG.png\"/></td>";
+                echo "<td><img title=\"$num regions\" src=\"test-results/${path%.xml}.IMG-DEBUG.png\"/></td>";
                 lastgrp="$grp";
             done;
             echo "</tr></table>";
