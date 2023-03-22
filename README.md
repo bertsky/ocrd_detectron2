@@ -16,6 +16,7 @@
      * [LayoutParser](#layoutparser)
      * [DocBank](#docbank)
   * [Testing](#testing)
+     * [Test results](#test-results)
 
 ## Introduction
 
@@ -303,3 +304,7 @@ You can inspect the results under `test/assets/*/data` under various new `OCR-D-
 Finally, to remove the test data, do:
 
     make clean
+
+### Test results
+
+These tests are integrated as a [Github Action](https://github.com/bertsky/ocrd_detectron2/actions/workflows/python-app.yml). Its results can be viewed [here](https://bertsky.github.io/ocrd_detectron2/test-results).
