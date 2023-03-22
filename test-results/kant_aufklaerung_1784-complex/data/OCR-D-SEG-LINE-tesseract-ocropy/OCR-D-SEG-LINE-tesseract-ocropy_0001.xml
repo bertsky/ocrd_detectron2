@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd">
+    <pc:Metadata>
+        <pc:Creator>OCR-D/core 2.7.1</pc:Creator>
+        <pc:Created>2020-05-31T20:46:32</pc:Created>
+        <pc:LastChange>2020-05-31T20:47:03</pc:LastChange>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-olena-binarize">
+            <pc:Labels>
+                <pc:Label value="sauvola-ms-split" type="impl"/>
+                <pc:Label value="0.34" type="k"/>
+                <pc:Label value="101" type="win-size"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/cropping" value="ocrd-anybaseocr-crop">
+            <pc:Labels>
+                <pc:Label value="True" type="force"/>
+                <pc:Label value="0.04" type="colSeparator"/>
+                <pc:Label value="0.3" type="maxRularArea"/>
+                <pc:Label value="0.05" type="minArea"/>
+                <pc:Label value="0.01" type="minRularArea"/>
+                <pc:Label value="0.75" type="positionBelow"/>
+                <pc:Label value="0.4" type="positionLeft"/>
+                <pc:Label value="0.6" type="positionRight"/>
+                <pc:Label value="10.0" type="rularRatioMax"/>
+                <pc:Label value="3.0" type="rularRatioMin"/>
+                <pc:Label value="0.95" type="rularWidth"/>
+                <pc:Label value="page" type="operation_level"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-olena-binarize">
+            <pc:Labels>
+                <pc:Label value="sauvola-ms-split" type="impl"/>
+                <pc:Label value="0.34" type="k"/>
+                <pc:Label value="101" type="win-size"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/despeckling" value="ocrd-cis-ocropy-denoise">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="page" type="level-of-operation"/>
+                <pc:Label value="3.0" type="noise_maxsize"/>
+                <pc:Label value="-1" type="dpi"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/deskewing" value="ocrd-tesserocr-deskew">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="page" type="operation_level"/>
+                <pc:Label value="-1" type="dpi"/>
+                <pc:Label value="1.5" type="min_orientation_confidence"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/deskewing" value="ocrd-cis-ocropy-deskew">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="page" type="level-of-operation"/>
+                <pc:Label value="5" type="maxskew"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-tesserocr-segment-region">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="5" type="padding"/>
+                <pc:Label value="False" type="find_tables"/>
+                <pc:Label value="-1" type="dpi"/>
+                <pc:Label value="True" type="overwrite_regions"/>
+                <pc:Label value="False" type="crop_polygons"/>
+                <pc:Label value="False" type="sparse_text"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-segment-repair">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="True" type="plausibilize"/>
+                <pc:Label value="0.7" type="plausibilize_merge_min_overlap"/>
+                <pc:Label value="False" type="sanitize"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-cis-ocropy-clip">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="region" type="level-of-operation"/>
+                <pc:Label value="-1" type="dpi"/>
+                <pc:Label value="0.7" type="min_fraction"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/deskewing" value="ocrd-tesserocr-deskew">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="region" type="operation_level"/>
+                <pc:Label value="-1" type="dpi"/>
+                <pc:Label value="1.5" type="min_orientation_confidence"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-cis-ocropy-segment">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="2.4" type="spread"/>
+                <pc:Label value="-1" type="dpi"/>
+                <pc:Label value="region" type="level-of-operation"/>
+                <pc:Label value="20" type="maxcolseps"/>
+                <pc:Label value="20" type="maxseps"/>
+                <pc:Label value="10" type="maximages"/>
+                <pc:Label value="4" type="csminheight"/>
+                <pc:Label value="10" type="hlminwidth"/>
+                <pc:Label value="0.01" type="gap_height"/>
+                <pc:Label value="1.5" type="gap_width"/>
+                <pc:Label value="True" type="overwrite_separators"/>
+                <pc:Label value="True" type="overwrite_regions"/>
+                <pc:Label value="True" type="overwrite_lines"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+    </pc:Metadata>
+    <pc:Page imageFilename="OCR-D-IMG/INPUT_0017.tif" imageWidth="1457" imageHeight="2083" orientation="0." type="content" primaryScript="Latf - Latin (Fraktur variant)" readingDirection="left-to-right" textLineOrder="top-to-bottom">
+        <pc:AlternativeImage filename="OCR-D-IMG-BIN/OCR-D-IMG-BINPAGE-sauvola_0001-BIN_sauvola-ms-split.png" comments="binarized"/>
+        <pc:AlternativeImage filename="OCR-D-IMG-CROP/OCR-D-IMG-CROP_0001.png" comments="binarized,cropped"/>
+        <pc:AlternativeImage filename="OCR-D-IMG-BIN/INPUT_0017-BIN_sauvola-ms-split.png" comments="cropped,binarized"/>
+        <pc:AlternativeImage filename="OCR-D-IMG-DESPECK/OCR-D-IMG-DESPECK_0001.png" comments="cropped,binarized,despeckled"/>
+        <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001.png" comments="cropped,binarized,despeckled,deskewed"/>
+        <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001.png" comments="cropped,binarized,despeckled,deskewed"/>
+        <pc:Border>
+            <pc:Coords points="107,231 926,231 926,1785 107,1785"/>
+        </pc:Border>
+        <pc:ReadingOrder>
+            <pc:OrderedGroup id="reading-order">
+                <pc:RegionRefIndexed index="0" regionRef="region0002"/>
+                <pc:RegionRefIndexed index="1" regionRef="region0003"/>
+                <pc:RegionRefIndexed index="2" regionRef="region0004"/>
+                <pc:RegionRefIndexed index="3" regionRef="region0005"/>
+            </pc:OrderedGroup>
+        </pc:ReadingOrder>
+        <pc:TextRegion id="region0002" orientation="0." readingDirection="left-to-right" textLineOrder="top-to-bottom">
+            <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001_region0002.png" comments="binarized,despeckled"/>
+            <pc:Coords points="109,361 924,361 924,445 109,445"/>
+            <pc:TextLine id="region0002_line0000">
+                <pc:Coords points="322,361 315,372 306,373 282,372 276,362 245,362 228,371 144,367 138,364 109,367 109,438 144,440 203,436 337,436 344,444 357,444 364,436 378,436 383,444 401,444 409,435 644,434 721,435 727,444 741,444 749,435 759,435 764,444 780,444 788,435 844,435 851,443 864,443 872,435 923,435 923,367 903,367 897,363 887,364 884,361 855,361 851,366 847,361 828,361 824,369 807,370 787,369 784,361 726,361 721,367 715,363 699,363 693,368 669,365 663,370 621,372 525,361 489,361 483,364 419,369 411,369 405,361 385,361 376,365 371,361 345,361 341,365 336,361"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0003" orientation="0." readingDirection="left-to-right" textLineOrder="top-to-bottom">
+            <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001_region0003.png" comments="binarized,despeckled"/>
+            <pc:Coords points="246,477 784,477 784,626 246,626"/>
+            <pc:TextLine id="region0003_line0000">
+                <pc:Coords points="412,477 310,479 305,484 305,526 310,531 456,533 461,536 475,536 479,533 577,534 582,538 596,538 601,534 715,534 720,529 720,493 715,488 612,485 603,484 597,479 574,482 542,477"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0003_line0001">
+                <pc:Coords points="488,560 482,564 443,561 435,564 376,568 367,563 353,563 337,568 330,562 319,562 312,567 246,564 246,625 283,625 289,621 338,619 344,619 348,625 363,625 367,619 372,618 783,618 783,570 735,570 727,561 715,561 702,570 693,570 609,562 505,563 501,560"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0004" orientation="0." readingDirection="left-to-right" textLineOrder="top-to-bottom" primaryScript="Latf - Latin (Fraktur variant)">
+            <pc:AlternativeImage filename="OCR-D-IMG-CLIP/OCR-D-IMG-CLIP_0001_region0004.png" comments="binarized,despeckled,clipped"/>
+            <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001_region0004.png" comments="binarized,despeckled,clipped"/>
+            <pc:Coords points="170,744 867,744 867,1066 170,1066"/>
+            <pc:TextLine id="region0004_line0000">
+                <pc:Coords points="819,777 814,780 766,783 763,787 763,796 768,802 770,812 840,815 847,822 866,822 866,780 831,780"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0001">
+                <pc:Coords points="734,792 726,796 724,803 683,801 677,795 661,794 650,801 586,803 582,800 571,800 555,805 503,808 465,807 461,804 451,804 447,807 325,807 252,798 170,797 170,860 429,858 511,861 517,866 533,867 542,861 620,858 652,860 664,867 675,867 688,860 729,860 735,865 752,865 761,860 842,859 846,856 847,823 840,816 771,814 763,797 756,797 751,802 747,794"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0002">
+                <pc:Coords points="566,877 557,881 518,885 488,884 481,881 398,881 384,885 365,882 357,887 327,889 315,885 301,885 296,889 289,889 258,882 213,878 170,879 170,942 384,941 391,949 401,949 408,941 551,939 556,947 566,948 574,939 670,938 726,939 731,944 741,944 748,940 793,942 804,948 817,948 827,942 853,942 866,938 866,878 823,879 762,888 697,888 679,886 671,877 658,877 651,882 581,880"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0003">
+                <pc:Coords points="614,970 546,976 482,976 476,971 463,972 457,976 373,971 179,972 174,977 174,1019 179,1024 279,1023 293,1026 297,1023 385,1022 399,1013 434,1012 503,1015 510,1023 521,1025 612,1022 661,1022 665,1025 832,1024 843,1023 848,1018 848,977 843,972 716,970 697,974"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0004">
+                <pc:Coords points="434,1013 399,1014 389,1026 355,1027 352,1031 353,1059 357,1062 423,1065 505,1063 509,1060 510,1024 503,1016"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0005" orientation="0.07870294912496" readingDirection="left-to-right" textLineOrder="top-to-bottom" primaryScript="Latf - Latin (Fraktur variant)">
+            <pc:AlternativeImage filename="OCR-D-IMG-CLIP/OCR-D-IMG-CLIP_0001_region0005.png" comments="binarized,despeckled,clipped"/>
+            <pc:AlternativeImage filename="OCR-D-IMG-DESKEW/OCR-D-IMG-DESKEW_0001_region0005.png" comments="binarized,despeckled,clipped,deskewed"/>
+            <pc:Coords points="107,1052 926,1052 926,1785 107,1785"/>
+            <pc:TextLine id="region0005_line0000">
+                <pc:Coords points="107,1053 107,1090 115,1094 123,1093 126,1097 156,1095 165,1087 192,1086 201,1078 201,1057 198,1053"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0001">
+                <pc:Coords points="266,1075 202,1078 192,1087 165,1088 152,1097 126,1098 123,1094 115,1095 107,1091 107,1121 121,1122 123,1116 128,1113 133,1123 194,1126 200,1132 211,1132 217,1126 309,1124 349,1126 373,1132 420,1126 438,1128 457,1125 617,1124 631,1130 641,1130 651,1125 683,1125 703,1130 717,1126 759,1123 925,1123 925,1084 901,1083 864,1076 814,1076 782,1082 755,1081 750,1077 740,1077 734,1081 635,1085 608,1083 584,1077 538,1077 512,1083 437,1078 414,1079 397,1085 340,1086 297,1084 284,1075"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0002">
+                <pc:Coords points="122,1124 107,1126 107,1173 127,1175 140,1172 154,1177 175,1172 292,1172 302,1176 313,1172 393,1170 409,1172 413,1177 431,1172 472,1171 474,1174 493,1171 553,1171 572,1172 579,1176 603,1172 615,1176 633,1172 706,1170 925,1170 925,1131 889,1130 883,1123 867,1123 860,1130 774,1124 724,1130 713,1128 703,1131 675,1126 651,1126 645,1130 631,1131 617,1125 583,1125 576,1129 532,1131 497,1125 457,1126 438,1129 420,1127 385,1133 348,1133 337,1127 326,1127 322,1130 319,1126 309,1125 297,1127 292,1132 250,1134 179,1132 163,1129 158,1125"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0003">
+                <pc:Coords points="380,1171 375,1173 373,1179 313,1173 302,1177 292,1173 238,1176 221,1176 218,1173 193,1176 190,1173 175,1173 154,1178 140,1173 127,1176 112,1173 107,1174 107,1217 130,1217 162,1223 184,1218 425,1219 451,1221 462,1226 478,1224 483,1220 492,1219 565,1217 579,1217 588,1222 598,1218 763,1216 848,1218 853,1223 867,1223 877,1219 900,1220 904,1223 925,1220 925,1178 860,1177 855,1171 840,1171 832,1177 769,1176 741,1171 695,1172 673,1177 646,1176 642,1173 615,1177 603,1173 592,1173 584,1177 539,1177 530,1176 525,1172 514,1172 509,1176 491,1173 463,1178 457,1173 446,1173 440,1178 432,1174 417,1178 401,1178 393,1171"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0004">
+                <pc:Coords points="119,1218 107,1219 107,1266 120,1271 140,1265 150,1270 159,1269 164,1265 189,1269 194,1265 349,1268 357,1265 435,1264 489,1264 494,1269 506,1268 510,1264 627,1264 668,1269 678,1265 726,1262 925,1263 925,1224 853,1224 848,1219 837,1219 825,1224 788,1224 780,1221 733,1223 729,1218 716,1218 712,1223 702,1224 645,1224 609,1222 605,1219 588,1223 579,1218 565,1218 522,1225 506,1225 501,1220 492,1220 486,1221 483,1225 462,1227 380,1225 369,1224 364,1220 336,1223 307,1219 263,1220 241,1225 220,1225 214,1220 201,1222 184,1219 162,1224"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0005">
+                <pc:Coords points="754,1263 744,1268 739,1264 728,1264 723,1268 719,1265 709,1265 705,1268 678,1266 668,1270 646,1267 616,1268 607,1265 586,1265 577,1268 514,1265 508,1269 487,1271 458,1270 446,1265 357,1266 349,1269 316,1267 296,1272 226,1271 221,1267 179,1270 175,1266 164,1266 156,1271 108,1271 107,1314 314,1310 350,1314 424,1312 438,1315 442,1312 463,1311 502,1312 513,1317 525,1314 550,1317 589,1310 629,1310 668,1312 671,1316 681,1317 690,1312 731,1309 748,1310 758,1315 767,1311 925,1310 925,1270 895,1269 885,1263 874,1263 866,1269"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0006">
+                <pc:Coords points="731,1310 719,1314 705,1311 697,1316 681,1318 640,1316 629,1311 607,1311 601,1314 589,1311 575,1316 550,1318 536,1315 513,1318 494,1312 482,1317 472,1317 463,1312 438,1316 424,1313 369,1313 362,1317 349,1315 321,1318 195,1316 182,1312 166,1312 160,1315 107,1315 107,1357 159,1361 166,1358 218,1361 233,1357 447,1359 458,1363 462,1360 487,1359 497,1363 507,1359 525,1358 574,1358 589,1362 594,1358 639,1356 715,1356 735,1360 750,1356 925,1356 925,1317 855,1310 814,1312 795,1316 758,1316 743,1315 739,1311"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0007">
+                <pc:Coords points="233,1358 218,1362 207,1360 194,1363 181,1362 177,1359 163,1362 147,1360 107,1363 107,1407 207,1402 245,1405 273,1403 290,1405 294,1409 305,1409 311,1405 369,1405 409,1409 447,1405 634,1403 692,1404 703,1408 720,1402 735,1406 767,1404 777,1409 789,1405 818,1405 832,1410 844,1410 860,1404 925,1403 925,1362 915,1357 889,1363 836,1365 799,1363 793,1358 765,1361 759,1357 740,1358 735,1361 726,1358 698,1357 692,1362 673,1361 662,1357 639,1357 634,1360 612,1362 589,1363 574,1360 570,1363 528,1365 500,1365 490,1361 484,1361 479,1365 460,1366 447,1360 439,1360 432,1365 371,1365 366,1361 347,1365 321,1363 314,1359 301,1359 296,1362 274,1358"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0008">
+                <pc:Coords points="195,1403 144,1408 107,1408 108,1449 154,1449 173,1452 256,1451 260,1456 272,1456 279,1449 324,1450 362,1452 373,1458 386,1454 430,1455 441,1458 455,1453 476,1455 484,1451 500,1451 518,1456 524,1451 539,1450 653,1452 730,1448 800,1450 805,1453 822,1454 837,1447 854,1449 858,1445 870,1442 882,1442 885,1446 893,1446 900,1450 926,1449 923,1406 877,1409 872,1405 860,1405 852,1410 832,1411 777,1410 735,1407 720,1403 703,1409 654,1409 648,1404 634,1404 626,1409 556,1411 548,1410 544,1406 501,1408 480,1405 384,1411 359,1410 350,1406 282,1410 273,1404 249,1407"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0009">
+                <pc:Coords points="870,1443 858,1446 854,1450 837,1448 822,1455 801,1452 791,1454 784,1450 756,1452 747,1449 658,1453 632,1451 629,1455 587,1457 511,1457 500,1452 484,1452 476,1456 452,1455 441,1459 373,1459 362,1453 335,1453 323,1456 318,1451 304,1451 293,1456 287,1450 279,1450 272,1457 179,1456 165,1452 150,1455 108,1455 108,1495 242,1498 249,1503 262,1502 267,1498 306,1496 471,1495 507,1495 509,1498 525,1502 532,1500 536,1495 644,1492 727,1496 734,1501 747,1501 752,1497 799,1495 807,1491 816,1491 824,1497 844,1496 851,1501 858,1501 865,1496 918,1500 926,1498 925,1450 911,1449 901,1452 893,1447 885,1447 882,1443"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0010">
+                <pc:Coords points="807,1492 798,1498 765,1502 734,1502 727,1497 700,1497 695,1501 688,1501 682,1496 670,1496 663,1501 614,1504 575,1504 570,1500 561,1500 556,1504 534,1504 511,1499 498,1501 465,1497 423,1498 398,1504 330,1504 324,1498 313,1497 305,1504 287,1504 282,1501 248,1504 171,1500 167,1497 149,1499 143,1496 114,1496 108,1498 108,1541 154,1543 165,1547 170,1547 174,1543 270,1542 314,1545 329,1550 341,1550 348,1546 398,1543 496,1544 500,1548 513,1545 587,1543 616,1545 622,1550 634,1550 641,1545 689,1543 805,1542 840,1544 846,1549 858,1549 863,1544 926,1543 926,1502 904,1498 869,1497 851,1502 844,1497 824,1498 816,1492"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0011">
+                <pc:Coords points="114,1541 108,1545 108,1591 113,1595 123,1595 129,1589 153,1588 273,1591 279,1596 301,1592 316,1597 324,1597 331,1592 377,1591 382,1595 392,1595 397,1591 439,1591 512,1592 517,1597 525,1597 532,1592 614,1591 621,1592 627,1597 640,1597 646,1594 697,1594 707,1591 710,1587 710,1557 705,1552 601,1550 571,1545 513,1546 500,1549 496,1545 396,1549 391,1545 378,1545 372,1549 329,1551 305,1545 220,1543 165,1548 155,1545 141,1547 131,1542"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0012">
+                <pc:Coords points="123,1596 115,1597 110,1602 110,1632 118,1638 122,1646 137,1644 145,1648 196,1648 240,1644 343,1644 366,1645 390,1651 398,1651 405,1647 429,1648 444,1652 490,1645 513,1645 520,1649 534,1646 613,1645 682,1646 687,1651 696,1651 702,1646 747,1645 770,1646 781,1651 792,1646 926,1645 926,1605 749,1604 741,1597 728,1597 719,1603 711,1603 705,1597 693,1597 686,1601 644,1599 639,1602 627,1602 623,1599 613,1599 608,1603 561,1601 556,1604 521,1600 516,1604 499,1605 493,1600 485,1600 479,1605 467,1607 461,1600 453,1600 439,1606 400,1598 345,1605 319,1605 297,1604 291,1599 266,1603 261,1598 249,1598 225,1603 197,1596"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0013">
+                <pc:Coords points="129,1645 120,1650 108,1650 108,1687 153,1688 174,1694 201,1691 217,1696 231,1695 237,1691 263,1691 270,1695 286,1691 320,1692 356,1694 360,1697 390,1693 460,1692 624,1693 651,1698 656,1694 688,1692 743,1694 815,1691 832,1698 840,1696 843,1692 926,1692 926,1650 916,1650 909,1645 877,1649 828,1646 824,1649 781,1652 760,1651 755,1647 724,1647 720,1651 637,1653 606,1651 602,1646 566,1646 560,1651 537,1647 520,1650 513,1646 490,1646 438,1653 429,1649 419,1652 414,1648 405,1648 398,1652 390,1652 366,1646 343,1645 313,1646 297,1650 292,1650 289,1646 270,1646 266,1652 218,1652 181,1647 145,1649"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0014">
+                <pc:Coords points="108,1688 108,1737 203,1736 278,1740 287,1744 353,1737 423,1741 436,1738 517,1740 577,1738 634,1741 642,1742 649,1747 670,1742 693,1743 707,1738 745,1739 771,1744 819,1743 862,1738 882,1742 889,1738 926,1738 926,1697 891,1697 885,1692 832,1699 821,1698 815,1692 800,1692 792,1699 745,1698 743,1695 710,1697 707,1693 688,1693 682,1697 659,1699 613,1698 588,1694 552,1694 523,1698 494,1695 490,1698 467,1699 443,1698 439,1693 421,1693 415,1698 370,1699 327,1696 320,1693 278,1697 263,1692 237,1692 225,1697 184,1696 153,1689"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0005_line0015">
+                <pc:Coords points="148,1736 108,1738 108,1782 322,1785 926,1782 926,1744 882,1743 870,1739 862,1742 822,1742 803,1745 707,1739 693,1744 670,1743 649,1752 645,1747 633,1743 577,1739 517,1741 436,1739 431,1742 372,1742 367,1738 353,1738 320,1744 287,1745 248,1739"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:SeparatorRegion id="region0000">
+            <pc:Coords points="118,231 879,231 879,247 118,247"/>
+        </pc:SeparatorRegion>
+        <pc:SeparatorRegion id="region0001">
+            <pc:Coords points="123,241 879,241 879,258 123,258"/>
+        </pc:SeparatorRegion>
+    </pc:Page>
+</pc:PcGts>

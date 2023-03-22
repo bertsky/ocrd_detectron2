@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-BIN-bengel_abriss01_1751-0007">
+    <pc:Metadata>
+        <pc:Creator>OCR-D/core 2.47.4</pc:Creator>
+        <pc:Created>2023-03-22T02:44:15.320203</pc:Created>
+        <pc:LastChange>2023-03-22T02:44:15.320203</pc:LastChange>
+        <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="page" type="level-of-operation"/>
+                <pc:Label value="0" type="dpi"/>
+                <pc:Label value="sauvola" type="method"/>
+                <pc:Label value="0" type="window_size"/>
+                <pc:Label value="0.34" type="k"/>
+            </pc:Labels>
+            <pc:Labels externalModel="ocrd-tool" externalId="version">
+                <pc:Label value="0.1.7" type="ocrd-skimage-binarize"/>
+                <pc:Label value="2.47.4" type="ocrd/core"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="TableBank_X152_Psarpei.yaml" type="model_config"/>
+                <pc:Label value="TableBank_X152_Psarpei.pth" type="model_weights"/>
+                <pc:Label value="['TableRegion']" type="categories"/>
+                <pc:Label value="instance_colors_only" type="debug_img"/>
+                <pc:Label value="only-nms" type="postprocessing"/>
+                <pc:Label value="0.3" type="min_confidence"/>
+                <pc:Label value="page" type="operation_level"/>
+                <pc:Label value="cuda" type="device"/>
+            </pc:Labels>
+            <pc:Labels externalModel="ocrd-tool" externalId="version">
+                <pc:Label value="0.1.7" type="ocrd-detectron2-segment"/>
+                <pc:Label value="2.47.4" type="ocrd/core"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+    </pc:Metadata>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-bengel_abriss01_1751-0007.jpg" imageWidth="1600" imageHeight="2867" custom="coords=[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]">
+        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-bengel_abriss01_1751-0007.IMG-BIN.png" comments=",binarized"/>
+    </pc:Page>
+</pc:PcGts>
