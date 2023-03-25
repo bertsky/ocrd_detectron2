@@ -4,7 +4,7 @@ PYTHONIOENCODING=utf8
 SHELL = /bin/bash
 
 # Docker container tag
-DOCKER_TAG = 'bertsky/detectron2'
+DOCKER_TAG = 'bertsky/ocrd_detectron2'
 
 help:
 	@echo
