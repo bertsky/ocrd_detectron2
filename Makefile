@@ -3,6 +3,9 @@ PIP = pip3
 PYTHONIOENCODING=utf8
 SHELL = /bin/bash
 
+# Docker container tag
+DOCKER_TAG = 'bertsky/detectron2'
+
 help:
 	@echo
 	@echo "  Targets"
@@ -12,10 +15,12 @@ help:
 	@echo "    deps-test Install Python dependencies for tests via pip and models via resmgr"
 	@echo "    test      Run regression tests"
 	@echo "    clean     Remove symlinks in test/assets"
+	@echo "    docker    Build Docker image"
 	@echo
 	@echo "  Variables"
 	@echo "    PYTHON"
 	@echo "    CUDA_VERSION  override detection of CUDA runtime version (e.g. '11.3' or 'CPU')"
+	@echo "    DOCKER_TAG    Docker image tag of result for the docker target"
 
 # Install Python deps via pip
 # There is no prebuilt for detectron2 on PyPI, and the wheels depend on CUDA and Torch version.
@@ -81,6 +86,13 @@ test/assets: repo/assets
 clean:
 	-$(RM) -r test/assets
 
+# Build docker image
+docker:
+	docker build \
+	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
+	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+	-t $(DOCKER_TAG) .
+
 #MODELDIR := $(or $(XDG_DATA_HOME),$(HOME)/.local/share)/ocrd-resources/ocrd-detectron2-segment
 
 TESTMODEL := TableBank_X152_Psarpei
@@ -124,4 +136,4 @@ count-regions := python -c "import sys; from ocrd_models.ocrd_page import parse;
 # make cannot delete directories, so keep them
 .PRECIOUS .SECONDARY: %/OCR-D-BIN %/OCR-D-SEG-$(MODEL)
 
-.PHONY: help deps install deps-test models-test test clean
+.PHONY: help deps install deps-test models-test test clean docker
