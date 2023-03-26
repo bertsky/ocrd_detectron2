@@ -1,5 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/ocrd-detectron2.svg)](https://badge.fury.io/py/ocrd-detectron2)
 [![Python test](https://github.com/bertsky/ocrd_detectron2/actions/workflows/python-app.yml/badge.svg)](https://github.com/bertsky/ocrd_detectron2/actions/workflows/python-app.yml)
+[![Docker Automated build via Github Container Registry](https://github.com/bertsky/ocrd_detectron2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/bertsky/ocrd_detectron2/actions/workflows/docker-image.yml)
+[![Docker Automated build via Dockerhub](https://img.shields.io/docker/automated/bertsky/ocrd_detectron2.svg)](https://hub.docker.com/r/bertsky/ocrd_detectron2/tags/)
 
 # ocrd_detectron2
 
@@ -46,6 +48,13 @@ To install this module, then do:
 Which is the equivalent of:
 
     pip install .
+
+**Alternatively**, you can use the provided **Docker image** (either from [Github Container Registry](https://github.com/users/bertsky/packages/container/package/ocrd_detectron2) or from [Dockerhub](https://hub.docker.com/r/bertsky/ocrd_detectron2)):
+
+    docker pull bertsky/ocrd_detectron2
+    # or
+    docker pull ghcr.io/bertsky/ocrd_detectron2
+
 
 ## Usage
 
@@ -157,6 +166,20 @@ Example:
     ocrd-detectron2-segment -I OCR-D-BIN -O OCR-D-SEG-TAB -p presets_TableBank_X152.json -P min_confidence 0.1 
     # download all preconfigured models
     ocrd resmgr download ocrd-detectron2-segment "*"
+
+For installation **via Docker**, usage is bascially the same as above – with some modifications:
+
+    # For data persistency, decide which host-side directories you want to mount in Docker:
+    DATADIR=/host-side/path/to/data
+    MODELDIR=/host-side/path/to/models
+    # Either you "log in" to a container first:
+    docker run -v $DATADIR:/data -v $MODELDIR:/usr/local/share/ocrd-resources -it bertsky/ocrd_detectron2 bash
+    # and then can use the above commands verbatim
+    ...
+    # Or you spin up a new container each time,
+    # which means prefixing the above commands with
+    docker run -v $DATADIR:/data -v $MODELDIR:/usr/local/share/ocrd-resources bertsky/ocrd_detectron2 ...
+
 
 #### Debugging
 
