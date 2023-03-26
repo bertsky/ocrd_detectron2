@@ -2,8 +2,8 @@
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-BIN_1">
     <pc:Metadata>
         <pc:Creator>OCR-D/core 2.49.0</pc:Creator>
-        <pc:Created>2023-03-25T23:30:43.449435</pc:Created>
-        <pc:LastChange>2023-03-25T23:30:43.449435</pc:LastChange>
+        <pc:Created>2023-03-26T01:10:03.943954</pc:Created>
+        <pc:LastChange>2023-03-26T01:10:03.943954</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -40,76 +40,76 @@
         <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN_1.IMG-BIN.png" comments=",binarized"/>
         <pc:AlternativeImage filename="OCR-D-SEG-DocBank_X101/OCR-D-SEG-DocBank_X101_1.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0001_TextRegion" type="paragraph">
-            <pc:Coords points="1050,2364 1050,2500 1948,2500 1948,2364" conf="0.952567756175995"/>
+            <pc:Coords points="1050,2364 1050,2500 1948,2500 1948,2364" conf="0.952568769454956"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0002_TextRegion" type="paragraph">
-            <pc:Coords points="1278,1558 1278,1640 1894,1640 1894,1558" conf="0.949399769306183"/>
+            <pc:Coords points="1278,1558 1278,1640 1894,1640 1894,1558" conf="0.949399709701538"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0003_TextRegion" type="paragraph">
-            <pc:Coords points="802,24 802,344 1554,344 1554,24" conf="0.909762978553772"/>
+            <pc:Coords points="802,24 802,344 1554,344 1554,24" conf="0.909762918949127"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0004_TextRegion" type="paragraph">
-            <pc:Coords points="1278,1382 1278,1468 1678,1468 1678,1382" conf="0.886644005775452"/>
+            <pc:Coords points="1278,1382 1278,1468 1678,1468 1678,1382" conf="0.886644065380096"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0005_TextRegion" type="paragraph">
-            <pc:Coords points="32,1468 32,1556 450,1556 450,1468" conf="0.881225645542145"/>
+            <pc:Coords points="32,1468 32,1556 450,1556 450,1468" conf="0.88122570514679"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0006_TextRegion" type="paragraph">
-            <pc:Coords points="16,912 16,1124 2020,1124 2020,912" conf="0.873024046421051"/>
+            <pc:Coords points="16,912 16,1124 2020,1124 2020,912" conf="0.873023808002472"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0007_TextRegion" type="paragraph">
-            <pc:Coords points="56,356 56,396 432,396 432,356" conf="0.855994045734406"/>
+            <pc:Coords points="56,356 56,396 432,396 432,356" conf="0.85599422454834"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0008_TextRegion" type="paragraph">
-            <pc:Coords points="26,740 26,868 2028,868 2028,740" conf="0.851742923259735"/>
+            <pc:Coords points="26,740 26,868 2028,868 2028,740" conf="0.851743161678314"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0009_TextRegion" type="paragraph">
-            <pc:Coords points="32,510 32,698 1992,698 1992,510" conf="0.844185948371887"/>
+            <pc:Coords points="32,510 32,698 1992,698 1992,510" conf="0.844186544418335"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0010_TextRegion" type="paragraph">
             <pc:Coords points="54,90 54,304 564,304 564,90" conf="0.836988210678101"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0011_TextRegion" type="paragraph">
-            <pc:Coords points="1054,1970 1054,2100 1842,2100 1842,1970" conf="0.813097894191742"/>
+            <pc:Coords points="1054,1970 1054,2100 1842,2100 1842,1970" conf="0.813097238540649"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0012_TextRegion" type="paragraph">
-            <pc:Coords points="58,2368 58,2586 754,2586 754,2368" conf="0.812174439430237"/>
+            <pc:Coords points="58,2368 58,2586 754,2586 754,2368" conf="0.81217497587204"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0013_TextRegion" type="paragraph">
-            <pc:Coords points="56,2276 56,2320 1140,2320 1140,2276" conf="0.807736456394196"/>
+            <pc:Coords points="56,2276 56,2320 1140,2320 1140,2276" conf="0.807736277580261"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0014_TextRegion" type="paragraph">
-            <pc:Coords points="58,1968 58,2186 748,2186 748,1968" conf="0.799788355827332"/>
+            <pc:Coords points="58,1968 58,2186 748,2186 748,1968" conf="0.7997887134552"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0015_TextRegion" type="paragraph">
-            <pc:Coords points="1056,352 1056,398 1274,398 1274,352" conf="0.7817263007164"/>
+            <pc:Coords points="1056,352 1056,398 1274,398 1274,352" conf="0.781725108623505"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0016_TextRegion" type="paragraph">
-            <pc:Coords points="60,1878 60,1924 1140,1924 1140,1878" conf="0.766338169574738"/>
+            <pc:Coords points="60,1878 60,1924 1140,1924 1140,1878" conf="0.766341984272003"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0017_TextRegion" type="paragraph">
-            <pc:Coords points="46,1166 46,1212 1824,1212 1824,1166" conf="0.749013900756836"/>
+            <pc:Coords points="46,1166 46,1212 1824,1212 1824,1166" conf="0.749014675617218"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0018_TextRegion" type="paragraph">
-            <pc:Coords points="34,1254 34,1342 436,1342 436,1254" conf="0.6664879322052"/>
+            <pc:Coords points="34,1254 34,1342 436,1342 436,1254" conf="0.66648805141449"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0019_TextRegion" type="paragraph">
-            <pc:Coords points="38,1382 38,1426 690,1426 690,1382" conf="0.658658921718597"/>
+            <pc:Coords points="38,1382 38,1426 690,1426 690,1382" conf="0.658658742904663"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0020_TextRegion" type="paragraph">
-            <pc:Coords points="28,476 28,876 2010,876 2010,476" conf="0.617212891578674"/>
+            <pc:Coords points="28,476 28,876 2010,876 2010,476" conf="0.617213428020477"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0021_TextRegion" type="paragraph">
-            <pc:Coords points="82,1874 82,2172 1654,2172 1654,1874" conf="0.586047887802124"/>
+            <pc:Coords points="82,1874 82,2172 1654,2172 1654,1874" conf="0.586047172546387"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0022_TextRegion" type="paragraph">
-            <pc:Coords points="256,18 256,382 1684,382 1684,18" conf="0.379300773143768"/>
+            <pc:Coords points="256,18 256,382 1684,382 1684,18" conf="0.379300951957703"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0024_TextRegion" type="paragraph">
-            <pc:Coords points="42,2346 42,2556 1974,2556 1974,2346" conf="0.321447283029556"/>
+            <pc:Coords points="42,2346 42,2556 1974,2556 1974,2346" conf="0.321447193622589"/>
         </pc:TextRegion>
         <pc:GraphicRegion id="region0023_GraphicRegion">
-            <pc:Coords points="32,28 32,410 2030,410 2030,28" conf="0.351765006780624"/>
+            <pc:Coords points="32,28 32,410 2030,410 2030,28" conf="0.351764678955078"/>
         </pc:GraphicRegion>
     </pc:Page>
 </pc:PcGts>
