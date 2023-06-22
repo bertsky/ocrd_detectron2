@@ -9,3 +9,4 @@ typing-extensions # for torch
 torch>=1.10.0 #,<1.11
 torchvision>=0.11.2
 detectron2>=0.6
+wheel
