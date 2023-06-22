@@ -11,6 +11,8 @@ import multiprocessing as mp
 import multiprocessing.sharedctypes
 import ctypes
 import numpy as np
+# torch must be imported before shapely 1.8, see issue shapely#1598.
+import torch
 from shapely.geometry import Polygon
 from shapely.ops import unary_union
 import cv2
@@ -20,7 +22,6 @@ from detectron2.engine import DefaultPredictor
 from detectron2.utils import visualizer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog #, DatasetCatalog
-import torch
 
 from ocrd_utils import (
     getLogger,
