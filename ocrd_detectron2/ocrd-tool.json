@@ -68,155 +68,145 @@
                     "description": "TableBank via LayoutLM X152-FPN config",
                     "name": "TableBank_X152.yaml",
                     "size": 536,
-                    "url": "https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/All_X152.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152.yaml"
                 },
                 {
                     "description": "TableBank via LayoutLM X152-FPN weights",
                     "name": "TableBank_X152.pth",
                     "size": 1103832675,
-                    "url": "https://layoutlm.blob.core.windows.net/tablebank/model_zoo/detection/All_X152/model_final.pth"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152.pth"
                 },
                 {
                     "description": "TableBank via Psarpei X152-FPN config",
                     "name": "TableBank_X152_Psarpei.yaml",
                     "size": 534,
-                    "url": "https://drive.google.com/uc?id=1WBk6kHHyvyEzoPBsRr2BvFY51zURjd4R"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152_Psarpei.yaml"
                 },
                 {
                     "description": "TableBank via Psarpei X152-FPN weights",
                     "name": "TableBank_X152_Psarpei.pth",
                     "size": 1103832675,
-                    "url": "https://drive.google.com/uc?id=11FgFTy0MyVUMGd00T_InEDaarB4qAlP8"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152_Psarpei.pth"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 R50-FPN config",
                     "name": "PubLayNet_R_50_FPN_3x.yaml",
                     "size": 388,
-                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_50_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x.yaml"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x.pth",
-                    "size": 176249992,
-                    "type": "archive",
-                    "path_in_archive": "model_final_trimmed.pth",
-                    "url": "https://www.dropbox.com/sh/44ez171b2qaocd2/AAB0huidzzOXeo99QdplZRjua"
+                    "size": 176249718,
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x.pth"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 R101-FPN config",
                     "name": "PubLayNet_R_101_FPN_3x.yaml",
                     "size": 392,
-                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_101_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x.yaml"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 R101-FPN weights",
                     "name": "PubLayNet_R_101_FPN_3x.pth",
-                    "size": 254055290,
-                    "type": "archive",
-                    "path_in_archive": "model_final.pth",
-                    "url": "https://www.dropbox.com/sh/wgt9skz67usliei/AAD9n6qbsyMz1Y3CwpZpHXCpa"
+                    "size": 503147199,
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x.pth"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 X101-FPN config",
                     "name": "PubLayNet_X_101_32x8d_FPN_3x.yaml",
                     "size": 592,
-                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_X_101_32x8d_FPN_3x.yaml"
                 },
                 {
                     "description": "PubLayNet via hpanwar08 X101-FPN weights",
                     "name": "PubLayNet_X_101_32x8d_FPN_3x.pth",
-                    "type": "archive",
-                    "path_in_archive": "model_final_trimmed.pth",
-                    "size": 431414189,
-                    "url": "https://www.dropbox.com/sh/1098ym6vhad4zi6/AABe16eSdY_34KGp52W0ruwha"
+                    "size": 429840864,
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_X_101_32x8d_FPN_3x.pth"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R50-FPN config",
                     "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.yaml",
                     "size": 388,
-                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_50_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x_JPLeoRX.yaml"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R50-FPN weights",
                     "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.pth",
                     "size": 176299422,
-                    "url": "https://drive.google.com/file/d/1IbxaRd82hIrxPT4a1U61_g2vvE3zcRLO/view?usp=sharing"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x_JPLeoRX.pth"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R101-FPN config",
                     "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.yaml",
                     "size": 392,
-                    "url": "https://github.com/hpanwar08/detectron2/raw/master/configs/DLA_mask_rcnn_R_101_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x_JPLeoRX.yaml"
                 },
                 {
                     "description": "PubLayNet via JPLeoRX R101-FPN weights",
                     "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.pth",
                     "size": 252572745,
-                    "url": "https://drive.google.com/file/d/17MD-FegQtFRNn4GeHqKCLaQZ6FiFrzLg/view?usp=sharing"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x_JPLeoRX.pth"
                 },
                 {
                     "description": "Modern Magazines via Jambo-sudo X101-FPN (pre-trained on PubLayNet, fine-tuned on 500 p. 20th cent. magazines) config",
                     "name": "Jambo-sudo_X101.yaml",
                     "size": 592,
-                    "url": "https://github.com/Jambo-sudo/Historical-document-layout-analysis/raw/main/historical-document-analysis/DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Jambo-sudo_X101.yaml"
                 },
                 {
                     "description": "Modern Magazines via Jambo-sudo X101-FPN (pre-trained on PubLayNet, fine-tuned on 500 p. 20th cent. magazines) weights",
                     "name": "Jambo-sudo_X101.pth",
                     "size": 856430002,
-                    "url": "https://www.dropbox.com/s/hfhsdpvg7jesd4g/pub_model_final.pth?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Jambo-sudo_X101.pth"
                 },
                 {
                     "description": "PRImALayout via LayoutLM R50-FPN config",
                     "name": "PRImALayout_R50.yaml",
                     "size": 934,
-                    "url": "https://www.dropbox.com/s/yc92x97k50abynt/config.yaml?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PRImALayout_R50.yaml"
                 },
                 {
                     "description": "PRImALayout via LayoutLM R50-FPN weights",
                     "name": "PRImALayout_R50.pth",
                     "size": 351229486,
-                    "url": "https://www.dropbox.com/s/h7th27jfv19rxiy/model_final.pth?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PRImALayout_R50.pth"
                 },
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
                     "name": "DocBank_X101.yaml",
-                    "type": "archive",
-                    "path_in_archive": "X101/X101.yaml",
-                    "size": 783884362,
-                    "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
+                    "size": 523,
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/DocBank_X101.yaml"
                 },
                 {
                     "description": "DocBank via LayoutLM X101-FPN config",
                     "name": "DocBank_X101.pth",
-                    "type": "archive",
-                    "path_in_archive": "X101/model.pth",
-                    "size": 783884362,
-                    "url": "https://layoutlm.blob.core.windows.net/docbank/model_zoo/X101.zip"
+                    "size": 835606605,
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/DocBank_X101.pth"
                 },
                 {
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN config",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.yaml",
                     "size": 330226761,
-                    "url": "https://www.dropbox.com/s/wnido8pk4oubyzr/config.yml?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/NewspaperNavigator_R_50_PFPN_3x.yaml"
                 },
                 {
                     "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN weights",
                     "name": "NewspaperNavigator_R_50_PFPN_3x.pth",
                     "size": 330226761,
-                    "url": "https://www.dropbox.com/s/6ewh6g8rqt2ev3a/model_final.pth?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/NewspaperNavigator_R_50_PFPN_3x.pth"
                 },
                 {
                     "description": "MathFormulaDetection via LayoutParser R50-FPN config",
                     "name": "Math_R_50_FPN_3x.yaml",
                     "size": 5632,
-                    "url": "https://www.dropbox.com/s/ld9izb95f19369w/config.yaml?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Math_R_50_FPN_3x.yaml"
                 },
                 {
                     "description": "MathFormulaDetection via LayoutParser R50-FPN weights",
                     "name": "Math_R_50_FPN_3x.pth",
                     "size": 330084629,
-                    "url": "https://www.dropbox.com/s/7xel0i3iqpm2p8y/model_final.pth?dl=1"
+                    "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Math_R_50_FPN_3x.pth"
                 }
             ]
         }

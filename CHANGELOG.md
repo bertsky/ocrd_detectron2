@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - workarounds for broken models (DocBank_X101, Jambo-sudo_X101)
+- `make deps`: add explicit reqs prior to pip step with Torch index
 
 ### Added
 - CI for CLI tests (with cached models and stored result artifacts)
+
+### Changed
+- migrated model URLs from external to Github release assets
 
 ## [0.1.7] - 2023-03-20
 ### Fixed
