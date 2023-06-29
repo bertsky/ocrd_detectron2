@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - workarounds for broken models (DocBank_X101, Jambo-sudo_X101)
 - `make deps`: add explicit reqs prior to pip step with Torch index
+- set `pc:PcGts/@pcGtsId` from `mets:file/@ID`
 
 ### Added
 - CI for CLI tests (with cached models and stored result artifacts)
