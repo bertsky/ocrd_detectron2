@@ -14,6 +14,7 @@ help:
 	@echo "    install   Install full Python package via pip"
 	@echo "    deps-test Install Python dependencies for tests via pip and models via resmgr"
 	@echo "    test      Run regression tests"
+	@echo "    build     Build Python package as source and wheel distribution"
 	@echo "    clean     Remove symlinks in test/assets"
 	@echo "    docker    Build Docker image"
 	@echo
@@ -73,6 +74,9 @@ install: deps
 deps-test: models-test
 	$(PIP) install -r requirements-test.txt
 
+build:
+	$(PIP) install build
+	$(PYTHON) -m build .
 
 # Clone OCR-D/assets to ./repo/assets
 repo/assets:
@@ -138,4 +142,4 @@ count-regions := python -c "import sys; from ocrd_models.ocrd_page import parse;
 # make cannot delete directories, so keep them
 .PRECIOUS .SECONDARY: %/OCR-D-BIN %/OCR-D-SEG-$(MODEL)
 
-.PHONY: help deps install deps-test models-test test clean docker
+.PHONY: help deps install build deps-test models-test test clean docker
