@@ -2,8 +2,8 @@
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-TableBank_X152_Psarpei-dannhauer_catechismus04_1653-0585">
     <pc:Metadata>
         <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-06-29T13:08:44.330503</pc:Created>
-        <pc:LastChange>2023-06-29T13:08:44.330503</pc:LastChange>
+        <pc:Created>2023-06-29T13:13:03.352654</pc:Created>
+        <pc:LastChange>2023-06-29T13:13:03.352654</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -40,7 +40,7 @@
         <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-dannhauer_catechismus04_1653-0585.IMG-BIN.png" comments=",binarized"/>
         <pc:AlternativeImage filename="OCR-D-SEG-TableBank_X152_Psarpei/OCR-D-SEG-TableBank_X152_Psarpei-dannhauer_catechismus04_1653-0585.IMG-DEBUG.png" comments="debug"/>
         <pc:TableRegion id="region0001_TableRegion">
-            <pc:Coords points="68,167 68,2024 1435,2024 1435,167" conf="0.498948305845261"/>
+            <pc:Coords points="68,167 68,2024 1435,2024 1435,167" conf="0.498948067426682"/>
         </pc:TableRegion>
     </pc:Page>
 </pc:PcGts>
