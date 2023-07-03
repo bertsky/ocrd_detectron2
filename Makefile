@@ -65,6 +65,8 @@ deps:
 	-r <(sed -n "/torch/p" requirements.txt) && \
 	$(PIP) install --no-build-isolation -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
 	"git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2"
+	# Patch installed detectron2 to fix issue #26.
+	sed -i~ s/interp=Image.LINEAR/interp=Image.BILINEAR/ $$($(PIP) show detectron2|grep Location|sed s/Location:.//)/detectron2/data/transforms/transform.py
 
 # Install Python package via pip
 install: deps
