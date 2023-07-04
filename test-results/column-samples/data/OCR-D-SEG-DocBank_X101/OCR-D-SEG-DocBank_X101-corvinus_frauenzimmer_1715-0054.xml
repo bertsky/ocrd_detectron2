@@ -2,8 +2,8 @@
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-DocBank_X101-corvinus_frauenzimmer_1715-0054">
     <pc:Metadata>
         <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-07-04T11:21:40.722303</pc:Created>
-        <pc:LastChange>2023-07-04T11:21:40.722303</pc:LastChange>
+        <pc:Created>2023-07-04T11:40:44.830712</pc:Created>
+        <pc:LastChange>2023-07-04T11:40:44.830712</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -43,7 +43,7 @@
             <pc:Coords points="0,2739 0,2752 197,2752 197,2739" conf="0.940640568733215"/>
         </pc:TextRegion>
         <pc:GraphicRegion id="region0002_GraphicRegion">
-            <pc:Coords points="16,0 16,2755 1599,2755 1599,0" conf="0.911301255226135"/>
+            <pc:Coords points="16,0 16,2755 1599,2755 1599,0" conf="0.911301016807556"/>
         </pc:GraphicRegion>
     </pc:Page>
 </pc:PcGts>

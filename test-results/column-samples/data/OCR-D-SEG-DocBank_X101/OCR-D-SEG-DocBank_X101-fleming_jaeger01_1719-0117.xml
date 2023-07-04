@@ -2,8 +2,8 @@
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-DocBank_X101-fleming_jaeger01_1719-0117">
     <pc:Metadata>
         <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-07-04T11:21:40.134438</pc:Created>
-        <pc:LastChange>2023-07-04T11:21:40.134438</pc:LastChange>
+        <pc:Created>2023-07-04T11:40:44.132249</pc:Created>
+        <pc:LastChange>2023-07-04T11:40:44.132249</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -40,13 +40,13 @@
         <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-fleming_jaeger01_1719-0117.IMG-BIN.png" comments=",binarized"/>
         <pc:AlternativeImage filename="OCR-D-SEG-DocBank_X101/OCR-D-SEG-DocBank_X101-fleming_jaeger01_1719-0117.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0001_TextRegion" type="paragraph">
-            <pc:Coords points="0,2618 0,2639 345,2639 345,2618" conf="0.799777209758759"/>
+            <pc:Coords points="0,2618 0,2639 345,2639 345,2618" conf="0.799778282642365"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0003_TextRegion" type="paragraph">
-            <pc:Coords points="973,0 973,4 1454,4 1454,0" conf="0.425978988409042"/>
+            <pc:Coords points="973,0 973,4 1454,4 1454,0" conf="0.425979405641556"/>
         </pc:TextRegion>
         <pc:GraphicRegion id="region0002_GraphicRegion">
-            <pc:Coords points="33,0 33,2641 1580,2641 1580,0" conf="0.451817780733109"/>
+            <pc:Coords points="33,0 33,2641 1580,2641 1580,0" conf="0.451819181442261"/>
         </pc:GraphicRegion>
     </pc:Page>
 </pc:PcGts>
