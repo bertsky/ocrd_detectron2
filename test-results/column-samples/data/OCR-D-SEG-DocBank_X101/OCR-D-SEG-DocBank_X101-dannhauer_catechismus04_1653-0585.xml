@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-DocBank_X101-dannhauer_catechismus04_1653-0585">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-07-04T11:40:43.533055</pc:Created>
-        <pc:LastChange>2023-07-04T11:40:43.533055</pc:LastChange>
+        <pc:Creator>OCR-D/core 2.65.0</pc:Creator>
+        <pc:Created>2024-05-21T11:14:31.984006</pc:Created>
+        <pc:LastChange>2024-05-21T11:14:31.984006</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -14,7 +14,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -30,7 +30,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
@@ -40,7 +40,7 @@
         <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-dannhauer_catechismus04_1653-0585.IMG-BIN.png" comments=",binarized"/>
         <pc:AlternativeImage filename="OCR-D-SEG-DocBank_X101/OCR-D-SEG-DocBank_X101-dannhauer_catechismus04_1653-0585.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0002_TextRegion" type="paragraph">
-            <pc:Coords points="0,2152 0,2169 218,2169 218,2152" conf="0.345706164836884"/>
+            <pc:Coords points="0,2152 0,2169 218,2169 218,2152" conf="0.345705986022949"/>
         </pc:TextRegion>
         <pc:GraphicRegion id="region0001_GraphicRegion">
             <pc:Coords points="7,38 7,2163 1577,2163 1577,38" conf="0.955395579338074"/>

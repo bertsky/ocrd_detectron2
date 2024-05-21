@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-Jambo-sudo_X101-eiteritz_affe_1719-0206">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-07-04T11:40:42.916872</pc:Created>
-        <pc:LastChange>2023-07-04T11:40:42.916872</pc:LastChange>
+        <pc:Creator>OCR-D/core 2.65.0</pc:Creator>
+        <pc:Created>2024-05-21T11:14:31.679586</pc:Created>
+        <pc:LastChange>2024-05-21T11:14:31.679586</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -14,7 +14,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -30,7 +30,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
@@ -46,7 +46,7 @@
             <pc:Coords points="907,2399 906,2400 873,2400 872,2401 869,2401 868,2402 866,2402 863,2405 863,2406 862,2407 862,2418 863,2419 863,2420 865,2422 866,2422 867,2423 870,2423 871,2424 987,2424 988,2423 1048,2423 1049,2424 1147,2424 1148,2423 1151,2423 1152,2422 1153,2422 1153,2421 1154,2420 1154,2403 1153,2402 1153,2401 1152,2400 1151,2400 1150,2399" conf="0.609716236591339"/>
         </pc:TextRegion>
         <pc:TextRegion id="region0004_TextRegion" type="caption">
-            <pc:Coords points="1318,2091 1317,2092 1313,2092 1313,2094 1312,2095 1312,2150 1313,2151 1313,2152 1314,2153 1316,2153 1317,2154 1435,2154 1436,2155 1449,2155 1450,2154 1452,2154 1453,2153 1454,2153 1455,2152 1455,2151 1456,2150 1456,2148 1457,2147 1457,2102 1456,2101 1456,2095 1453,2092 1379,2092 1378,2091" conf="0.539578080177307"/>
+            <pc:Coords points="1318,2091 1317,2092 1313,2092 1313,2094 1312,2095 1312,2150 1313,2151 1313,2152 1314,2153 1316,2153 1317,2154 1435,2154 1436,2155 1449,2155 1450,2154 1452,2154 1453,2153 1454,2153 1455,2152 1455,2151 1456,2150 1456,2148 1457,2147 1457,2102 1456,2101 1456,2095 1453,2092 1379,2092 1378,2091" conf="0.539577960968018"/>
         </pc:TextRegion>
         <pc:ImageRegion id="region0002_ImageRegion">
             <pc:Coords points="1563,52 1562,53 1559,53 1558,54 1557,54 1556,53 1547,53 1546,54 1526,54 1525,55 1512,55 1511,56 1474,56 1473,55 1457,55 1456,54 1453,54 1452,55 1446,55 1445,54 1435,54 1434,55 1417,55 1416,56 1408,56 1407,55 1405,55 1404,56 1400,56 1399,57 1394,57 1393,58 1387,58 1386,59 1382,59 1381,60 1378,60 1377,61 1375,61 1374,62 1373,62 1372,63 1370,63 1368,65 1367,65 1366,66 1365,66 1363,68 1363,74 1362,75 1362,90 1361,91 1361,142 1362,143 1362,162 1363,163 1363,175 1364,176 1364,182 1365,183 1365,190 1366,191 1366,201 1367,202 1367,219 1368,220 1368,225 1369,226 1369,230 1370,231 1370,234 1371,235 1371,237 1372,238 1372,239 1373,240 1373,241 1374,242 1374,243 1375,244 1375,246 1376,247 1376,248 1377,249 1377,250 1378,251 1378,252 1381,255 1382,255 1383,256 1384,256 1385,257 1386,257 1387,258 1388,258 1390,260 1391,260 1392,261 1393,261 1394,262 1395,262 1396,263 1397,263 1398,264 1400,264 1401,265 1404,265 1405,266 1406,266 1407,267 1409,267 1410,268 1412,268 1413,269 1428,269 1429,270 1472,270 1473,271 1474,270 1499,270 1500,271 1556,271 1557,270 1578,270 1579,269 1585,269 1587,267 1587,266 1589,264 1589,263 1590,262 1590,260 1591,259 1591,234 1592,233 1592,224 1591,223 1591,218 1592,217 1592,187 1593,186 1593,156 1594,155 1594,71 1593,70 1593,63 1592,62 1592,58 1589,55 1588,55 1586,53 1585,53 1584,52 1576,52 1575,53 1574,52" conf="0.653745174407959"/>

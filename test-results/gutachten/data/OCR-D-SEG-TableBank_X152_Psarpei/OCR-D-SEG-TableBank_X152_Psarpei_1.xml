@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-TableBank_X152_Psarpei_1">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.52.0</pc:Creator>
-        <pc:Created>2023-07-04T11:39:17.318249</pc:Created>
-        <pc:LastChange>2023-07-04T11:39:17.318249</pc:LastChange>
+        <pc:Creator>OCR-D/core 2.65.0</pc:Creator>
+        <pc:Created>2024-05-21T11:13:28.757251</pc:Created>
+        <pc:LastChange>2024-05-21T11:13:28.757251</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -14,7 +14,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -30,7 +30,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.52.0" type="ocrd/core"/>
+                <pc:Label value="2.65.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
@@ -46,7 +46,7 @@
             <pc:Coords points="38,88 38,310 2016,310 2016,88" conf="0.891344666481018"/>
         </pc:TableRegion>
         <pc:TableRegion id="region0003_TableRegion">
-            <pc:Coords points="34,2008 34,2590 2022,2590 2022,2008" conf="0.79097056388855"/>
+            <pc:Coords points="34,2008 34,2590 2022,2590 2022,2008" conf="0.790970623493195"/>
         </pc:TableRegion>
     </pc:Page>
 </pc:PcGts>
