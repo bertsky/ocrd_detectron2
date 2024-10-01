@@ -4,7 +4,8 @@ PYTHONIOENCODING=utf8
 SHELL = /bin/bash
 
 # Docker container tag
-DOCKER_TAG = 'bertsky/ocrd_detectron2'
+DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda-torch:v2.69.0
+DOCKER_TAG = 'ocrd/detectron2'
 
 help:
 	@echo
@@ -94,6 +95,7 @@ clean:
 # Build docker image
 docker:
 	docker build \
+	--build-arg DOCKER_BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
 	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	-t $(DOCKER_TAG) .

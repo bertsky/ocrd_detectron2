@@ -1,4 +1,5 @@
-FROM ocrd/core-cuda
+ARG DOCKER_BASE_IMAGE
+FROM $DOCKER_BASE_IMAGE
 ARG VCS_REF
 ARG BUILD_DATE
 LABEL \
@@ -10,13 +11,7 @@ LABEL \
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHONIOENCODING utf8
 
-# avoid HOME/.local/share (hard to predict USER here)
-# so let XDG_DATA_HOME coincide with fixed system location
-# (can still be overridden by derived stages or at runtime)
-# should be combined with a bind-mount at runtime
-ENV XDG_DATA_HOME /usr/local/share
-
-WORKDIR /build-ocrd
+WORKDIR /build/ocrd_detectron2
 COPY setup.py .
 COPY ocrd_detectron2/ocrd-tool.json .
 COPY README.md .
@@ -27,11 +22,8 @@ COPY Makefile .
 RUN apt-get install -y --no-install-recommends g++ && \
     make deps && \
     make install && \
-    rm -rf /build-ocrd && \
+    rm -rf /build/ocrd_detectron2 && \
     apt-get -y remove --auto-remove g++
 
 WORKDIR /data
 VOLUME /data
-
-# override Nvidia entrypoint
-ENTRYPOINT []
