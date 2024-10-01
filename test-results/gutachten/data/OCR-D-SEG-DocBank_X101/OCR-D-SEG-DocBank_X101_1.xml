@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-DocBank_X101_1">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.65.0</pc:Creator>
-        <pc:Created>2024-05-21T11:13:28.757251</pc:Created>
-        <pc:LastChange>2024-05-21T11:13:28.757251</pc:LastChange>
+        <pc:Creator>OCR-D/core 2.68.0</pc:Creator>
+        <pc:Created>2024-10-01T19:51:16.040130</pc:Created>
+        <pc:LastChange>2024-10-01T19:51:16.040130</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -14,7 +14,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.65.0" type="ocrd/core"/>
+                <pc:Label value="2.68.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -30,7 +30,7 @@
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
                 <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.65.0" type="ocrd/core"/>
+                <pc:Label value="2.68.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
