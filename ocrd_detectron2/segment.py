@@ -267,11 +267,11 @@ class Detectron2Segment(Processor):
                     image_bin = image_bin.resize(
                         (int(image_raw.width * zoomed),
                          int(image_raw.height * zoomed)),
-                        resample=Image.BICUBIC)
+                        resample=Image.Resampling.BICUBIC)
                     image_raw = image_raw.resize(
                         (int(image_raw.width * zoomed),
                          int(image_raw.height * zoomed)),
-                        resample=Image.BICUBIC)
+                        resample=Image.Resampling.BICUBIC)
 
                 # convert raw to BGR
                 array_raw = np.array(image_raw)
