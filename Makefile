@@ -63,9 +63,7 @@ deps:
 	fi && \
 	$(PIP) install -i "https://download.pytorch.org/whl/$$CUDA" \
 	-r <(sed -n "/torch/p" requirements.txt) && \
-	$(PIP) install --no-build-isolation -f "https://dl.fbaipublicfiles.com/detectron2/wheels/$$CUDA/torch1.10/index.html" \
-	"git+https://github.com/facebookresearch/detectron2@v0.6#egg=detectron2"
-	-wget --quiet -O- https://github.com/facebookresearch/detectron2/commit/ed294fabf043eadbb33948d5c39f8f0361829a4f.patch | patch -f -d `$(PYTHON) -c "import detectron2; print(detectron2.__path__[0])"` -p2
+	$(PIP) install --no-build-isolation "git+https://github.com/facebookresearch/detectron2#egg=detectron2"
 
 # Install Python package via pip
 install: deps
