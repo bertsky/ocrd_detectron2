@@ -3,10 +3,10 @@ name: Docker Image CI
 on:
   push:
     branches: [ "master" ]
-  workflow_dispatch: # run manually
+  workflow_dispatch:
 
 env:
-  DOCKER_TAGNAME: bertsky/ocrd_detectron2
+  DOCKER_TAGNAME: ocrd/detectron2
 
 jobs:
 
@@ -32,7 +32,7 @@ jobs:
     - name: Push image to Dockerhub
       run: docker push ${{ env.DOCKER_TAGNAME }}
     - name: Alias the Docker image for GHCR
-      run: docker tag ${{ env.DOCKER_TAGNAME }} ghcr.io/${{ env.DOCKER_TAGNAME }}
+      run: docker tag ${{ env.DOCKER_TAGNAME }} ghcr.io/bertsky/ocrd_detectron2
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v2
       with:
@@ -40,4 +40,4 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Push image to Github Container Registry
-      run: docker push ghcr.io/${{ env.DOCKER_TAGNAME }}
+      run: docker push ghcr.io/bertsky/ocrd_detectron2
