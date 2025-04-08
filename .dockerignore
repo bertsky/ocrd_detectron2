@@ -1,0 +1,6 @@
+test
+repo
+dist
+build
+*.egg-info
+*.whl

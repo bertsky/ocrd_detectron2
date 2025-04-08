@@ -4,7 +4,7 @@ PYTHONIOENCODING=utf8
 SHELL = /bin/bash
 
 # Docker container tag
-DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda-torch:v2.69.0
+DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda-torch:v3.3.0
 DOCKER_TAG = 'ocrd/detectron2'
 
 help:
