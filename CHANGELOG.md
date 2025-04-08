@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-04-08
+
+### Changed
+- updated to OCR-D v3 API
+- switched from `setup.py` to `pyproject.toml`  
+  (and `ocrd-tool.json` based versioning)
+- updated Dockerfile (base version, variables, labels, `ocrd-all-tool.json`)
+- updated CI
+
 ## [0.1.8] - 2023-06-29
 ### Fixed
 - workarounds for broken models (DocBank_X101, Jambo-sudo_X101)
@@ -88,4 +97,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.1.6]: ../../compare/v0.1.5...v0.1.6
 [0.1.7]: ../../compare/v0.1.6...v0.1.7
 [0.1.8]: ../../compare/v0.1.7...v0.1.8
-[unreleased]: ../../compare/v0.1.8...master
+[0.2.0]: ../../compare/v0.1.8...v0.2.0
+[unreleased]: ../../compare/v0.2.0...master
