@@ -20,12 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version:  ${{ matrix.python-version }}
     - name: Lint with flake8
@@ -44,7 +44,7 @@ jobs:
     - name: Install package
       run: make install
     - name: Cache models
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: detectron-models
         path: /home/runner/.local/share/ocrd-resources/ocrd-detectron2-segment/*
@@ -54,7 +54,7 @@ jobs:
     - name: Run tests
       run: make test
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
