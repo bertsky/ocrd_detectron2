@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-Jambo-sudo_X101-corvinus_frauenzimmer_1715-0054">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.68.0</pc:Creator>
-        <pc:Created>2024-10-01T19:52:15.789844</pc:Created>
-        <pc:LastChange>2024-10-01T19:52:15.789844</pc:LastChange>
+        <pc:Creator>OCR-D/core 3.3.0</pc:Creator>
+        <pc:Created>2025-04-08T18:39:35.380514</pc:Created>
+        <pc:LastChange>2025-04-08T18:39:35.380514</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
                 <pc:Label value="0" type="dpi"/>
                 <pc:Label value="sauvola" type="method"/>
-                <pc:Label value="73" type="window_size"/>
+                <pc:Label value="0" type="window_size"/>
                 <pc:Label value="0.34" type="k"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-skimage-binarize"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -29,16 +29,14 @@
                 <pc:Label value="cuda" type="device"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-detectron2-segment"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
-    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-corvinus_frauenzimmer_1715-0054.jpg" imageWidth="1600" imageHeight="2756" custom="coords=[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]">
-        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-corvinus_frauenzimmer_1715-0054.IMG-BIN.png" comments=",binarized"/>
-        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-corvinus_frauenzimmer_1715-0054.IMG-DEBUG.png" comments="debug"/>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-corvinus_frauenzimmer_1715-0054.jpg" imageWidth="1600" imageHeight="2756" custom="coords=[[1. 0. 0.]&#10; [0. 1. 0.]&#10; [0. 0. 1.]]">
+        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-corvinus_frauenzimmer_1715-0054_.IMG-BIN.png" comments=",binarized"/>
+        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-corvinus_frauenzimmer_1715-0054_.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0001_TextRegion" type="paragraph">
             <pc:Coords points="800,886 799,887 798,887 797,888 796,888 795,889 794,889 793,890 792,890 790,892 789,892 787,894 786,894 785,895 784,895 782,897 781,897 780,898 779,898 778,899 774,899 773,900 754,900 753,901 751,901 750,902 749,902 748,903 746,903 745,904 743,904 742,905 740,905 739,906 737,906 736,907 734,907 733,908 731,908 730,909 718,909 717,910 687,910 686,909 660,909 659,908 641,908 640,907 627,907 626,906 614,906 613,905 600,905 599,904 586,904 585,903 567,903 566,902 563,902 562,903 523,903 522,902 514,902 513,903 468,903 467,904 456,904 455,905 430,905 429,906 414,906 413,907 402,907 401,908 385,908 384,909 368,909 367,910 354,910 353,911 328,911 327,912 316,912 315,913 300,913 299,914 277,914 276,913 263,913 262,912 254,912 253,913 242,913 241,914 234,914 233,915 231,915 230,916 229,916 228,917 226,917 225,918 224,918 223,919 222,919 221,920 220,920 218,922 217,922 216,923 215,923 212,926 211,926 211,927 208,930 208,931 207,932 207,933 205,935 205,936 204,937 204,938 203,939 203,940 202,941 202,942 201,943 201,944 200,945 200,946 199,947 199,948 198,949 198,950 197,951 197,953 196,954 196,955 195,956 195,958 194,959 194,960 193,961 193,963 192,964 192,966 191,967 191,969 190,970 190,972 189,973 189,976 188,977 188,979 187,980 187,985 186,986 186,992 185,993 185,1001 184,1002 184,1010 183,1011 183,1020 182,1021 182,1042 181,1043 181,1107 180,1108 180,1171 179,1172 179,1279 178,1280 178,1655 177,1656 177,2102 178,2103 178,2116 179,2117 179,2128 180,2129 180,2138 181,2139 181,2147 182,2148 182,2151 183,2152 183,2153 184,2154 184,2155 185,2156 185,2157 186,2158 186,2159 188,2161 190,2161 191,2162 193,2162 194,2163 195,2163 196,2164 199,2164 200,2165 202,2165 203,2166 206,2166 207,2167 209,2167 210,2168 266,2168 267,2167 276,2167 277,2166 294,2166 295,2165 318,2165 319,2164 352,2164 353,2163 496,2163 497,2164 513,2164 514,2165 551,2165 552,2166 574,2166 575,2167 618,2167 619,2168 648,2168 649,2169 688,2169 689,2170 784,2170 785,2169 798,2169 799,2168 802,2168 803,2167 805,2167 806,2166 807,2166 808,2165 809,2165 810,2164 811,2164 812,2163 813,2163 814,2162 815,2162 816,2161 817,2161 819,2159 820,2159 823,2156 824,2156 824,2155 825,2154 825,2153 826,2152 826,2151 827,2150 827,2141 828,2140 828,2119 829,2118 829,2042 830,2041 830,1935 831,1934 831,1726 832,1725 832,1667 833,1666 833,1596 834,1595 834,1407 835,1406 835,997 834,996 834,967 833,966 833,950 832,949 832,936 831,935 831,928 830,927 830,921 829,920 829,915 828,914 828,909 827,908 827,904 826,903 826,899 825,898 825,895 824,894 824,892 823,891 822,891 821,890 818,890 817,889 813,889 812,888 808,888 807,887 803,887 802,886" conf="0.963613569736481"/>
         </pc:TextRegion>

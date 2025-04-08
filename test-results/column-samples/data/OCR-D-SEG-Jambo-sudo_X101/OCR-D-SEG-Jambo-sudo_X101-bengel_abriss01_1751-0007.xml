@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-Jambo-sudo_X101-bengel_abriss01_1751-0007">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.68.0</pc:Creator>
-        <pc:Created>2024-10-01T19:52:14.584616</pc:Created>
-        <pc:LastChange>2024-10-01T19:52:14.584616</pc:LastChange>
+        <pc:Creator>OCR-D/core 3.3.0</pc:Creator>
+        <pc:Created>2025-04-08T18:39:34.308419</pc:Created>
+        <pc:LastChange>2025-04-08T18:39:34.308419</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
@@ -13,8 +13,8 @@
                 <pc:Label value="0.34" type="k"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-skimage-binarize"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -29,16 +29,14 @@
                 <pc:Label value="cuda" type="device"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-detectron2-segment"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
-    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-bengel_abriss01_1751-0007.jpg" imageWidth="1600" imageHeight="2867" custom="coords=[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]">
-        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-bengel_abriss01_1751-0007.IMG-BIN.png" comments=",binarized"/>
-        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-bengel_abriss01_1751-0007.IMG-DEBUG.png" comments="debug"/>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-bengel_abriss01_1751-0007.jpg" imageWidth="1600" imageHeight="2867" custom="coords=[[1. 0. 0.]&#10; [0. 1. 0.]&#10; [0. 0. 1.]]">
+        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-bengel_abriss01_1751-0007_.IMG-BIN.png" comments=",binarized"/>
+        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-bengel_abriss01_1751-0007_.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0002_TextRegion" type="paragraph">
             <pc:Coords points="1100,1029 1099,1030 972,1030 971,1031 835,1031 834,1032 821,1032 820,1033 814,1033 809,1038 809,1063 808,1064 808,1114 809,1115 809,1142 810,1143 810,1167 811,1168 811,1180 812,1181 812,1205 813,1206 813,1214 814,1215 814,1233 813,1234 813,1261 814,1262 814,1264 813,1265 813,1310 814,1311 814,1331 815,1332 815,1336 816,1337 816,1339 817,1340 817,1342 818,1343 818,1346 819,1347 819,1353 820,1354 820,1359 821,1360 821,1365 822,1366 822,1367 823,1368 823,1369 824,1370 824,1371 825,1372 825,1373 827,1375 827,1376 828,1377 828,1378 829,1379 829,1380 831,1382 831,1383 832,1384 832,1385 833,1386 833,1387 832,1388 832,1389 830,1391 830,1392 829,1393 829,1394 828,1395 828,1396 827,1397 827,1398 826,1399 826,1400 825,1401 825,1402 824,1403 824,1404 823,1405 823,1406 822,1407 822,1410 823,1411 823,1424 824,1425 824,1427 823,1428 823,1431 822,1432 822,1434 821,1435 821,1438 820,1439 820,1442 819,1443 819,1445 818,1446 818,1452 819,1453 819,1466 820,1467 820,1469 819,1470 819,1476 818,1477 818,1484 817,1485 817,1492 816,1493 816,1499 815,1500 815,1512 814,1513 814,1525 813,1526 813,1561 812,1562 812,1591 814,1593 815,1593 816,1594 820,1594 821,1595 826,1595 827,1596 833,1596 834,1597 854,1597 855,1598 891,1598 892,1597 918,1597 919,1598 935,1598 936,1597 999,1597 1000,1596 1021,1596 1022,1597 1058,1597 1059,1596 1145,1596 1146,1597 1236,1597 1237,1598 1365,1598 1366,1599 1382,1599 1383,1598 1391,1598 1392,1597 1400,1597 1401,1596 1402,1596 1407,1591 1407,1586 1408,1585 1408,1576 1409,1575 1409,1556 1410,1555 1410,1320 1411,1319 1411,1067 1410,1066 1410,1045 1409,1044 1409,1038 1408,1037 1408,1036 1404,1032 1403,1032 1401,1030 1387,1030 1386,1029" conf="0.601843535900116"/>
         </pc:TextRegion>

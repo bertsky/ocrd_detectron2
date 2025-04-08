@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-Jambo-sudo_X101-fleming_jaeger01_1719-0117">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.68.0</pc:Creator>
-        <pc:Created>2024-10-01T19:52:15.463271</pc:Created>
-        <pc:LastChange>2024-10-01T19:52:15.463271</pc:LastChange>
+        <pc:Creator>OCR-D/core 3.3.0</pc:Creator>
+        <pc:Created>2025-04-08T18:39:35.074233</pc:Created>
+        <pc:LastChange>2025-04-08T18:39:35.074233</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
                 <pc:Label value="0" type="dpi"/>
                 <pc:Label value="sauvola" type="method"/>
-                <pc:Label value="73" type="window_size"/>
+                <pc:Label value="0" type="window_size"/>
                 <pc:Label value="0.34" type="k"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-skimage-binarize"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -29,16 +29,14 @@
                 <pc:Label value="cuda" type="device"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-detectron2-segment"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
-    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-fleming_jaeger01_1719-0117.jpg" imageWidth="1600" imageHeight="2642" custom="coords=[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]">
-        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-fleming_jaeger01_1719-0117.IMG-BIN.png" comments=",binarized"/>
-        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-fleming_jaeger01_1719-0117.IMG-DEBUG.png" comments="debug"/>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-fleming_jaeger01_1719-0117.jpg" imageWidth="1600" imageHeight="2642" custom="coords=[[1. 0. 0.]&#10; [0. 1. 0.]&#10; [0. 0. 1.]]">
+        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-fleming_jaeger01_1719-0117_.IMG-BIN.png" comments=",binarized"/>
+        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-fleming_jaeger01_1719-0117_.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0001_TextRegion" type="paragraph">
             <pc:Coords points="508,1762 507,1763 164,1763 163,1764 134,1764 133,1765 127,1765 126,1766 121,1766 120,1767 116,1767 115,1768 113,1768 108,1773 108,1779 107,1780 107,1789 106,1790 106,1802 105,1803 105,1824 104,1825 104,2338 105,2339 105,2359 104,2360 104,2381 105,2382 105,2398 106,2399 106,2401 112,2407 113,2407 114,2408 118,2408 119,2409 126,2409 127,2410 135,2410 136,2411 700,2411 701,2410 720,2410 721,2409 727,2409 728,2408 733,2408 734,2407 737,2407 743,2401 743,2400 744,2399 744,2389 745,2388 745,2346 746,2345 746,2266 747,2265 747,2011 746,2010 746,1947 747,1946 747,1905 746,1904 746,1815 745,1814 745,1795 744,1794 744,1790 743,1789 743,1786 742,1785 742,1782 741,1781 741,1779 740,1778 740,1776 739,1775 739,1774 735,1770 733,1770 732,1769 731,1769 730,1768 728,1768 727,1767 725,1767 724,1766 721,1766 720,1765 717,1765 716,1764 706,1764 705,1763 543,1763 542,1762" conf="0.983637690544128"/>
         </pc:TextRegion>

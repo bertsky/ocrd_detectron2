@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd" pcGtsId="OCR-D-SEG-Jambo-sudo_X101-dannhauer_catechismus04_1653-0585">
     <pc:Metadata>
-        <pc:Creator>OCR-D/core 2.68.0</pc:Creator>
-        <pc:Created>2024-10-01T19:52:15.198205</pc:Created>
-        <pc:LastChange>2024-10-01T19:52:15.198205</pc:LastChange>
+        <pc:Creator>OCR-D/core 3.3.0</pc:Creator>
+        <pc:Created>2025-04-08T18:39:34.855017</pc:Created>
+        <pc:LastChange>2025-04-08T18:39:34.855017</pc:LastChange>
         <pc:MetadataItem type="processingStep" name="preprocessing/optimization/binarization" value="ocrd-skimage-binarize">
             <pc:Labels externalModel="ocrd-tool" externalId="parameters">
                 <pc:Label value="page" type="level-of-operation"/>
                 <pc:Label value="0" type="dpi"/>
                 <pc:Label value="sauvola" type="method"/>
-                <pc:Label value="73" type="window_size"/>
+                <pc:Label value="0" type="window_size"/>
                 <pc:Label value="0.34" type="k"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-skimage-binarize"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-skimage-binarize"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
         <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-detectron2-segment">
@@ -29,16 +29,14 @@
                 <pc:Label value="cuda" type="device"/>
             </pc:Labels>
             <pc:Labels externalModel="ocrd-tool" externalId="version">
-                <pc:Label value="0.1.8" type="ocrd-detectron2-segment"/>
-                <pc:Label value="2.68.0" type="ocrd/core"/>
+                <pc:Label value="0.2.0" type="ocrd-detectron2-segment"/>
+                <pc:Label value="3.3.0" type="ocrd/core"/>
             </pc:Labels>
         </pc:MetadataItem>
     </pc:Metadata>
-    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-dannhauer_catechismus04_1653-0585.jpg" imageWidth="1600" imageHeight="2175" custom="coords=[[1. 0. 0.]
- [0. 1. 0.]
- [0. 0. 1.]]">
-        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-dannhauer_catechismus04_1653-0585.IMG-BIN.png" comments=",binarized"/>
-        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-dannhauer_catechismus04_1653-0585.IMG-DEBUG.png" comments="debug"/>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG-dannhauer_catechismus04_1653-0585.jpg" imageWidth="1600" imageHeight="2175" custom="coords=[[1. 0. 0.]&#10; [0. 1. 0.]&#10; [0. 0. 1.]]">
+        <pc:AlternativeImage filename="OCR-D-BIN/OCR-D-BIN-dannhauer_catechismus04_1653-0585_.IMG-BIN.png" comments=",binarized"/>
+        <pc:AlternativeImage filename="OCR-D-SEG-Jambo-sudo_X101/OCR-D-SEG-Jambo-sudo_X101-dannhauer_catechismus04_1653-0585_.IMG-DEBUG.png" comments="debug"/>
         <pc:TextRegion id="region0001_TextRegion" type="paragraph">
             <pc:Coords points="475,511 474,512 450,512 449,513 421,513 420,514 400,514 399,515 381,515 380,516 350,516 349,517 318,517 317,516 302,516 301,515 291,515 290,516 274,516 273,515 258,515 257,514 240,514 239,515 218,515 217,516 199,516 198,517 168,517 167,518 124,518 123,517 114,517 113,516 103,516 102,517 98,517 97,518 94,518 93,519 90,519 89,520 86,520 85,521 82,521 81,522 81,523 80,524 80,525 79,526 79,528 78,529 78,532 77,533 77,546 76,547 76,562 75,563 75,579 74,580 74,606 73,607 73,660 72,661 72,720 73,721 73,775 72,776 72,790 73,791 73,831 74,832 74,901 73,902 73,954 72,955 72,1082 73,1083 73,1146 72,1147 72,1564 71,1565 71,1877 72,1878 72,1918 73,1919 73,1931 74,1932 74,1934 75,1935 75,1936 76,1937 76,1939 77,1940 77,1941 78,1942 78,1943 80,1945 80,1946 82,1948 83,1948 84,1949 87,1949 88,1950 92,1950 93,1951 97,1951 98,1952 102,1952 103,1953 135,1953 136,1954 558,1954 559,1953 665,1953 666,1952 682,1952 683,1951 692,1951 693,1950 698,1950 699,1949 704,1949 705,1948 710,1948 711,1947 714,1947 716,1945 717,1945 719,1943 720,1943 723,1940 724,1940 732,1932 732,1931 734,1929 734,1913 735,1912 735,1857 734,1856 734,1828 733,1827 733,1822 734,1821 734,1775 735,1774 735,1710 736,1709 736,1688 737,1687 737,1664 738,1663 738,1622 739,1621 739,1590 740,1589 740,1562 741,1561 741,1546 742,1545 742,1527 743,1526 743,1502 744,1501 744,1466 745,1465 745,1420 746,1419 746,1354 747,1353 747,1308 748,1307 748,777 747,776 747,680 746,679 746,626 745,625 745,595 744,594 744,573 743,572 743,558 742,557 742,544 741,543 741,531 740,530 740,528 739,527 739,526 738,525 738,524 737,524 736,523 735,523 734,522 733,522 732,521 731,521 730,520 728,520 727,519 726,519 725,518 723,518 722,517 721,517 720,516 718,516 717,515 715,515 714,514 676,514 675,513 613,513 612,512 582,512 581,511" conf="0.909610271453857"/>
         </pc:TextRegion>
