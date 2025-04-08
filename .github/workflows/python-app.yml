@@ -20,12 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version:  ${{ matrix.python-version }}
     - name: Lint with flake8
@@ -44,7 +44,7 @@ jobs:
     - name: Install package
       run: make install
     - name: Cache models
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: detectron-models
         path: /home/runner/.local/share/ocrd-resources/ocrd-detectron2-segment/*
@@ -54,7 +54,8 @@ jobs:
     - name: Run tests
       run: make test
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      if: matrix.python-version == '3.8'
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |
@@ -71,11 +72,11 @@ jobs:
     continue-on-error: true
     steps:
     - name: Checkout GH Pages
-      uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f # v3.4.0
+      uses: actions/checkout@v4
       with:
         ref: gh-pages
     - name: Download Artifact
-      uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+      uses: actions/download-artifact@v4
       with:
         name: test-results
         path: test-results

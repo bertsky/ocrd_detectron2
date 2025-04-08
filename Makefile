@@ -4,20 +4,21 @@ PYTHONIOENCODING=utf8
 SHELL = /bin/bash
 
 # Docker container tag
-DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda-torch:v2.69.0
+DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda-torch:v3.3.0
 DOCKER_TAG = 'ocrd/detectron2'
 
 help:
 	@echo
 	@echo "  Targets"
 	@echo
-	@echo "    deps      Install only Python dependencies via pip"
-	@echo "    install   Install full Python package via pip"
-	@echo "    deps-test Install Python dependencies for tests via pip and models via resmgr"
-	@echo "    test      Run regression tests"
-	@echo "    build     Build Python package as source and wheel distribution"
-	@echo "    clean     Remove symlinks in test/assets"
-	@echo "    docker    Build Docker image"
+	@echo "    deps        Install only Python dependencies via pip"
+	@echo "    install     Install full Python package via pip"
+	@echo "    install-dev Install full Python package via pip"
+	@echo "    deps-test   Install Python dependencies for tests via pip and models via resmgr"
+	@echo "    test        Run regression tests"
+	@echo "    build       Build Python package as source and wheel distribution"
+	@echo "    clean       Remove symlinks in test/assets"
+	@echo "    docker      Build Docker image"
 	@echo
 	@echo "  Variables"
 	@echo "    PYTHON"
@@ -69,6 +70,10 @@ deps:
 # Install Python package via pip
 install: deps
 	$(PIP) install .
+
+# Install Python package via pip
+install-dev: deps
+	$(PIP) install -e .
 
 # Install testing python deps via pip
 deps-test: models-test

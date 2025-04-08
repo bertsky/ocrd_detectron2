@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-from pkg_resources import resource_filename
 import sys
 import os
 import tempfile
@@ -10,6 +9,8 @@ import math
 import multiprocessing as mp
 import multiprocessing.sharedctypes
 import ctypes
+from typing import Optional
+
 import numpy as np
 from shapely.geometry import Polygon
 from shapely.ops import unary_union
@@ -23,19 +24,17 @@ from detectron2.data import MetadataCatalog #, DatasetCatalog
 import torch
 
 from ocrd_utils import (
+    resource_filename,
     getLogger,
-    make_file_id,
-    assert_file_grp_cardinality,
     pushd_popd,
     coordinates_of_segment,
     coordinates_for_segment,
     crop_image,
     points_from_polygon,
     polygon_from_points,
-    MIMETYPE_PAGE
 )
 from ocrd_models.ocrd_page import (
-    to_xml,
+    OcrdPage,
     PageType,
     AdvertRegionType,
     ChartRegionType,
@@ -60,12 +59,8 @@ from ocrd_models.ocrd_page_generateds import (
     GraphicsTypeSimpleType,
     TextTypeSimpleType
 )
-from ocrd_modelfactory import page_from_file
-from ocrd import Processor
+from ocrd import Processor, OcrdPageResult, OcrdPageResultImage
 
-from .config import OCRD_TOOL
-
-TOOL = 'ocrd-detectron2-segment'
 # when doing Numpy postprocessing, enlarge masks via
 # outer (convex) instead of inner (concave) hull of
 # corresponding connected components
@@ -83,35 +78,32 @@ IOCC_THRESHOLD = 0.4
 FINAL_DILATION = 4
 
 class Detectron2Segment(Processor):
+    max_workers = 1 # GPU context sharable across not forks
 
-    def __init__(self, *args, **kwargs):
-        kwargs['ocrd_tool'] = OCRD_TOOL['tools'][TOOL]
-        kwargs['version'] = OCRD_TOOL['version']
-        super().__init__(*args, **kwargs)
-        if hasattr(self, 'output_file_grp'):
-            # processing context
-            self.setup()
+    @property
+    def executable(self):
+        return 'ocrd-detectron2-segment'
 
     def setup(self):
         #setup_logger(name='fvcore')
         #mp.set_start_method("spawn", force=True)
-        LOG = getLogger('processor.Detectron2Segment')
         # runtime overrides
         if self.parameter['device'] == 'cpu' or not torch.cuda.is_available():
             device = "cpu"
         else:
             device = self.parameter['device']
-        LOG.info("Using compute device %s", device)
+        self.logger.info("Using compute device %s", device)
         model_config = self.resolve_resource(self.parameter['model_config'])
-        LOG.info("Loading config '%s'", model_config)
+        self.logger.info("Loading config '%s'", model_config)
         # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
         with tempfile.TemporaryDirectory() as tmpdir:
             # workaround for fvcore/detectron2's stupid decision
             # to resolve the relative path for _BASE_ in the config file
             # on its dirname instead of the detectron2 distribution's config directory
-            temp_config = os.path.join(tmpdir, 'configs')
-            shutil.copytree(resource_filename('detectron2', 'model_zoo/configs'), temp_config)
-            temp_config = os.path.join(temp_config, os.path.basename(model_config))
+            temp_configs = os.path.join(tmpdir, 'configs')
+            with resource_filename('detectron2', 'model_zoo/configs') as stock_configs:
+                shutil.copytree(stock_configs, temp_configs)
+            temp_config = os.path.join(temp_configs, os.path.basename(model_config))
             shutil.copyfile(model_config, temp_config)
             with pushd_popd(tmpdir):
                 # repair broken config files that make deviating assumptions on model_zoo files
@@ -145,13 +137,13 @@ class Detectron2Segment(Processor):
             "The chosen model's number of classes %d does not match the given list of categories %d " % (
                 cfg.MODEL.ROI_HEADS.NUM_CLASSES, len(self.parameter['categories']))
         # instantiate model
-        LOG.info("Loading weights '%s'", model_weights)
+        self.logger.info("Loading weights '%s'", model_weights)
         self.predictor = DefaultPredictor(cfg)
         self.categories = self.parameter['categories']
-        self.metadata = MetadataCatalog.get('runtime')
-        self.metadata.thing_classes = self.categories
+        self.metadatacat = MetadataCatalog.get('runtime')
+        self.metadatacat.thing_classes = self.categories
 
-    def process(self):
+    def process_page_pcgts(self, *input_pcgts: Optional[OcrdPage], page_id: Optional[str] = None) -> OcrdPageResult:
         """Use detectron2 to segment each page into regions.
 
         Open and deserialize PAGE input files and their respective images,
@@ -190,113 +182,93 @@ class Detectron2Segment(Processor):
 
         Produce a new output file by serialising the resulting hierarchy.
         """
-        LOG = getLogger('processor.Detectron2Segment')
-        assert_file_grp_cardinality(self.input_file_grp, 1)
-        assert_file_grp_cardinality(self.output_file_grp, 1)
+        pcgts = input_pcgts[0]
+        result = OcrdPageResult(pcgts)
         level = self.parameter['operation_level']
 
-        # pylint: disable=attribute-defined-outside-init
-        for n, input_file in enumerate(self.input_files):
-            file_id = make_file_id(input_file, self.output_file_grp)
-            page_id = input_file.pageId or input_file.ID
-            LOG.info("INPUT FILE %i / %s", n, page_id)
-            pcgts = page_from_file(self.workspace.download_file(input_file))
-            pcgts.set_pcGtsId(file_id)
-            self.add_metadata(pcgts)
+        page = pcgts.get_Page()
+        page_image_raw, page_coords, page_image_info = self.workspace.image_from_page(
+            page, page_id, feature_filter='binarized')
+        # for morphological post-processing, we will need the binarized image, too
+        if self.parameter['postprocessing'] != 'none':
+            page_image_bin, _, _ = self.workspace.image_from_page(
+                page, page_id, feature_selector='binarized')
+            page_image_raw, page_image_bin = _ensure_consistent_crops(
+                page_image_raw, page_image_bin)
+        else:
+            page_image_bin = page_image_raw
+        # determine current zoom and target zoom
+        if page_image_info.resolution != 1:
+            dpi = page_image_info.resolution
+            if page_image_info.resolutionUnit == 'cm':
+                dpi = round(dpi * 2.54)
+            zoom = 300.0 / dpi
+        else:
+            dpi = None
+            zoom = 1.0
+        # todo: if zoom is > 4.0, do something along the lines of eynollah's enhance
+        if zoom < 2.0:
+            # actual resampling: see below
+            zoomed = zoom / 2.0
+            self.logger.info("scaling %dx%d image by %.2f", page_image_raw.width, page_image_raw.height, zoomed)
+        else:
+            zoomed = 1.0
 
-            page = pcgts.get_Page()
-            page_image_raw, page_coords, page_image_info = self.workspace.image_from_page(
-                page, page_id, feature_filter='binarized')
-            # for morphological post-processing, we will need the binarized image, too
-            if self.parameter['postprocessing'] != 'none':
-                page_image_bin, _, _ = self.workspace.image_from_page(
-                    page, page_id, feature_selector='binarized')
-                page_image_raw, page_image_bin = _ensure_consistent_crops(
-                    page_image_raw, page_image_bin)
-            else:
-                page_image_bin = page_image_raw
-            # determine current zoom and target zoom
-            if page_image_info.resolution != 1:
-                dpi = page_image_info.resolution
-                if page_image_info.resolutionUnit == 'cm':
-                    dpi = round(dpi * 2.54)
-                zoom = 300.0 / dpi
-            else:
-                dpi = None
-                zoom = 1.0
-            # todo: if zoom is > 4.0, do something along the lines of eynollah's enhance
-            if zoom < 2.0:
-                # actual resampling: see below
-                zoomed = zoom / 2.0
-                LOG.info("scaling %dx%d image by %.2f", page_image_raw.width, page_image_raw.height, zoomed)
-            else:
-                zoomed = 1.0
+        for segment in ([page] if level == 'page' else
+                        page.get_AllRegions(depth=1, classes=['Table'])):
+            # regions = segment.get_AllRegions(depth=1)
+            # FIXME: as long as we don't have get_AllRegions on region level,
+            #        we have to simulate this via parent_object filtering
+            def at_segment(region):
+                return region.parent_object_ is segment
+            regions = list(filter(at_segment, page.get_AllRegions()))
 
-            for segment in ([page] if level == 'page' else
-                            page.get_AllRegions(depth=1, classes=['Table'])):
-                # regions = segment.get_AllRegions(depth=1)
-                # FIXME: as long as we don't have get_AllRegions on region level,
-                #        we have to simulate this via parent_object filtering
-                def at_segment(region):
-                    return region.parent_object_ is segment
-                regions = list(filter(at_segment, page.get_AllRegions()))
-
-                if isinstance(segment, PageType):
-                    image_raw = page_image_raw
-                    image_bin = page_image_bin
-                    coords = page_coords
+            if isinstance(segment, PageType):
+                image_raw = page_image_raw
+                image_bin = page_image_bin
+                coords = page_coords
+            else:
+                image_raw, coords = self.workspace.image_from_segment(
+                    segment, page_image_raw, page_coords, feature_filter='binarized')
+                if self.parameter['postprocessing'] != 'none':
+                    image_bin, _ = self.workspace.image_from_segment(
+                        segment, page_image_bin, page_coords)
+                    image_raw, image_bin = _ensure_consistent_crops(
+                        image_raw, image_bin)
                 else:
-                    image_raw, coords = self.workspace.image_from_segment(
-                        segment, page_image_raw, page_coords, feature_filter='binarized')
-                    if self.parameter['postprocessing'] != 'none':
-                        image_bin, _ = self.workspace.image_from_segment(
-                            segment, page_image_bin, page_coords)
-                        image_raw, image_bin = _ensure_consistent_crops(
-                            image_raw, image_bin)
-                    else:
-                        image_bin = image_raw
+                    image_bin = image_raw
 
-                # ensure RGB (if raw was merely grayscale)
-                if image_raw.mode == '1':
-                    image_raw = image_raw.convert('L')
-                image_raw = image_raw.convert(mode='RGB')
-                image_bin = image_bin.convert(mode='1')
+            # ensure RGB (if raw was merely grayscale)
+            if image_raw.mode == '1':
+                image_raw = image_raw.convert('L')
+            image_raw = image_raw.convert(mode='RGB')
+            image_bin = image_bin.convert(mode='1')
 
-                # reduce resolution to 300 DPI max
-                if zoomed != 1.0:
-                    image_bin = image_bin.resize(
-                        (int(image_raw.width * zoomed),
-                         int(image_raw.height * zoomed)),
-                        resample=Image.Resampling.BICUBIC)
-                    image_raw = image_raw.resize(
-                        (int(image_raw.width * zoomed),
-                         int(image_raw.height * zoomed)),
-                        resample=Image.Resampling.BICUBIC)
+            # reduce resolution to 300 DPI max
+            if zoomed != 1.0:
+                image_bin = image_bin.resize(
+                    (int(image_raw.width * zoomed),
+                     int(image_raw.height * zoomed)),
+                    resample=Image.Resampling.BICUBIC)
+                image_raw = image_raw.resize(
+                    (int(image_raw.width * zoomed),
+                     int(image_raw.height * zoomed)),
+                    resample=Image.Resampling.BICUBIC)
 
-                # convert raw to BGR
-                array_raw = np.array(image_raw)
-                array_raw = array_raw[:,:,::-1]
-                # convert binarized to single-channel negative
-                array_bin = np.array(image_bin)
-                array_bin = ~ array_bin
+            # convert raw to BGR
+            array_raw = np.array(image_raw)
+            array_raw = array_raw[:,:,::-1]
+            # convert binarized to single-channel negative
+            array_bin = np.array(image_bin)
+            array_bin = ~ array_bin
 
-                self._process_segment(segment, regions, coords, array_raw, array_bin, zoomed,
-                                      file_id, input_file.pageId)
+            image = self._process_segment(segment, regions, coords, array_raw, array_bin, zoomed, page_id)
+            if image:
+                result.images.append(image)
+        return result
 
-            file_path = os.path.join(self.output_file_grp,
-                                     file_id + '.xml')
-            out = self.workspace.add_file(
-                ID=file_id,
-                file_grp=self.output_file_grp,
-                pageId=input_file.pageId,
-                local_filename=file_path,
-                mimetype=MIMETYPE_PAGE,
-                content=to_xml(pcgts))
-            LOG.info('created file ID: %s, file_grp: %s, path: %s',
-                     file_id, self.output_file_grp, out.local_filename)
-
-    def _process_segment(self, segment, ignore, coords, array_raw, array_bin, zoomed, file_id, page_id):
-        LOG = getLogger('processor.Detectron2Segment')
+    def _process_segment(self, segment, ignore, coords, array_raw, array_bin, zoomed, page_id) -> Optional[OcrdPageResultImage]:
+        self.logger = getLogger('processor.Detectron2Segment')
         cpu = torch.device('cpu')
         segtype = segment.__class__.__name__[:-4]
         # remove existing segmentation (have only detected targets survive)
@@ -315,12 +287,12 @@ class Detectron2Segment(Processor):
                 counts = np.sqrt(3 * counts)
                 counts = counts[(5 < counts) & (counts < 100)]
                 scale = int(np.median(counts))
-                LOG.debug("estimated scale: %d", scale)
+                self.logger.debug("estimated scale: %d", scale)
         # predict
         output = self.predictor(array_raw)
         if self.parameter['debug_img'] != 'none':
             vis = visualizer.Visualizer(array_raw,
-                                        metadata=self.metadata,
+                                        metadata=self.metadatacat,
                                         instance_mode={
                                             'instance_colors': visualizer.ColorMode.IMAGE,
                                             'instance_colors_only': visualizer.ColorMode.IMAGE_BW,
@@ -328,10 +300,10 @@ class Detectron2Segment(Processor):
                                         }[self.parameter['debug_img']])
         # decoding, cf. https://detectron2.readthedocs.io/en/latest/tutorials/models.html
         if 'panoptic_seg' in output:
-            LOG.info("decoding from panoptic segmentation results")
+            self.logger.info("decoding from panoptic segmentation results")
             segmap, seginfo = output['panoptic_seg']
             if not isinstance(segmap, np.ndarray):
-                LOG.debug(str(segmap))
+                self.logger.debug(str(segmap))
                 segmap = segmap.to(cpu)
                 segmap = segmap.numpy()
             if self.parameter['debug_img'] != 'none':
@@ -339,8 +311,8 @@ class Detectron2Segment(Processor):
             seglabels = np.unique(segmap)
             nseg = len(seglabels)
             if not nseg:
-                LOG.warning("Detected no regions on %s '%s'", segtype, segment.id)
-                return
+                self.logger.warning("Detected no regions on %s '%s'", segtype, segment.id)
+                return None
             masks = []
             classes = []
             scores = []
@@ -360,10 +332,10 @@ class Detectron2Segment(Processor):
                 scores.append(1.0) #scores[i]
                 classes.append(class_id)
             if not len(masks):
-                LOG.warning("Detected no regions for selected categories on %s '%s'", segtype, segment.id)
-                return
+                self.logger.warning("Detected no regions for selected categories on %s '%s'", segtype, segment.id)
+                return None
         elif 'instances' in output:
-            LOG.info("decoding from instance segmentation results")
+            self.logger.info("decoding from instance segmentation results")
             instances = output['instances']
             if not isinstance(instances, dict):
                 assert instances.image_size == (height, width)
@@ -383,8 +355,8 @@ class Detectron2Segment(Processor):
             if not isinstance(scores, np.ndarray):
                 scores = scores.to(cpu).numpy()
             if not scores.shape[0]:
-                LOG.warning("Detected no regions on %s '%s'", segtype, segment.id)
-                return
+                self.logger.warning("Detected no regions on %s '%s'", segtype, segment.id)
+                return None
             if 'pred_masks' in instances: # or pred_masks_rle ?
                 masks = np.asarray(instances['pred_masks'])
                 def get_mask(x):
@@ -394,7 +366,7 @@ class Detectron2Segment(Processor):
                     return x.mask > 0
                 masks = np.stack([get_mask(x) for x in masks])
             elif 'pred_boxes' in instances:
-                LOG.warning("model has no mask output, only bbox")
+                self.logger.warning("model has no mask output, only bbox")
                 boxes = instances['pred_boxes']
                 if not isinstance(boxes, np.ndarray):
                     boxes = boxes.to(cpu).tensor.numpy()
@@ -406,8 +378,8 @@ class Detectron2Segment(Processor):
                           math.floor(y1):math.ceil(y2),
                           math.floor(x1):math.ceil(x2)] = True
         else:
-            LOG.error("Found no suitable output format to decode from")
-            return
+            self.logger.error("Found no suitable output format to decode from")
+            return None
         assert len(scores) == len(classes) == len(masks)
         # apply non-maximum suppression between overlapping instances
         # (not strictly necessary in case of panoptic segmentation,
@@ -427,10 +399,10 @@ class Detectron2Segment(Processor):
         if postprocessing in ['full', 'only-nms']:
             scores, classes, masks = postprocess_nms(
                 scores, classes, masks, array_bin, self.categories,
-                min_confidence=self.parameter['min_confidence'], nproc=8)
+                min_confidence=self.parameter['min_confidence'], nproc=8, logger=self.logger)
         if postprocessing in ['full', 'only-morph']:
             scores, classes, masks = postprocess_morph(
-                scores, classes, masks, components, nproc=8)
+                scores, classes, masks, components, nproc=8, logger=self.logger)
         if len(ignore):
             scores = scores[1:]
             classes = classes[1:]
@@ -451,7 +423,7 @@ class Detectron2Segment(Processor):
                 mask = cv2.dilate(mask.astype(np.uint8),
                                   np.ones((scale,scale), np.uint8)) > 0
             if invalid:
-                LOG.warning("Ignoring non-contiguous (%d) region for %s", len(contours), category)
+                self.logger.warning("Ignoring non-contiguous (%d) region for %s", len(contours), category)
                 continue
             region_polygon = contours[0][:,0,:] # already in x,y order
             if zoomed != 1.0:
@@ -460,7 +432,7 @@ class Detectron2Segment(Processor):
             region_polygon = coordinates_for_segment(region_polygon, _, coords)
             region_polygon = polygon_for_parent(region_polygon, segment)
             if region_polygon is None:
-                LOG.warning("Ignoring extant region for %s", category)
+                self.logger.warning("Ignoring extant region for %s", category)
                 continue
             # annotate new region/line
             region_coords = CoordsType(points_from_polygon(region_polygon), conf=score)
@@ -485,8 +457,7 @@ class Detectron2Segment(Processor):
             try:
                 regiontype = cat2class[cat[0]]
             except KeyError:
-                LOG.critical("Invalid region type %s (see https://github.com/PRImA-Research-Lab/PAGE-XML)", cat[0])
-                sys.exit(1)
+                raise ValueError("Invalid region type %s (see https://github.com/PRImA-Research-Lab/PAGE-XML)", cat[0])
             region_no += 1
             region_id = 'region%04d_%s' % (region_no, cat[0])
             region = regiontype(id=region_id, Coords=region_coords)
@@ -499,22 +470,25 @@ class Detectron2Segment(Processor):
                 except (KeyError, ValueError):
                     region.set_custom(cat[1])
             getattr(segment, 'add_' + cat[0])(region)
-            LOG.info("Detected %s region%04d (p=%.2f) on %s '%s'",
+            self.logger.info("Detected %s region%04d (p=%.2f) on %s '%s'",
                      category, region_no, score, segtype, segment.id)
         if self.parameter['debug_img'] != 'none':
-            path = self.workspace.save_image_file(
+            altimg = AlternativeImageType(comments='debug')
+            segment.add_AlternativeImage(altimg)
+            return OcrdPageResultImage(
                 Image.fromarray(visimg.get_image()),
-                (file_id if isinstance(segment, PageType) else file_id + '_' + segment.id) + '.IMG-DEBUG',
-                self.output_file_grp, page_id=page_id)
-            segment.add_AlternativeImage(AlternativeImageType(filename=path, comments='debug'))
+                ('' if isinstance(segment, PageType) else '_' + segment.id) + '.IMG-DEBUG',
+                altimg)
+        return None
 
 
-def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_confidence=0.5, nproc=8):
+def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_confidence=0.5, nproc=8, logger=None):
     """Apply geometrical post-processing to raw detections: remove overlapping candidates via non-maximum suppression across classes.
 
     Implement via Numpy routines.
     """
-    LOG = getLogger('processor.Detectron2Segment')
+    if logger is None:
+        logger = getLogger('ocrd.processor.Detectron2Segment')
     # apply IoU-based NMS across classes
     assert masks.dtype == bool
     instances = np.arange(len(masks))
@@ -543,25 +517,25 @@ def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_conf
         bbox = [xs.min(), ys.min(), xs.max(), ys.max()]
         class_id = classes[i]
         if class_id < 0:
-            LOG.debug("ignoring existing region at %s", str(bbox))
+            logger.debug("ignoring existing region at %s", str(bbox))
             continue
         category = categories[class_id]
         if scores[i] < min_confidence:
-            LOG.debug("Ignoring instance for %s with too low score %.2f", category, score)
+            logger.debug("Ignoring instance for %s with too low score %.2f", category, score)
             bad[i] = True
             continue
         count = np.count_nonzero(mask)
         if count < 10:
-            LOG.warning("Ignoring too small (%dpx) region for %s", count, category)
+            logger.warning("Ignoring too small (%dpx) region for %s", count, category)
             bad[i] = True
             continue
         worse = score < scores
         if np.any(worse & overlaps[i]):
-            LOG.debug("Ignoring instance for %s with %.2f overlapping better neighbour",
+            logger.debug("Ignoring instance for %s with %.2f overlapping better neighbour",
                       category, score)
             bad[i] = True
         else:
-            LOG.debug("post-processing prediction for %s at %s area %d score %f",
+            logger.debug("post-processing prediction for %s at %s area %d score %f",
                       category, str(bbox), count, score)
     # post-process detections morphologically and decode to region polygons
     # does not compile (no OpenCV support):
@@ -574,12 +548,13 @@ def postprocess_nms(scores, classes, masks, page_array_bin, categories, min_conf
     masks = masks[keep]
     return scores, classes, masks
 
-def postprocess_morph(scores, classes, masks, components, nproc=8):
+def postprocess_morph(scores, classes, masks, components, nproc=8, logger=None):
     """Apply morphological post-processing to raw detections: extend masks to avoid chopping off fg connected components.
 
     Implement via Numpy routines.
     """
-    LOG = getLogger('processor.Detectron2Segment')
+    if logger is None:
+        logger = getLogger('ocrd.processor.Detectron2Segment')
     shared_masks = mp.sharedctypes.RawArray(ctypes.c_bool, masks.size)
     shared_components = mp.sharedctypes.RawArray(ctypes.c_int32, components.size)
     shared_masks_np = tonumpyarray_with_shape(shared_masks, masks.shape)
