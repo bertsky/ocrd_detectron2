@@ -76,7 +76,7 @@ jobs:
       with:
         ref: gh-pages
     - name: Download Artifact
-      uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+      uses: actions/download-artifact@4
       with:
         name: test-results
         path: test-results
