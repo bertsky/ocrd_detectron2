@@ -9,5 +9,6 @@ typing-extensions # for Torch build
 torch>=1.10.0 #,<1.11
 torchvision>=0.11.2
 detectron2>=0.6
+setuptools >= 78.0 # for Detectron build
 wheel # for Detectron build
 pycocotools # for Detectron
