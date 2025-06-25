@@ -167,7 +167,7 @@ Example:
     # download all preconfigured models
     ocrd resmgr download ocrd-detectron2-segment "*"
 
-For installation **via Docker**, usage is bascially the same as above – with some modifications:
+For installation **via Docker**, usage is basically the same as above – with some modifications:
 
     # For data persistency, decide which host-side directories you want to mount in Docker:
     DATADIR=/host-side/path/to/data
